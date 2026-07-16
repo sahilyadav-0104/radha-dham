@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { MANTRAS } from "../data";
+import { useT } from "../i18n";
 
 /* ============================================================
    JAPA COUNTER — Naam jaap ka hisaab (device par save hota hai)
@@ -86,6 +87,7 @@ function last7Days(history, todayCount) {
 export default function CounterPage() {
   const [c, setC] = useState(loadCounter);
   const [pulse, setPulse] = useState(false);
+  const { t } = useT();
 
   useEffect(() => {
     localStorage.setItem(COUNTER_KEY, JSON.stringify(c));
@@ -125,15 +127,15 @@ export default function CounterPage() {
   const weekMax = Math.max(...week.map(d => d.count), 1);
 
   const stats = [
-    { label: "🌅 Aaj", value: c.day, key: "day" },
-    { label: "🗓️ Is Mahine", value: c.month, key: "month" },
-    { label: "📅 Is Saal", value: c.year, key: "year" },
-    { label: "📿 Kul Jaap", value: c.total, key: "all" },
+    { label: "🌅 " + t("c.today"), value: c.day, key: "day" },
+    { label: "🗓️ " + t("c.month"), value: c.month, key: "month" },
+    { label: "📅 " + t("c.year"), value: c.year, key: "year" },
+    { label: "📿 " + t("c.total"), value: c.total, key: "all" },
   ];
 
   return (
     <div className="page-section">
-      <h2 className="section-heading">Japa Counter</h2>
+      <h2 className="section-heading">{t("h.counter")}</h2>
       <div className="section-divider" />
 
       {/* Streak badge */}
@@ -159,7 +161,7 @@ export default function CounterPage() {
         <button className={`counter-big-btn${pulse ? " pulse" : ""}`} onClick={count}>
           <span className="counter-big-num">{c.day}</span>
           <span className="counter-big-label">{MANTRAS[c.mantra]}</span>
-          <span className="counter-big-tap">yahan tap karein 🌸</span>
+          <span className="counter-big-tap">{t("c.tap")}</span>
         </button>
       </div>
 
@@ -219,7 +221,7 @@ export default function CounterPage() {
         ))}
       </div>
 
-      <p style={{ textAlign: "center", fontSize: 12, color: "#993556", marginTop: 18, lineHeight: 1.7 }}>
+      <p style={{ textAlign: "center", fontSize: 12, color: "var(--c-dark)", marginTop: 18, lineHeight: 1.7 }}>
         📿 Aapka jaap is device par apne aap save hota rehta hai.<br />
         Din, mahina aur saal badalte hi count apne aap naye bucket mein shuru ho jaata hai.
       </p>

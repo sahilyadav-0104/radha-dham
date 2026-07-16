@@ -1,6 +1,8 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DARSHAN_IMAGES, NAV_LINKS } from "./data";
+import { THEMES } from "./themes";
+import { LANGS, STRINGS, LangContext } from "./i18n";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
 import BhajansPage from "./pages/BhajansPage";
@@ -59,6 +61,24 @@ function HeroBgSvg() {
 export default function App() {
   const [activeNav, setActiveNav] = useState("Home");
   const [darshan, setDarshan] = useState(null); // current darshan image index
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem("radhaDhamTheme") || "gulabi");
+  const [lang, setLang] = useState(() => localStorage.getItem("radhaDhamLang") || "hinglish");
+
+  // Theme ke colors CSS variables me apply karo
+  useEffect(() => {
+    const th = THEMES.find(x => x.id === theme) || THEMES[0];
+    for (const [k, v] of Object.entries(th.vars)) {
+      document.documentElement.style.setProperty(k, v);
+    }
+    localStorage.setItem("radhaDhamTheme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    localStorage.setItem("radhaDhamLang", lang);
+  }, [lang]);
+
+  const t = (key) => (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.hinglish[key] || key;
 
   function openDarshan() {
     // har baar jab darshan kholein, ek random image (jo pichli baar dikhi usse alag)
@@ -85,34 +105,70 @@ export default function App() {
   }
 
   return (
-    <div style={{ fontFamily:"Georgia, serif", background:"#fff5f8", minHeight:"100vh" }}>
+    <LangContext.Provider value={{ lang, t }}>
+    <div style={{ fontFamily:"Georgia, serif", background:"var(--c-page)", minHeight:"100vh" }}>
       <div className="browser-bar">
-        <div className="browser-dots">
+        <div className="browser-dots" onClick={() => setSettingsOpen(o => !o)} title="Settings — rang aur bhasha badlein">
           {["#E24B4A","#EF9F27","#639922"].map((c,i) => <div key={i} className="browser-dot" style={{ background:c }} />)}
         </div>
         <div className="browser-url">radharani.devotional.in</div>
       </div>
+
+      {/* SETTINGS PANEL — 3 dots pe click se khulta hai */}
+      {settingsOpen && (
+        <>
+          <div className="settings-overlay" onClick={() => setSettingsOpen(false)} />
+          <div className="settings-panel">
+            <p className="settings-title">🎨 {t("set.theme")}</p>
+            <div className="theme-swatches">
+              {THEMES.map(th => (
+                <button
+                  key={th.id}
+                  className={`theme-swatch${theme === th.id ? " active" : ""}`}
+                  style={{ background: th.vars["--c-primary"] }}
+                  title={`${th.emoji} ${th.name}`}
+                  onClick={() => setTheme(th.id)}
+                >{theme === th.id ? "✓" : ""}</button>
+              ))}
+            </div>
+            <p className="settings-theme-name">
+              {(THEMES.find(x => x.id === theme) || THEMES[0]).emoji}{" "}
+              {(THEMES.find(x => x.id === theme) || THEMES[0]).name}
+            </p>
+            <p className="settings-title">🌐 {t("set.lang")}</p>
+            <div className="lang-list">
+              {LANGS.map(l => (
+                <button
+                  key={l.id}
+                  className={`lang-chip${lang === l.id ? " active" : ""}`}
+                  onClick={() => setLang(l.id)}
+                >{l.native}</button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
       <div className="hero">
         <HeroBgSvg />
         <div className="hero-content">
           <div className="lotus-wrap">
-            <div className="lotus-circle" style={{ width:180, height:180, background:"#F4C0D1", opacity:0.35 }} />
-            <div className="lotus-circle" style={{ width:130, height:130, background:"#ED93B1", opacity:0.3 }} />
-            <div className="lotus-circle" style={{ width:85, height:85, background:"#D4537E", opacity:0.2 }} />
+            <div className="lotus-circle" style={{ width:180, height:180, background:"var(--c-soft)", opacity:0.35 }} />
+            <div className="lotus-circle" style={{ width:130, height:130, background:"var(--c-border)", opacity:0.3 }} />
+            <div className="lotus-circle" style={{ width:85, height:85, background:"var(--c-primary)", opacity:0.2 }} />
             <div className="lotus-flute" />
             {[0,1,2,3,4,5,6].map(i => <div key={i} className="lotus-hole" style={{ left:`calc(18% + ${i*10}%)` }} />)}
-            {[-20,0,20].map((rot,i) => <div key={i} className="lotus-petal" style={{ background:i===1?"#F4C0D1":"#ED93B1", transform:`translate(-50%, 0) rotate(${rot}deg)` }} />)}
+            {[-20,0,20].map((rot,i) => <div key={i} className="lotus-petal" style={{ background:i===1?"var(--c-soft)":"var(--c-border)", transform:`translate(-50%, 0) rotate(${rot}deg)` }} />)}
           </div>
           <h1>Radha Rani</h1>
-          <p className="hero-subtitle">Shri Vrindavan Dham — Devotional Portal</p>
-          <p className="hero-tagline">Bhakti ka digital mandir — anytime, anywhere</p>
+          <p className="hero-subtitle">{t("hero.sub")}</p>
+          <p className="hero-tagline">{t("hero.tag")}</p>
           <p className="hero-links">Bhajans · Leelas · Quotes · Festival Calendar · Gallery</p>
-          <button className="btn-cta" onClick={openDarshan}>Darshan Karo →</button>
+          <button className="btn-cta" onClick={openDarshan}>{t("hero.cta")}</button>
         </div>
       </div>
       <nav className="main-nav">
         {NAV_LINKS.map(link => (
-          <button key={link} className={`nav-btn${activeNav===link?" active":""}`} onClick={() => setActiveNav(link)}>{link}</button>
+          <button key={link} className={`nav-btn${activeNav===link?" active":""}`} onClick={() => setActiveNav(link)}>{t("nav." + link)}</button>
         ))}
       </nav>
       {renderPage()}
@@ -124,7 +180,7 @@ export default function App() {
           href={process.env.PUBLIC_URL + "/app/radha-dham.apk"}
           download="radha-dham.apk"
         >
-          📲 Download App from here
+          📲 {t("footer.dl")}
         </a>
       </footer>
 
@@ -174,8 +230,8 @@ export default function App() {
               onClick={() => setDarshan(null)}
               style={{
                 position: "absolute", top: 20, right: 24,
-                background: "rgba(0,0,0,0.4)", color: "#F4C0D1",
-                border: "1px solid #ED93B1", borderRadius: "50%",
+                background: "rgba(0,0,0,0.4)", color: "var(--c-soft)",
+                border: "1px solid var(--c-border)", borderRadius: "50%",
                 width: 44, height: 44, fontSize: 22, cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}
@@ -201,13 +257,13 @@ export default function App() {
               />
             </div>
 
-            <p style={{ color: "#F4C0D1", fontSize: 15, margin: 0, textAlign: "center", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
+            <p style={{ color: "var(--c-soft)", fontSize: 15, margin: 0, textAlign: "center", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
               {DARSHAN_IMAGES[darshan].caption}
             </p>
 
             {/* Mantra box — chant karne ke liye */}
             <div style={{
-              background: "rgba(114,36,62,0.85)",
+              background: "rgba(var(--c-deep-rgb),0.85)",
               border: "1.5px solid #FAC775",
               borderRadius: 16,
               padding: "16px 32px",
@@ -218,17 +274,18 @@ export default function App() {
               <p style={{ color: "#FAC775", fontSize: 13, margin: "0 0 6px", letterSpacing: 1, textTransform: "uppercase" }}>
                 🕉️ Aaj ka Mantra — Chant Karein
               </p>
-              <p style={{ color: "#FBEAF0", fontSize: 24, fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
+              <p style={{ color: "var(--c-bg)", fontSize: 24, fontWeight: 500, margin: 0, lineHeight: 1.5 }}>
                 {DARSHAN_IMAGES[darshan].mantra}
               </p>
             </div>
 
-            <p style={{ color: "#ED93B1", fontSize: 12, margin: 0, textAlign: "center" }}>
+            <p style={{ color: "var(--c-border)", fontSize: 12, margin: 0, textAlign: "center" }}>
               Band karne ke liye kahin bhi click karein
             </p>
           </div>
         </div>
       )}
     </div>
+    </LangContext.Provider>
   );
 }

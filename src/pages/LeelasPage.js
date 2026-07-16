@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { LEELAS, QUOTES, whatsappShare } from "../data";
+import { useT } from "../i18n";
 
 /* ============================================================
    LEELAS PAGE — Full stories + Quotes
    ============================================================ */
 export default function LeelasPage() {
+  const { t } = useT();
   const [quoteIdx, setQuoteIdx] = useState(0);
   const [expanded, setExpanded] = useState(null);
   const q = QUOTES[quoteIdx];
 
   return (
     <div className="page-section">
-      <h2 className="section-heading">Leelas & Quotes</h2>
+      <h2 className="section-heading">{t("h.leelas")}</h2>
       <div className="section-divider" />
 
       {/* Quote */}
@@ -32,7 +34,7 @@ export default function LeelasPage() {
       </div>
 
       {/* Leelas */}
-      <h3 style={{ fontSize:18, color:"#72243E", marginBottom:16, textAlign:"center" }}>Radha Krishna ki Leelayein</h3>
+      <h3 style={{ fontSize:18, color:"var(--c-deep)", marginBottom:16, textAlign:"center" }}>Radha Krishna ki Leelayein</h3>
       <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
         {LEELAS.map((l, i) => (
           <div key={i} style={{ background:l.bg, border:`0.5px solid ${l.border}`, borderRadius:14, overflow:"hidden" }}>
@@ -57,7 +59,7 @@ export default function LeelasPage() {
           </div>
         ))}
       </div>
-      <p style={{ textAlign:"center", fontSize:13, color:"#993556", marginTop:20 }}>
+      <p style={{ textAlign:"center", fontSize:13, color:"var(--c-dark)", marginTop:20 }}>
         Kisi bhi leela par click karein puri kahani padhne ke liye 🌸
       </p>
     </div>

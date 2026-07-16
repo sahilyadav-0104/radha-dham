@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { INITIAL_COMMENTS, ALL_SEARCH_DATA } from "../data";
+import { useT } from "../i18n";
 
 /* ============================================================
    CONTACT PAGE — Comments (device par save) + Search
@@ -21,6 +22,7 @@ export default function ContactPage() {
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState("comments");
   const [submitted, setSubmitted] = useState(false);
+  const { t } = useT();
 
   useEffect(() => {
     localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
@@ -30,8 +32,8 @@ export default function ContactPage() {
     Bhajan: { bg:"#FAEEDA", text:"#633806" },
     Leela:  { bg:"#EEEDFE", text:"#3C3489" },
     Festival:{ bg:"#EAF3DE", text:"#27500A" },
-    Gallery: { bg:"#FBEAF0", text:"#993556" },
-    Counter: { bg:"#FBEAF0", text:"#D4537E" },
+    Gallery: { bg:"var(--c-bg)", text:"var(--c-dark)" },
+    Counter: { bg:"var(--c-bg)", text:"var(--c-primary)" },
   };
 
   const results = ALL_SEARCH_DATA.filter(d => query.length > 1 && d.title.toLowerCase().includes(query.toLowerCase()));
@@ -49,9 +51,9 @@ export default function ContactPage() {
       <div style={{ display:"flex", justifyContent:"center", gap:10, marginBottom:28 }}>
         {["comments","search"].map(t => (
           <button key={t} onClick={() => setTab(t)} style={{
-            background: tab===t ? "#72243E" : "#FBEAF0",
-            color: tab===t ? "#F4C0D1" : "#993556",
-            border: "0.5px solid #ED93B1",
+            background: tab===t ? "var(--c-deep)" : "var(--c-bg)",
+            color: tab===t ? "var(--c-soft)" : "var(--c-dark)",
+            border: "0.5px solid var(--c-border)",
             borderRadius: 20,
             padding: "8px 22px",
             fontSize: 14,
@@ -65,7 +67,7 @@ export default function ContactPage() {
 
       {tab === "comments" && (
         <>
-          <h2 className="section-heading">Bhakto ke Anubhav</h2>
+          <h2 className="section-heading">{t("h.contact")}</h2>
           <div className="section-divider" />
           <div className="comment-form">
             <h3>Apna anubhav share karein 🙏</h3>
@@ -99,7 +101,7 @@ export default function ContactPage() {
               {query && <button onClick={() => setQuery("")} style={{ background:"transparent", border:"none", color:"#185FA5", cursor:"pointer", fontSize:16 }}>✕</button>}
             </div>
             {query.length > 1 && results.length === 0 && (
-              <p style={{ textAlign:"center", color:"#993556", fontSize:14 }}>Koi result nahi mila. Doosra naam try karein.</p>
+              <p style={{ textAlign:"center", color:"var(--c-dark)", fontSize:14 }}>Koi result nahi mila. Doosra naam try karein.</p>
             )}
             {results.map((r,i) => (
               <div key={i} className="search-result-card">
@@ -109,10 +111,10 @@ export default function ContactPage() {
             ))}
             {query.length === 0 && (
               <div style={{ textAlign:"center", padding:"20px 0" }}>
-                <p style={{ color:"#993556", fontSize:13, marginBottom:12 }}>Kuch type karein... sabse pehle Radhe Radhe 🌸</p>
+                <p style={{ color:"var(--c-dark)", fontSize:13, marginBottom:12 }}>Kuch type karein... sabse pehle Radhe Radhe 🌸</p>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:8, justifyContent:"center" }}>
                   {["Radhe","Vrindavan","Janmashtami","Raas Leela","Holi","Banke Bihari"].map(tag => (
-                    <button key={tag} onClick={() => setQuery(tag)} style={{ background:"#FBEAF0", border:"0.5px solid #ED93B1", borderRadius:16, padding:"5px 14px", fontSize:13, color:"#993556", cursor:"pointer", fontFamily:"Georgia, serif" }}>{tag}</button>
+                    <button key={tag} onClick={() => setQuery(tag)} style={{ background:"var(--c-bg)", border:"0.5px solid var(--c-border)", borderRadius:16, padding:"5px 14px", fontSize:13, color:"var(--c-dark)", cursor:"pointer", fontFamily:"Georgia, serif" }}>{tag}</button>
                   ))}
                 </div>
               </div>

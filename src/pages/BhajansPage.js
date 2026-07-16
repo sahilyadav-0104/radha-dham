@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { BHAJANS } from "../data";
+import { useT } from "../i18n";
 
 /* ============================================================
    BHAJAN PLAYER — Audio player with real MP3 + lyrics
    ============================================================ */
 export default function BhajansPage() {
+  const { t } = useT();
   const [current, setCurrent] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -59,7 +61,7 @@ export default function BhajansPage() {
 
   return (
     <div className="page-section">
-      <h2 className="section-heading">Bhajan Player</h2>
+      <h2 className="section-heading">{t("h.bhajans")}</h2>
       <div className="section-divider" />
 
       {current !== null && (
@@ -68,13 +70,13 @@ export default function BhajansPage() {
 
       {/* Player Bar */}
       {current !== null && (
-        <div style={{ background:"#72243E", borderRadius:16, padding:"16px 20px", marginBottom:28, border:"0.5px solid #993556" }}>
+        <div style={{ background:"var(--c-deep)", borderRadius:16, padding:"16px 20px", marginBottom:28, border:"0.5px solid var(--c-dark)" }}>
           <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:14 }}>
             <img src={BHAJANS[current].cover} alt="" onError={e=>e.target.style.display="none"}
               style={{ width:56, height:56, borderRadius:10, objectFit:"cover", flexShrink:0 }} />
             <div style={{ flex:1 }}>
               <p style={{ color:"#FAC775", fontSize:16, fontWeight:500, margin:0 }}>{BHAJANS[current].title}</p>
-              <p style={{ color:"#F4C0D1", fontSize:12, margin:"3px 0 0" }}>{BHAJANS[current].singer}</p>
+              <p style={{ color:"var(--c-soft)", fontSize:12, margin:"3px 0 0" }}>{BHAJANS[current].singer}</p>
             </div>
           </div>
           {audioError && (
@@ -86,24 +88,24 @@ export default function BhajansPage() {
           {BHAJANS[current].lyrics && (
             <div style={{ background:"rgba(0,0,0,0.25)", borderRadius:10, padding:"10px 16px", marginBottom:12, textAlign:"center" }}>
               {BHAJANS[current].lyrics.split("\n").map((line, li) => (
-                <p key={li} style={{ color:"#FBEAF0", fontSize:15, lineHeight:1.9, margin:0 }}>{line}</p>
+                <p key={li} style={{ color:"var(--c-bg)", fontSize:15, lineHeight:1.9, margin:0 }}>{line}</p>
               ))}
             </div>
           )}
           {/* Progress bar */}
-          <div onClick={seek} style={{ background:"#993556", borderRadius:4, height:5, cursor:"pointer", marginBottom:6, position:"relative" }}>
+          <div onClick={seek} style={{ background:"var(--c-dark)", borderRadius:4, height:5, cursor:"pointer", marginBottom:6, position:"relative" }}>
             <div style={{ width:`${duration ? (progress/duration*100) : 0}%`, height:"100%", background:"#FAC775", borderRadius:4 }} />
           </div>
-          <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"#F4C0D1", marginBottom:12 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"var(--c-soft)", marginBottom:12 }}>
             <span>{fmt(progress)}</span><span>{fmt(duration)}</span>
           </div>
           {/* Controls */}
           <div style={{ display:"flex", justifyContent:"center", gap:20, alignItems:"center" }}>
-            <button onClick={prev} style={{ background:"#993556", border:"none", color:"#F4C0D1", borderRadius:"50%", width:40, height:40, cursor:"pointer", fontSize:18 }}>⏮</button>
+            <button onClick={prev} style={{ background:"var(--c-dark)", border:"none", color:"var(--c-soft)", borderRadius:"50%", width:40, height:40, cursor:"pointer", fontSize:18 }}>⏮</button>
             <button onClick={() => play(current)} style={{ background:"#FAC775", border:"none", color:"#412402", borderRadius:"50%", width:52, height:52, cursor:"pointer", fontSize:22 }}>
               {isPlaying ? "⏸" : "▶"}
             </button>
-            <button onClick={next} style={{ background:"#993556", border:"none", color:"#F4C0D1", borderRadius:"50%", width:40, height:40, cursor:"pointer", fontSize:18 }}>⏭</button>
+            <button onClick={next} style={{ background:"var(--c-dark)", border:"none", color:"var(--c-soft)", borderRadius:"50%", width:40, height:40, cursor:"pointer", fontSize:18 }}>⏭</button>
           </div>
         </div>
       )}

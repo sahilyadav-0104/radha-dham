@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { getFestivalsForYear, FESTIVAL_YEARS, whatsappShare } from "../data";
+import { useT } from "../i18n";
 
 /* ============================================================
    CALENDAR PAGE — data ek jagah se aata hai (data.js)
    ============================================================ */
 export default function CalendarPage() {
+  const { t } = useT();
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(FESTIVAL_YEARS.includes(currentYear) ? currentYear : FESTIVAL_YEARS[0]);
   const festList = getFestivalsForYear(year);
@@ -12,16 +14,16 @@ export default function CalendarPage() {
 
   return (
     <div className="page-section">
-      <h2 className="section-heading">Festival Calendar</h2>
+      <h2 className="section-heading">{t("h.calendar")}</h2>
       <div className="section-divider" />
 
       {/* Year selector */}
       <div style={{ display:"flex", justifyContent:"center", gap:10, marginBottom:24 }}>
         {FESTIVAL_YEARS.map(y => (
           <button key={y} onClick={() => setYear(y)} style={{
-            background: year===y ? "#72243E" : "#FBEAF0",
-            color: year===y ? "#F4C0D1" : "#993556",
-            border: "0.5px solid #ED93B1",
+            background: year===y ? "var(--c-deep)" : "var(--c-bg)",
+            color: year===y ? "var(--c-soft)" : "var(--c-dark)",
+            border: "0.5px solid var(--c-border)",
             borderRadius: 20,
             padding: "8px 22px",
             fontSize: 14,

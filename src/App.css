@@ -3,25 +3,149 @@
    Sahil · Training Project 2026
    ============================================= */
 
+/* Default theme: Gulabi (pink) — settings panel se badalta hai */
+:root {
+  --c-primary: #D4537E;
+  --c-dark: #993556;
+  --c-deep: #72243E;
+  --c-border: #ED93B1;
+  --c-soft: #F4C0D1;
+  --c-bg: #FBEAF0;
+  --c-page: #fff5f8;
+  --c-primary-rgb: 212,83,126;
+  --c-deep-rgb: 114,36,62;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Hero SVG ke rang bhi theme ke saath badlein (fill attribute ko CSS override karta hai) */
+.hero-bg-svg [fill="#D4537E"] { fill: var(--c-primary); }
+.hero-bg-svg [fill="#ED93B1"] { fill: var(--c-border); }
+.hero-bg-svg [fill="#993556"] { fill: var(--c-dark); }
+.hero-bg-svg [fill="#F4C0D1"] { fill: var(--c-soft); }
+
+/* ---- SETTINGS PANEL (3 dots pe click) ---- */
+.browser-dots {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.browser-dots:hover {
+  background: rgba(0,0,0,0.08);
+}
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+}
+
+.settings-panel {
+  position: fixed;
+  top: 42px;
+  left: 12px;
+  z-index: 1200;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  box-shadow: 0 10px 34px rgba(var(--c-deep-rgb), 0.25);
+}
+
+.settings-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-deep);
+  margin: 0 0 10px;
+  letter-spacing: 0.4px;
+}
+
+.theme-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.theme-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.12);
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.12);
+}
+
+.theme-swatch.active {
+  border-color: var(--c-deep);
+  transform: scale(1.12);
+}
+
+.settings-theme-name {
+  font-size: 12px;
+  color: var(--c-dark);
+  margin: 0 0 14px;
+}
+
+.lang-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lang-chip {
+  background: var(--c-page);
+  border: 0.5px solid var(--c-border);
+  color: var(--c-dark);
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.lang-chip:hover {
+  background: var(--c-soft);
+}
+
+.lang-chip.active {
+  background: var(--c-deep);
+  color: #FAC775;
+  border-color: var(--c-deep);
+}
+
 body {
   font-family: Georgia, serif;
-  background: #fff5f8;
+  background: var(--c-page);
 }
 
 /* ---- BROWSER BAR ---- */
 .browser-bar {
-  background: #F4C0D1;
+  background: var(--c-soft);
   padding: 8px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
-  border-bottom: 0.5px solid #ED93B1;
+  border-bottom: 0.5px solid var(--c-border);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -39,12 +163,12 @@ body {
 }
 
 .browser-url {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
   border-radius: 20px;
   padding: 3px 20px;
   font-size: 12px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 auto;
   font-family: Georgia, serif;
 }
@@ -52,7 +176,7 @@ body {
 /* ---- HERO ---- */
 .hero {
   position: relative;
-  background: #FBEAF0;
+  background: var(--c-bg);
   text-align: center;
   padding: 40px 20px 36px;
   overflow: hidden;
@@ -130,14 +254,14 @@ body {
   font-family: Georgia, serif;
   font-size: 36px;
   font-weight: 500;
-  color: #72243E;
+  color: var(--c-deep);
   margin: 0 0 6px;
   letter-spacing: 0.5px;
 }
 
 .hero-subtitle {
   font-size: 14px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 0 22px;
   letter-spacing: 0.3px;
 }
@@ -145,19 +269,19 @@ body {
 .hero-tagline {
   font-size: 17px;
   font-weight: 500;
-  color: #72243E;
+  color: var(--c-deep);
   margin: 0 0 6px;
 }
 
 .hero-links {
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 0 24px;
 }
 
 .btn-cta {
-  background: #D4537E;
-  color: #FBEAF0;
+  background: var(--c-primary);
+  color: var(--c-bg);
   border: none;
   border-radius: 24px;
   padding: 13px 40px;
@@ -170,13 +294,13 @@ body {
 }
 
 .btn-cta:hover {
-  background: #993556;
+  background: var(--c-dark);
   transform: translateY(-1px);
 }
 
 /* ---- NAV ---- */
 .main-nav {
-  background: #72243E;
+  background: var(--c-deep);
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -187,7 +311,7 @@ body {
 
 .nav-btn {
   background: transparent;
-  color: #F4C0D1;
+  color: var(--c-soft);
   border: none;
   padding: 13px 22px;
   font-size: 14px;
@@ -204,7 +328,7 @@ body {
 }
 
 .nav-btn.active {
-  background: #993556;
+  background: var(--c-dark);
   color: #FAC775;
   border-bottom: 2px solid #FAC775;
 }
@@ -221,14 +345,14 @@ body {
   text-align: center;
   font-size: 22px;
   font-weight: 500;
-  color: #72243E;
+  color: var(--c-deep);
   margin-bottom: 8px;
 }
 
 .section-divider {
   width: 180px;
   height: 1px;
-  background: #ED93B1;
+  background: var(--c-border);
   margin: 0 auto 30px;
 }
 
@@ -255,7 +379,7 @@ body {
 
 .feature-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px #D4537E22;
+  box-shadow: 0 6px 20px rgba(var(--c-primary-rgb), 0.13);
 }
 
 .feature-card-header {
@@ -291,8 +415,8 @@ body {
 .gallery-item {
   border-radius: 10px;
   overflow: hidden;
-  border: 0.5px solid #ED93B1;
-  background: #FBEAF0;
+  border: 0.5px solid var(--c-border);
+  background: var(--c-bg);
   aspect-ratio: 1;
   display: flex;
   align-items: center;
@@ -306,7 +430,7 @@ body {
 
 .gallery-item:hover {
   transform: scale(1.03);
-  box-shadow: 0 6px 20px rgba(212,83,126,0.25);
+  box-shadow: 0 6px 20px rgba(var(--c-primary-rgb),0.25);
 }
 
 .gallery-placeholder {
@@ -315,7 +439,7 @@ body {
 
 .gallery-label {
   font-size: 12px;
-  color: #993556;
+  color: var(--c-dark);
 }
 
 /* ---- BHAJAN PLAYER PAGE ---- */
@@ -387,8 +511,8 @@ body {
 }
 
 .player-bar {
-  background: #72243E;
-  color: #F4C0D1;
+  background: var(--c-deep);
+  color: var(--c-soft);
   padding: 14px 20px;
   display: flex;
   align-items: center;
@@ -407,7 +531,7 @@ body {
 .player-progress {
   flex: 2;
   height: 4px;
-  background: #993556;
+  background: var(--c-dark);
   border-radius: 2px;
   position: relative;
   cursor: pointer;
@@ -772,7 +896,7 @@ body {
 
 /* ---- FOOTER ---- */
 .main-footer {
-  background: #72243E;
+  background: var(--c-deep);
   padding: 24px 20px;
   text-align: center;
 }
@@ -780,13 +904,13 @@ body {
 .main-footer p:first-child {
   font-size: 15px;
   font-weight: 500;
-  color: #F4C0D1;
+  color: var(--c-soft);
   margin-bottom: 6px;
 }
 
 .main-footer p + p {
   font-size: 12px;
-  color: #ED93B1;
+  color: var(--c-border);
 }
 
 .footer-app-link {
@@ -804,8 +928,8 @@ body {
 }
 
 .footer-app-link:hover {
-  background: #ED93B1;
-  color: #72243E;
+  background: var(--c-border);
+  color: var(--c-deep);
   transform: translateY(-1px);
 }
 
@@ -814,7 +938,7 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: linear-gradient(90deg, #72243E, #993556);
+  background: linear-gradient(90deg, var(--c-deep), var(--c-dark));
   border-radius: 14px;
   padding: 14px 18px;
   margin-bottom: 18px;
@@ -842,15 +966,15 @@ body {
 }
 
 .countdown-days {
-  color: #F4C0D1;
+  color: var(--c-soft);
   font-size: 13px;
   margin: 0;
 }
 
 /* ---- AAJ KA DOHA (Home) ---- */
 .daily-doha {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
   border-radius: 14px;
   padding: 20px 22px;
   text-align: center;
@@ -859,7 +983,7 @@ body {
 
 .daily-doha-label {
   font-size: 12px;
-  color: #993556;
+  color: var(--c-dark);
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 0 0 8px;
@@ -867,7 +991,7 @@ body {
 
 .daily-doha-text {
   font-size: 17px;
-  color: #72243E;
+  color: var(--c-deep);
   font-style: italic;
   line-height: 1.7;
   margin: 0 0 6px;
@@ -875,7 +999,7 @@ body {
 
 .daily-doha-source {
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 0 12px;
 }
 
@@ -925,7 +1049,7 @@ body {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
   margin-bottom: 6px;
 }
 
@@ -950,9 +1074,9 @@ body {
 }
 
 .counter-goal-btn {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
-  color: #993556;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
+  color: var(--c-dark);
   border-radius: 14px;
   padding: 4px 12px;
   font-size: 12px;
@@ -961,16 +1085,16 @@ body {
 }
 
 .counter-goal-btn.active {
-  background: #72243E;
+  background: var(--c-deep);
   color: #FAC775;
-  border-color: #72243E;
+  border-color: var(--c-deep);
 }
 
 .counter-week {
   max-width: 420px;
   margin: 0 auto 26px;
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
   border-radius: 14px;
   padding: 14px 16px 10px;
 }
@@ -978,7 +1102,7 @@ body {
 .counter-week-title {
   text-align: center;
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 0 10px;
 }
 
@@ -999,25 +1123,25 @@ body {
 
 .counter-week-count {
   font-size: 10px;
-  color: #993556;
+  color: var(--c-dark);
   min-height: 13px;
 }
 
 .counter-week-bar {
   width: 100%;
   max-width: 30px;
-  background: #ED93B1;
+  background: var(--c-border);
   border-radius: 5px 5px 0 0;
   transition: height 0.2s;
 }
 
 .counter-week-bar.today {
-  background: linear-gradient(180deg, #D4537E, #993556);
+  background: linear-gradient(180deg, var(--c-primary), var(--c-dark));
 }
 
 .counter-week-label {
   font-size: 10px;
-  color: #993556;
+  color: var(--c-dark);
 }
 
 .counter-mantra-row {
@@ -1028,9 +1152,9 @@ body {
 }
 
 .counter-mantra-btn {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
-  color: #993556;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
+  color: var(--c-dark);
   border-radius: 18px;
   padding: 7px 16px;
   font-size: 14px;
@@ -1040,18 +1164,18 @@ body {
 }
 
 .counter-mantra-btn.active {
-  background: #72243E;
+  background: var(--c-deep);
   color: #FAC775;
-  border-color: #72243E;
+  border-color: var(--c-deep);
 }
 
 .counter-big-btn {
   width: 210px;
   height: 210px;
   border-radius: 50%;
-  border: 5px solid #ED93B1;
-  background: radial-gradient(circle at 35% 30%, #ED93B1, #D4537E 60%, #993556);
-  color: #FBEAF0;
+  border: 5px solid var(--c-border);
+  background: radial-gradient(circle at 35% 30%, var(--c-border), var(--c-primary) 60%, var(--c-dark));
+  color: var(--c-bg);
   cursor: pointer;
   font-family: Georgia, serif;
   display: inline-flex;
@@ -1059,7 +1183,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 4px;
-  box-shadow: 0 8px 28px rgba(212,83,126,0.35);
+  box-shadow: 0 8px 28px rgba(var(--c-primary-rgb),0.35);
   transition: transform 0.12s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -1078,12 +1202,12 @@ body {
 
 .counter-big-label {
   font-size: 15px;
-  color: #FBEAF0;
+  color: var(--c-bg);
 }
 
 .counter-big-tap {
   font-size: 11px;
-  color: #F4C0D1;
+  color: var(--c-soft);
 }
 
 .counter-mala {
@@ -1093,8 +1217,8 @@ body {
 }
 
 .counter-mala-track {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
   border-radius: 8px;
   height: 12px;
   overflow: hidden;
@@ -1103,14 +1227,14 @@ body {
 
 .counter-mala-fill {
   height: 100%;
-  background: linear-gradient(90deg, #D4537E, #993556);
+  background: linear-gradient(90deg, var(--c-primary), var(--c-dark));
   border-radius: 8px;
   transition: width 0.2s;
 }
 
 .counter-mala p {
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
 }
 
 .counter-stats-grid {
@@ -1122,8 +1246,8 @@ body {
 }
 
 .counter-stat-card {
-  background: #FBEAF0;
-  border: 0.5px solid #ED93B1;
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
   border-radius: 14px;
   padding: 16px 12px;
   text-align: center;
@@ -1131,21 +1255,21 @@ body {
 
 .counter-stat-label {
   font-size: 13px;
-  color: #993556;
+  color: var(--c-dark);
   margin: 0 0 6px;
 }
 
 .counter-stat-value {
   font-size: 26px;
-  color: #72243E;
+  color: var(--c-deep);
   font-weight: 600;
   margin: 0 0 10px;
 }
 
 .counter-reset-btn {
   background: transparent;
-  border: 0.5px solid #D4537E;
-  color: #D4537E;
+  border: 0.5px solid var(--c-primary);
+  color: var(--c-primary);
   border-radius: 14px;
   padding: 4px 14px;
   font-size: 12px;
@@ -1155,8 +1279,8 @@ body {
 }
 
 .counter-reset-btn:hover {
-  background: #D4537E;
-  color: #FBEAF0;
+  background: var(--c-primary);
+  color: var(--c-bg);
 }
 
 /* ---- RESPONSIVE ---- */
