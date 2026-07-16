@@ -1,5 +1,11 @@
 {
-  "gallery": [],
+  "gallery": [
+    {
+      "label": "API Test Photo",
+      "file": "admin-1784236375557-test.jpg",
+      "addedAt": "2026-07-16T21:12:56.589Z"
+    }
+  ],
   "bhajans": [],
   "leelas": []
 }
