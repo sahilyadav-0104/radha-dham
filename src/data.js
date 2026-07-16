@@ -1,6 +1,9 @@
 /* ============================================================
    SAB DATA EK JAGAH — pages isko import karte hain
+   Admin panel (#admin) se add kiya content custom-content.json
+   me aata hai aur yahan base data ke saath merge hota hai.
    ============================================================ */
+import CUSTOM from "./custom-content.json";
 
 // Darshan ki photos (public/ folder mein rakhi hain) — har pic ka apna mantra
 export const DARSHAN_IMAGES = [
@@ -13,7 +16,7 @@ export const DARSHAN_IMAGES = [
 // Gallery photos — Wikimedia Commons se download karke public/gallery/ mein rakhi hain
 const IMG = (file) => process.env.PUBLIC_URL + "/gallery/" + file;
 
-export const GALLERY_ITEMS = [
+const BASE_GALLERY = [
   { url: IMG("iskcon-radha-shyamsundar.jpg"), label: "ISKCON Vrindavan — Radha Shyamsundar" },
   { url: IMG("banke-bihari.jpg"), label: "Banke Bihari Mandir" },
   { url: IMG("prem-mandir.jpg"), label: "Prem Mandir, Vrindavan" },
@@ -28,10 +31,19 @@ export const GALLERY_ITEMS = [
   { url: IMG("phool-shringaar.jpg"), label: "Phool Shringaar" },
 ];
 
+// Admin ke add kiye photos merge karo
+export const GALLERY_ITEMS = [
+  ...BASE_GALLERY,
+  ...CUSTOM.gallery.map(g => ({
+    url: g.file ? IMG(g.file) : g.url,
+    label: g.label || "Radha Krishna",
+  })),
+];
+
 /* ============================================================
    BHAJANS — Internet Archive se (sab URLs verified working)
    ============================================================ */
-export const BHAJANS = [
+const BASE_BHAJANS = [
   {
     id: 1,
     title: "Jaya Radha Madhava",
@@ -87,10 +99,24 @@ export const BHAJANS = [
   },
 ];
 
+// Admin ke add kiye bhajans merge karo
+export const BHAJANS = [
+  ...BASE_BHAJANS,
+  ...CUSTOM.bhajans.map((b, i) => ({
+    id: 100 + i,
+    title: b.title,
+    singer: b.singer || "Bhajan",
+    duration: b.duration || "—",
+    src: b.src,
+    cover: b.cover || IMG("iskcon-radha-shyamsundar.jpg"),
+    lyrics: b.lyrics || undefined,
+  })),
+];
+
 /* ============================================================
    LEELAS — Full detailed stories
    ============================================================ */
-export const LEELAS = [
+const BASE_LEELAS = [
   {
     title: "🎭 Raas Leela — Divya Prem ka Utsav",
     story: `Sharad Purnima ki raat thi. Yamuna ke kinare kadamba ke ped pe baithe Krishna ne murli utha li. Woh dhun jo unhone chhedi, woh koi saadharan dhun nahi thi — woh Radha ke prem ki pukar thi. Vrindavan ki galiyon mein, ghar ghar mein, gopi ke kaanon mein woh awaaz pahunchi aur unke paon apne aap Yamuna ke kinare ki taraf uthne lage.
@@ -179,6 +205,25 @@ Krishna ne aankhein neechi kar lin aur bole — "Woh sunti nahi — woh khud us 
 Aaj Vrindavan mein jo bhi murli ki awaaz sunta hai — kuch pal ke liye sab kuch bhool jaata hai. Bhakton ka manna hai ki woh pehli dhun abhi bhi wahan hai — sirf sunne wala chahiye.`,
     bg: "#EEEDFE", text: "#26215C", border: "#CECBF6", emoji: "🎵",
   },
+];
+
+// Admin ki add ki leelas — rang bari-bari se milte hain
+const LEELA_COLOR_SETS = [
+  { bg: "#FBEAF0", text: "#72243E", border: "#ED93B1" },
+  { bg: "#EAF3DE", text: "#27500A", border: "#97C459" },
+  { bg: "#EEEDFE", text: "#3C3489", border: "#AFA9EC" },
+  { bg: "#FAEEDA", text: "#633806", border: "#FAC775" },
+  { bg: "#E1F5EE", text: "#085041", border: "#5DCAA5" },
+];
+
+export const LEELAS = [
+  ...BASE_LEELAS,
+  ...CUSTOM.leelas.map((l, i) => ({
+    title: `${l.emoji || "🌸"} ${l.title}`,
+    story: l.story,
+    emoji: l.emoji || "🌸",
+    ...LEELA_COLOR_SETS[i % LEELA_COLOR_SETS.length],
+  })),
 ];
 
 /* ============================================================

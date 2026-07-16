@@ -10,6 +10,7 @@ import LeelasPage from "./pages/LeelasPage";
 import CalendarPage from "./pages/CalendarPage";
 import CounterPage from "./pages/CounterPage";
 import ContactPage from "./pages/ContactPage";
+import AdminPage from "./pages/AdminPage";
 
 /* ============================================================
    HERO SVG
@@ -62,6 +63,7 @@ export default function App() {
   const [activeNav, setActiveNav] = useState("Home");
   const [darshan, setDarshan] = useState(null); // current darshan image index
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(window.location.hash === "#admin");
   const [theme, setTheme] = useState(() => localStorage.getItem("radhaDhamTheme") || "gulabi");
   const [lang, setLang] = useState(() => localStorage.getItem("radhaDhamLang") || "hinglish");
 
@@ -78,6 +80,13 @@ export default function App() {
     localStorage.setItem("radhaDhamLang", lang);
   }, [lang]);
 
+  // #admin hash se admin panel khulta hai (nav me nahi dikhta)
+  useEffect(() => {
+    const onHash = () => setIsAdmin(window.location.hash === "#admin");
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
   const t = (key) => (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.hinglish[key] || key;
 
   function openDarshan() {
@@ -92,6 +101,7 @@ export default function App() {
   }
 
   function renderPage() {
+    if (isAdmin) return <AdminPage />;
     switch (activeNav) {
       case "Home":     return <HomePage onNavigate={setActiveNav} />;
       case "Gallery":  return <GalleryPage />;
