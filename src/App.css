@@ -809,59 +809,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* ---- INSTALL BANNER (Home) ---- */
-.install-banner {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: #FBEAF0;
-  border: 1.5px dashed #D4537E;
-  border-radius: 14px;
-  padding: 14px 18px;
-  margin-bottom: 18px;
-}
-
-.install-emoji {
-  font-size: 30px;
-}
-
-.install-info {
-  flex: 1;
-}
-
-.install-title {
-  color: #72243E;
-  font-size: 15px;
-  font-weight: 600;
-  margin: 0 0 3px;
-}
-
-.install-sub {
-  color: #993556;
-  font-size: 12px;
-  margin: 0;
-}
-
-.install-btn {
-  display: inline-block;
-  background: #D4537E;
-  color: #FBEAF0;
-  border: none;
-  border-radius: 18px;
-  padding: 9px 18px;
-  font-size: 13px;
-  font-family: Georgia, serif;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-
-.install-btn:hover {
-  background: #993556;
-}
-
 /* ---- COUNTDOWN BANNER (Home) ---- */
 .countdown-banner {
   display: flex;

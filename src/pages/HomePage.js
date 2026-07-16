@@ -1,5 +1,4 @@
 import { getNextFestival, getQuoteOfTheDay, whatsappShare } from "../data";
-import InstallBanner from "../InstallBanner";
 
 /* ============================================================
    HOME PAGE — features + festival countdown + aaj ka doha
@@ -22,9 +21,6 @@ export default function HomePage({ onNavigate }) {
     <div className="page-section">
       <h2 className="section-heading">🌸 Radha Rani Devotional Portal</h2>
       <div className="section-divider" />
-
-      {/* App install option */}
-      <InstallBanner />
 
       {/* Festival countdown banner */}
       {nextFest && (
