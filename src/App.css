@@ -784,9 +784,29 @@ body {
   margin-bottom: 6px;
 }
 
-.main-footer p:last-child {
+.main-footer p + p {
   font-size: 12px;
   color: #ED93B1;
+}
+
+.footer-app-link {
+  display: inline-block;
+  margin-top: 14px;
+  background: #FAC775;
+  color: #412402;
+  border-radius: 20px;
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Georgia, serif;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.footer-app-link:hover {
+  background: #ED93B1;
+  color: #72243E;
+  transform: translateY(-1px);
 }
 
 /* ---- INSTALL BANNER (Home) ---- */

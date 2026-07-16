@@ -119,6 +119,13 @@ export default function App() {
       <footer className="main-footer">
         <p>🌸 Radha Rani Devotional Website 🌸</p>
         <p>Built with love by Sahil · Training Project 2026 · Jai Shri Radhe</p>
+        <a
+          className="footer-app-link"
+          href={process.env.PUBLIC_URL + "/app/radha-dham.apk"}
+          download="radha-dham.apk"
+        >
+          📲 Download App from here
+        </a>
       </footer>
 
       {/* DARSHAN MODAL — Full Screen */}
