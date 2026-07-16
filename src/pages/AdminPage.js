@@ -25,6 +25,9 @@ export default function AdminPage() {
   const [lTitle, setLTitle] = useState("");
   const [lEmoji, setLEmoji] = useState("🌸");
   const [lStory, setLStory] = useState("");
+  // Delete/manage
+  const [items, setItems] = useState(null); // { gallery, bhajans, leelas }
+  const [loadingList, setLoadingList] = useState(false);
 
   function unlock() {
     if (!secret.trim()) return;
@@ -38,27 +41,56 @@ export default function AdminPage() {
     setUnlocked(false);
   }
 
+  async function api(body) {
+    const r = await fetch("/api/add-content", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Secret": sessionStorage.getItem("adminSecret") || "",
+      },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json().catch(() => ({}));
+    return { r, j };
+  }
+
   async function send(type, data, image) {
     setBusy(true);
     setMsg(null);
     try {
-      const r = await fetch("/api/add-content", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Admin-Secret": sessionStorage.getItem("adminSecret") || "",
-        },
-        body: JSON.stringify({ type, data, image }),
-      });
-      const j = await r.json();
-      if (r.status === 401) {
-        setMsg({ ok: false, text: j.error });
-        lock();
-      } else if (!r.ok) {
-        setMsg({ ok: false, text: j.error + (j.detail ? " — " + j.detail : "") });
-      } else {
-        setMsg({ ok: true, text: j.message });
-      }
+      const { r, j } = await api({ action: "add", type, data, image });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: j.error + (j.detail ? " — " + j.detail : "") });
+      else setMsg({ ok: true, text: j.message });
+    } catch (e) {
+      setMsg({ ok: false, text: "Network problem — dobara try karein" });
+    }
+    setBusy(false);
+  }
+
+  async function loadList() {
+    setLoadingList(true);
+    setMsg(null);
+    try {
+      const { r, j } = await api({ action: "list" });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: j.error || "List load nahi hui" });
+      else setItems(j.content);
+    } catch (e) {
+      setMsg({ ok: false, text: "Network problem — dobara try karein" });
+    }
+    setLoadingList(false);
+  }
+
+  async function del(type, index, name) {
+    if (!window.confirm(`"${name}" ko delete karna hai?`)) return;
+    setBusy(true);
+    setMsg(null);
+    try {
+      const { r, j } = await api({ action: "delete", type, index });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: j.error || "Delete nahi hua" });
+      else { setMsg({ ok: true, text: j.message }); await loadList(); }
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
     }
@@ -125,8 +157,8 @@ export default function AdminPage() {
       <div className="section-divider" />
 
       <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 22, flexWrap: "wrap" }}>
-        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"]].map(([id, label]) => (
-          <button key={id} onClick={() => { setTab(id); setMsg(null); }} className={`lang-chip${tab === id ? " active" : ""}`}>
+        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"], ["manage", "🗑️ Delete"]].map(([id, label]) => (
+          <button key={id} onClick={() => { setTab(id); setMsg(null); if (id === "manage") loadList(); }} className={`lang-chip${tab === id ? " active" : ""}`}>
             {label}
           </button>
         ))}
@@ -183,8 +215,42 @@ export default function AdminPage() {
         </div>
       )}
 
+      {tab === "manage" && (
+        <div>
+          <h3 style={{ textAlign: "center", color: "var(--c-deep)", marginBottom: 16 }}>Aapke add kiye items — delete karne ke liye</h3>
+          {loadingList && <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Load ho raha hai...</p>}
+          {items && (() => {
+            const groups = [
+              ["gallery", "🖼️ Photos", i => i.label || "Photo"],
+              ["bhajans", "🎵 Bhajans", i => i.title],
+              ["leelas", "📖 Leelas", i => i.title],
+            ];
+            const typeOf = { gallery: "gallery", bhajans: "bhajan", leelas: "leela" };
+            const total = groups.reduce((s, [k]) => s + (items[k]?.length || 0), 0);
+            if (total === 0) return <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Abhi aapne kuch add nahi kiya. Jo aap add karoge wahi yahan delete ke liye dikhega.<br />(Website ka original content yahan nahi aata.)</p>;
+            return groups.map(([key, label, nameFn]) => (
+              (items[key] && items[key].length > 0) && (
+                <div key={key} style={{ marginBottom: 18 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", marginBottom: 8 }}>{label} ({items[key].length})</p>
+                  {items[key].map((it, idx) => (
+                    <div key={idx} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--c-bg)", border: "0.5px solid var(--c-border)", borderRadius: 10, padding: "10px 14px", marginBottom: 8 }}>
+                      {key === "gallery" && it.file && (
+                        <img src={process.env.PUBLIC_URL + "/gallery/" + it.file} alt="" style={{ width: 40, height: 40, borderRadius: 6, objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
+                      )}
+                      <span style={{ flex: 1, fontSize: 14, color: "var(--c-deep)" }}>{nameFn(it)}</span>
+                      <button className="counter-reset-btn" disabled={busy} onClick={() => del(typeOf[key], idx, nameFn(it))}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              )
+            ));
+          })()}
+          <button className="lang-chip" onClick={loadList} style={{ display: "block", margin: "10px auto 0" }}>🔄 Refresh</button>
+        </div>
+      )}
+
       <p style={{ textAlign: "center", fontSize: 12, color: "var(--c-dark)", marginTop: 18, lineHeight: 1.7 }}>
-        Add karne ke baad site apne aap update hoti hai — 2-3 minute lagte hain.<br />
+        Add/delete ke baad site apne aap update hoti hai — 2-3 minute lagte hain.<br />
         Ye page sirf aapke paas hai: <b>shriradharani.in/#admin</b>
       </p>
     </div>
