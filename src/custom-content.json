@@ -1,5 +1,12 @@
 {
   "gallery": [],
   "bhajans": [],
-  "leelas": []
+  "leelas": [
+    {
+      "title": "Admin Test Leela",
+      "emoji": "?",
+      "story": "Yeh ek test kahani hai jo admin panel se add hui.\n\nAgar yeh dikh rahi hai toh admin panel bilkul kaam kar raha hai.",
+      "addedAt": "2026-07-16T20:28:05.381Z"
+    }
+  ]
 }
