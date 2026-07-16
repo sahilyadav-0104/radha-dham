@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DARSHAN_IMAGES, NAV_LINKS } from "./data";
 import { THEMES } from "./themes";
 import { LANGS, STRINGS, LangContext } from "./i18n";
@@ -64,6 +64,21 @@ export default function App() {
   const [darshan, setDarshan] = useState(null); // current darshan image index
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(window.location.hash === "#admin");
+  const tapRef = useRef({ count: 0, last: 0 });
+
+  // Footer copyright ko 5 baar (2 sec me) tap karne se admin panel khulta hai
+  // (installed app me #admin URL nahi chalta, isliye ye secret gesture)
+  function secretAdminTap() {
+    const now = Date.now();
+    const t = tapRef.current;
+    t.count = now - t.last < 2000 ? t.count + 1 : 1;
+    t.last = now;
+    if (t.count >= 5) {
+      t.count = 0;
+      window.location.hash = "#admin";
+      setIsAdmin(true);
+    }
+  }
   const [theme, setTheme] = useState(() => localStorage.getItem("radhaDhamTheme") || "gulabi");
   const [lang, setLang] = useState(() => localStorage.getItem("radhaDhamLang") || "hinglish");
 
@@ -178,13 +193,13 @@ export default function App() {
       </div>
       <nav className="main-nav">
         {NAV_LINKS.map(link => (
-          <button key={link} className={`nav-btn${activeNav===link?" active":""}`} onClick={() => setActiveNav(link)}>{t("nav." + link)}</button>
+          <button key={link} className={`nav-btn${!isAdmin && activeNav===link?" active":""}`} onClick={() => { setActiveNav(link); if (isAdmin) { setIsAdmin(false); if (window.location.hash) window.location.hash = ""; } }}>{t("nav." + link)}</button>
         ))}
       </nav>
       {renderPage()}
       <footer className="main-footer">
         <p>🌸 Radha Rani Devotional Website 🌸</p>
-        <p>Built with love by Sahil · Training Project 2026 · Jai Shri Radhe</p>
+        <p onClick={secretAdminTap} style={{ cursor: "default", userSelect: "none" }}>Built with love by Sahil · Training Project 2026 · Jai Shri Radhe</p>
         <a
           className="footer-app-link"
           href={process.env.PUBLIC_URL + "/app/radha-dham.apk"}
