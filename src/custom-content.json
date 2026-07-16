@@ -1,12 +1,5 @@
 {
   "gallery": [],
   "bhajans": [],
-  "leelas": [
-    {
-      "title": "Auto Deploy Test",
-      "emoji": "??",
-      "story": "Yeh test karne ke liye hai ki auto-deploy chal raha hai.\n\nAgar site pe apne aap dikh gayi toh sab set hai.",
-      "addedAt": "2026-07-16T20:51:44.255Z"
-    }
-  ]
+  "leelas": []
 }
