@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "in.shriradharani.app",
+        "sha256_cert_fingerprints": ["A7:55:CC:D9:AF:B1:47:0B:C1:32:14:80:CA:A0:C0:56:76:2C:36:11:54:44:78:46:54:6D:AB:2C:5E:B7:46:C5"]
+      }
+    }]
