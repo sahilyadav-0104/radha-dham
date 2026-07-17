@@ -9,6 +9,8 @@ import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 
+// Naya version aate hi turant activate ho jaye (purana cache jaldi hate)
+self.skipWaiting();
 clientsClaim();
 
 // Build ke saare JS/CSS/HTML files pehle se cache ho jaate hain

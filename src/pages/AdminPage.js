@@ -54,13 +54,19 @@ export default function AdminPage() {
     return { r, j };
   }
 
+  // Kabhi bhi bare "undefined" na dikhe — status ke saath saaf message
+  function errText(r, j, fallback) {
+    if (j && j.error) return j.error + (j.detail ? " — " + j.detail : "");
+    return `${fallback} (error ${r ? r.status : "?"})`;
+  }
+
   async function send(type, data, image) {
     setBusy(true);
     setMsg(null);
     try {
       const { r, j } = await api({ action: "add", type, data, image });
-      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
-      else if (!r.ok) setMsg({ ok: false, text: j.error + (j.detail ? " — " + j.detail : "") });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Add nahi hua") });
       else setMsg({ ok: true, text: j.message });
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
@@ -73,8 +79,8 @@ export default function AdminPage() {
     setMsg(null);
     try {
       const { r, j } = await api({ action: "list" });
-      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
-      else if (!r.ok) setMsg({ ok: false, text: j.error || "List load nahi hui" });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "List load nahi hui") });
       else setItems(j.content);
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
@@ -88,8 +94,8 @@ export default function AdminPage() {
     setMsg(null);
     try {
       const { r, j } = await api({ action: "delete", type, index });
-      if (r.status === 401) { setMsg({ ok: false, text: j.error }); lock(); }
-      else if (!r.ok) setMsg({ ok: false, text: j.error || "Delete nahi hua" });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Delete nahi hua") });
       else { setMsg({ ok: true, text: j.message }); await loadList(); }
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
@@ -97,21 +103,45 @@ export default function AdminPage() {
     setBusy(false);
   }
 
-  function fileToBase64(file) {
-    return new Promise((res, rej) => {
-      const rd = new FileReader();
-      rd.onload = () => res(String(rd.result).split(",")[1]);
-      rd.onerror = rej;
-      rd.readAsDataURL(file);
+  // Photo ko browser me hi resize + JPEG me convert karo (phone ki badi photo/webp/heic sab handle)
+  function resizePhoto(file, maxSide = 1400, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        if (width > maxSide || height > maxSide) {
+          const scale = maxSide / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl.split(",")[1]);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Photo padhi nahi ja saki")); };
+      img.src = url;
     });
   }
 
   async function submitPhoto() {
     if (!photoFile) return setMsg({ ok: false, text: "Photo choose karo pehle" });
-    if (photoFile.size > 3 * 1024 * 1024) return setMsg({ ok: false, text: "Photo 3 MB se chhoti honi chahiye" });
-    const base64 = await fileToBase64(photoFile);
-    await send("gallery", { label: photoLabel || "Radha Krishna" }, { name: photoFile.name, base64 });
-    setPhotoFile(null); setPhotoLabel("");
+    setBusy(true);
+    setMsg({ ok: true, text: "Photo taiyar ho rahi hai..." });
+    try {
+      const base64 = await resizePhoto(photoFile);
+      setBusy(false);
+      await send("gallery", { label: photoLabel || "Radha Krishna" }, { name: "photo.jpg", base64 });
+      setPhotoFile(null); setPhotoLabel("");
+    } catch (e) {
+      setBusy(false);
+      setMsg({ ok: false, text: "Photo process nahi hui — dusri photo try karein" });
+    }
   }
 
   async function submitBhajan() {
