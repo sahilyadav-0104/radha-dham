@@ -104,7 +104,8 @@ export default function AdminPage() {
   }
 
   // Photo ko browser me hi resize + JPEG me convert karo (phone ki badi photo/webp/heic sab handle)
-  function resizePhoto(file, maxSide = 1400, quality = 0.85) {
+  // Input photo kitni bhi badi ho sakti hai — save 2000px high-quality JPEG hoti hai
+  function resizePhoto(file, maxSide = 2000, quality = 0.9) {
     return new Promise((resolve, reject) => {
       const url = URL.createObjectURL(file);
       const img = new Image();
