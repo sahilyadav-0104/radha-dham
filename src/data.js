@@ -229,36 +229,27 @@ export const LEELAS = [
 /* ============================================================
    FESTIVAL CALENDAR — ek hi jagah data, saal ke hisaab se
    ============================================================ */
+// Dates Drik Panchang se verified hain (Rang Panchami 2027 approx — Holi ke 4 din baad)
 const FESTIVAL_DATA = {
-  2025: [
-    { month: "Aug", day: "16", name: "Janmashtami", desc: "Shri Krishna ka Prakatya Utsav — Mathura, Vrindavan mein 3 din ka mahotsav hota hai.", emoji: "🪔", color: "#FAC775" },
-    { month: "Sep", day: "06", name: "Radhashtami", desc: "Shri Radha Rani ka Prakatya Divas — Barsana mein poori raat kirtan aur vishesh abhishek.", emoji: "🌸", color: "#F4C0D1" },
-    { month: "Mar", day: "14", name: "Holi / Phoolon ki Holi", desc: "Vrindavan ki prasidh Phoolon wali Holi — Banke Bihari mandir mein phool barsaye jaate hain.", emoji: "🎨", color: "#ED93B1" },
-    { month: "Aug", day: "07", name: "Hariyali Teej", desc: "Radha-Krishna ke milan ka utsav — sawan mein jhoolon par jhulna aur kirtan.", emoji: "🌿", color: "#C0DD97" },
-    { month: "Nov", day: "05", name: "Kartik Purnima", desc: "Yamuna snan ka vishesh divas — Dev Deepawali — poore Vrindavan mein lakhon diye jalte hain.", emoji: "✨", color: "#FAC775" },
-    { month: "Oct", day: "22", name: "Govardhan Puja", desc: "Giriraj Govardhan ki puja — Annakoot — hazaron bhog lagaye jaate hain, 21km ki parikrama.", emoji: "⛰️", color: "#C0DD97" },
-    { month: "Mar", day: "25", name: "Rang Panchami", desc: "Vrindavan mein Holi ka aakhri din — is din Thakur ji ko rang chadhaaya jaata hai.", emoji: "🌈", color: "#CECBF6" },
-    { month: "Oct", day: "20", name: "Sharad Purnima", desc: "Raas Leela ki raat — krishna paksha ki poornima, Yamuna kinare bhakton ka mela.", emoji: "🌕", color: "#B5D4F4" },
-  ],
   2026: [
-    { month: "Aug", day: "05", name: "Janmashtami", desc: "Shri Krishna ka Prakatya Utsav — Mathura, Vrindavan mein 3 din ka mahotsav hota hai.", emoji: "🪔", color: "#FAC775" },
-    { month: "Aug", day: "26", name: "Radhashtami", desc: "Shri Radha Rani ka Prakatya Divas — Barsana mein poori raat kirtan aur vishesh abhishek.", emoji: "🌸", color: "#F4C0D1" },
-    { month: "Mar", day: "04", name: "Holi / Phoolon ki Holi", desc: "Vrindavan ki prasidh Phoolon wali Holi — Banke Bihari mandir mein phool barsaye jaate hain.", emoji: "🎨", color: "#ED93B1" },
-    { month: "Jul", day: "27", name: "Hariyali Teej", desc: "Radha-Krishna ke milan ka utsav — sawan mein jhoolon par jhulna aur kirtan.", emoji: "🌿", color: "#C0DD97" },
+    { month: "Mar", day: "04", name: "Holi / Phoolon ki Holi", desc: "Vrindavan ki prasidh Phoolon wali Holi — Banke Bihari mandir mein phool barsaye jaate hain. (Holika Dahan: 3 Mar)", emoji: "🎨", color: "#ED93B1" },
+    { month: "Mar", day: "08", name: "Rang Panchami", desc: "Vrindavan mein Holi ka aakhri din — is din Thakur ji ko rang chadhaaya jaata hai.", emoji: "🌈", color: "#CECBF6" },
+    { month: "Aug", day: "15", name: "Hariyali Teej", desc: "Radha-Krishna ke milan ka utsav — sawan mein jhoolon par jhulna aur kirtan.", emoji: "🌿", color: "#C0DD97" },
+    { month: "Sep", day: "04", name: "Janmashtami", desc: "Shri Krishna ka Prakatya Utsav — Mathura, Vrindavan mein 3 din ka mahotsav. (ISKCON mandiron mein 5 Sep)", emoji: "🪔", color: "#FAC775" },
+    { month: "Sep", day: "19", name: "Radhashtami", desc: "Shri Radha Rani ka Prakatya Divas — Barsana mein poori raat kirtan aur vishesh abhishek.", emoji: "🌸", color: "#F4C0D1" },
+    { month: "Oct", day: "25", name: "Sharad Purnima", desc: "Raas Leela ki raat — ashwin poornima, Yamuna kinare bhakton ka mela.", emoji: "🌕", color: "#B5D4F4" },
+    { month: "Nov", day: "10", name: "Govardhan Puja", desc: "Giriraj Govardhan ki puja — Annakoot — hazaron bhog lagaye jaate hain, 21km ki parikrama.", emoji: "⛰️", color: "#C0DD97" },
     { month: "Nov", day: "24", name: "Kartik Purnima", desc: "Yamuna snan ka vishesh divas — Dev Deepawali — poore Vrindavan mein lakhon diye jalte hain.", emoji: "✨", color: "#FAC775" },
-    { month: "Nov", day: "11", name: "Govardhan Puja", desc: "Giriraj Govardhan ki puja — Annakoot — hazaron bhog lagaye jaate hain, 21km ki parikrama.", emoji: "⛰️", color: "#C0DD97" },
-    { month: "Mar", day: "14", name: "Rang Panchami", desc: "Vrindavan mein Holi ka aakhri din — is din Thakur ji ko rang chadhaaya jaata hai.", emoji: "🌈", color: "#CECBF6" },
-    { month: "Oct", day: "08", name: "Sharad Purnima", desc: "Raas Leela ki raat — krishna paksha ki poornima, Yamuna kinare bhakton ka mela.", emoji: "🌕", color: "#B5D4F4" },
   ],
   2027: [
-    { month: "Jul", day: "25", name: "Janmashtami", desc: "Shri Krishna ka Prakatya Utsav — Mathura, Vrindavan mein 3 din ka mahotsav hota hai.", emoji: "🪔", color: "#FAC775" },
-    { month: "Aug", day: "15", name: "Radhashtami", desc: "Shri Radha Rani ka Prakatya Divas — Barsana mein poori raat kirtan aur vishesh abhishek.", emoji: "🌸", color: "#F4C0D1" },
-    { month: "Feb", day: "21", name: "Holi / Phoolon ki Holi", desc: "Vrindavan ki prasidh Phoolon wali Holi — Banke Bihari mandir mein phool barsaye jaate hain.", emoji: "🎨", color: "#ED93B1" },
-    { month: "Aug", day: "16", name: "Hariyali Teej", desc: "Radha-Krishna ke milan ka utsav — sawan mein jhoolon par jhulna aur kirtan.", emoji: "🌿", color: "#C0DD97" },
-    { month: "Nov", day: "13", name: "Kartik Purnima", desc: "Yamuna snan ka vishesh divas — Dev Deepawali — poore Vrindavan mein lakhon diye jalte hain.", emoji: "✨", color: "#FAC775" },
-    { month: "Nov", day: "01", name: "Govardhan Puja", desc: "Giriraj Govardhan ki puja — Annakoot — hazaron bhog lagaye jaate hain, 21km ki parikrama.", emoji: "⛰️", color: "#C0DD97" },
-    { month: "Mar", day: "04", name: "Rang Panchami", desc: "Vrindavan mein Holi ka aakhri din — is din Thakur ji ko rang chadhaaya jaata hai.", emoji: "🌈", color: "#CECBF6" },
-    { month: "Sep", day: "27", name: "Sharad Purnima", desc: "Raas Leela ki raat — krishna paksha ki poornima, Yamuna kinare bhakton ka mela.", emoji: "🌕", color: "#B5D4F4" },
+    { month: "Mar", day: "22", name: "Holi / Phoolon ki Holi", desc: "Vrindavan ki prasidh Phoolon wali Holi — Banke Bihari mandir mein phool barsaye jaate hain. (Holika Dahan: 21 Mar)", emoji: "🎨", color: "#ED93B1" },
+    { month: "Mar", day: "26", name: "Rang Panchami", desc: "Vrindavan mein Holi ka aakhri din — is din Thakur ji ko rang chadhaaya jaata hai.", emoji: "🌈", color: "#CECBF6" },
+    { month: "Aug", day: "04", name: "Hariyali Teej", desc: "Radha-Krishna ke milan ka utsav — sawan mein jhoolon par jhulna aur kirtan.", emoji: "🌿", color: "#C0DD97" },
+    { month: "Aug", day: "25", name: "Janmashtami", desc: "Shri Krishna ka Prakatya Utsav — Mathura, Vrindavan mein 3 din ka mahotsav hota hai.", emoji: "🪔", color: "#FAC775" },
+    { month: "Sep", day: "08", name: "Radhashtami", desc: "Shri Radha Rani ka Prakatya Divas — Barsana mein poori raat kirtan aur vishesh abhishek.", emoji: "🌸", color: "#F4C0D1" },
+    { month: "Oct", day: "15", name: "Sharad Purnima", desc: "Raas Leela ki raat — ashwin poornima, Yamuna kinare bhakton ka mela.", emoji: "🌕", color: "#B5D4F4" },
+    { month: "Oct", day: "30", name: "Govardhan Puja", desc: "Giriraj Govardhan ki puja — Annakoot — hazaron bhog lagaye jaate hain, 21km ki parikrama.", emoji: "⛰️", color: "#C0DD97" },
+    { month: "Nov", day: "14", name: "Kartik Purnima", desc: "Yamuna snan ka vishesh divas — Dev Deepawali — poore Vrindavan mein lakhon diye jalte hain.", emoji: "✨", color: "#FAC775" },
   ],
 };
 
