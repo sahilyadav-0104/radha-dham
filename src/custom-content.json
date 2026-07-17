@@ -1,5 +1,11 @@
 {
-  "gallery": [],
+  "gallery": [
+    {
+      "label": "Radha Krishna",
+      "file": "admin-1784252575672-oip.webp",
+      "addedAt": "2026-07-17T01:42:56.597Z"
+    }
+  ],
   "bhajans": [],
   "leelas": []
 }
