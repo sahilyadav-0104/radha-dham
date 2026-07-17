@@ -10,6 +10,8 @@ import LeelasPage from "./pages/LeelasPage";
 import CalendarPage from "./pages/CalendarPage";
 import CounterPage from "./pages/CounterPage";
 import ContactPage from "./pages/ContactPage";
+import QuizPage from "./pages/QuizPage";
+import YatraPage from "./pages/YatraPage";
 import AdminPage from "./pages/AdminPage";
 
 /* ============================================================
@@ -124,6 +126,8 @@ export default function App() {
       case "Leelas":   return <LeelasPage />;
       case "Calendar": return <CalendarPage />;
       case "Counter":  return <CounterPage />;
+      case "Quiz":     return <QuizPage />;
+      case "Yatra":    return <YatraPage />;
       case "Contact":  return <ContactPage />;
       default:         return <HomePage onNavigate={setActiveNav} />;
     }

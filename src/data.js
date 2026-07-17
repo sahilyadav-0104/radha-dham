@@ -339,12 +339,19 @@ export const ALL_SEARCH_DATA = [
   { title: "Kartik Purnima", type: "Festival" },
   { title: "Sharad Purnima", type: "Festival" },
   { title: "Japa Counter", type: "Counter" },
+  { title: "Radha Krishna Quiz", type: "Quiz" },
+  { title: "Braj Yatra Guide", type: "Yatra" },
+  { title: "Banke Bihari Mandir Timings", type: "Yatra" },
+  { title: "Barsana Shriji Mandir", type: "Yatra" },
+  { title: "Prem Mandir Vrindavan", type: "Yatra" },
+  { title: "Govardhan Parikrama", type: "Yatra" },
+  { title: "Krishna Janmabhoomi Mathura", type: "Yatra" },
   { title: "Radha Krishna Pahari Painting", type: "Gallery" },
   { title: "Banke Bihari Mandir Vrindavan", type: "Gallery" },
   { title: "Yamuna Ghat Vrindavan", type: "Gallery" },
   { title: "Govardhan Parvat", type: "Gallery" },
 ];
 
-export const NAV_LINKS = ["Home", "Gallery", "Bhajans", "Leelas", "Calendar", "Counter", "Contact"];
+export const NAV_LINKS = ["Home", "Gallery", "Bhajans", "Leelas", "Calendar", "Counter", "Quiz", "Yatra", "Contact"];
 
 export const MANTRAS = ["राधे राधे", "हरे कृष्ण हरे कृष्ण", "जय श्री राधे", "ॐ नमो भगवते वासुदेवाय"];

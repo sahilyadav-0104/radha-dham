@@ -33,6 +33,8 @@ export const STRINGS = {
     "c.today": "Aaj", "c.month": "Is Mahine", "c.year": "Is Saal", "c.total": "Kul Jaap",
     "c.tap": "yahan tap karein 🌸",
     "footer.dl": "Download App from here",
+    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra",
+    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide",
     "set.theme": "Rang (Theme)", "set.lang": "Bhasha (Language)",
   },
   hi: {
@@ -48,6 +50,8 @@ export const STRINGS = {
     "c.today": "आज", "c.month": "इस महीने", "c.year": "इस साल", "c.total": "कुल जप",
     "c.tap": "यहाँ टैप करें 🌸",
     "footer.dl": "यहाँ से ऐप डाउनलोड करें",
+    "nav.Quiz": "क्विज़", "nav.Yatra": "यात्रा",
+    "h.quiz": "🎯 राधा कृष्ण क्विज़", "h.yatra": "🗺️ ब्रज यात्रा गाइड",
     "set.theme": "रंग", "set.lang": "भाषा",
   },
   en: {
@@ -63,6 +67,8 @@ export const STRINGS = {
     "c.today": "Today", "c.month": "This Month", "c.year": "This Year", "c.total": "Total Japa",
     "c.tap": "tap here 🌸",
     "footer.dl": "Download App from here",
+    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra",
+    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide",
     "set.theme": "Theme", "set.lang": "Language",
   },
   bn: {
@@ -78,6 +84,8 @@ export const STRINGS = {
     "c.today": "আজ", "c.month": "এই মাসে", "c.year": "এই বছরে", "c.total": "মোট জপ",
     "c.tap": "এখানে ট্যাপ করুন 🌸",
     "footer.dl": "এখান থেকে অ্যাপ ডাউনলোড করুন",
+    "nav.Quiz": "কুইজ", "nav.Yatra": "যাত্রা",
+    "h.quiz": "🎯 রাধা কৃষ্ণ কুইজ", "h.yatra": "🗺️ ব্রজ যাত্রা গাইড",
     "set.theme": "রং", "set.lang": "ভাষা",
   },
   mr: {
@@ -93,6 +101,8 @@ export const STRINGS = {
     "c.today": "आज", "c.month": "या महिन्यात", "c.year": "या वर्षी", "c.total": "एकूण जप",
     "c.tap": "येथे टॅप करा 🌸",
     "footer.dl": "येथून अ‍ॅप डाउनलोड करा",
+    "nav.Quiz": "क्विझ", "nav.Yatra": "यात्रा",
+    "h.quiz": "🎯 राधा कृष्ण क्विझ", "h.yatra": "🗺️ ब्रज यात्रा मार्गदर्शक",
     "set.theme": "रंग", "set.lang": "भाषा",
   },
   gu: {
@@ -108,6 +118,8 @@ export const STRINGS = {
     "c.today": "આજે", "c.month": "આ મહિને", "c.year": "આ વર્ષે", "c.total": "કુલ જપ",
     "c.tap": "અહીં ટૅપ કરો 🌸",
     "footer.dl": "અહીંથી એપ ડાઉનલોડ કરો",
+    "nav.Quiz": "ક્વિઝ", "nav.Yatra": "યાત્રા",
+    "h.quiz": "🎯 રાધા કૃષ્ણ ક્વિઝ", "h.yatra": "🗺️ બ્રજ યાત્રા માર્ગદર્શિકા",
     "set.theme": "રંગ", "set.lang": "ભાષા",
   },
   pa: {
@@ -123,6 +135,8 @@ export const STRINGS = {
     "c.today": "ਅੱਜ", "c.month": "ਇਸ ਮਹੀਨੇ", "c.year": "ਇਸ ਸਾਲ", "c.total": "ਕੁੱਲ ਜਪ",
     "c.tap": "ਇੱਥੇ ਟੈਪ ਕਰੋ 🌸",
     "footer.dl": "ਇੱਥੋਂ ਐਪ ਡਾਊਨਲੋਡ ਕਰੋ",
+    "nav.Quiz": "ਕੁਇਜ਼", "nav.Yatra": "ਯਾਤਰਾ",
+    "h.quiz": "🎯 ਰਾਧਾ ਕ੍ਰਿਸ਼ਨ ਕੁਇਜ਼", "h.yatra": "🗺️ ਬ੍ਰਜ ਯਾਤਰਾ ਗਾਈਡ",
     "set.theme": "ਰੰਗ", "set.lang": "ਭਾਸ਼ਾ",
   },
   ta: {
@@ -138,6 +152,8 @@ export const STRINGS = {
     "c.today": "இன்று", "c.month": "இந்த மாதம்", "c.year": "இந்த ஆண்டு", "c.total": "மொத்த ஜபம்",
     "c.tap": "இங்கே தட்டவும் 🌸",
     "footer.dl": "இங்கிருந்து ஆப்பை பதிவிறக்கவும்",
+    "nav.Quiz": "வினா", "nav.Yatra": "யாத்திரை",
+    "h.quiz": "🎯 ராதா கிருஷ்ண வினாடி வினா", "h.yatra": "🗺️ பிரஜ் யாத்திரை வழிகாட்டி",
     "set.theme": "நிறம்", "set.lang": "மொழி",
   },
   te: {
@@ -153,6 +169,8 @@ export const STRINGS = {
     "c.today": "ఈరోజు", "c.month": "ఈ నెల", "c.year": "ఈ ఏడాది", "c.total": "మొత్తం జపం",
     "c.tap": "ఇక్కడ నొక్కండి 🌸",
     "footer.dl": "ఇక్కడి నుండి యాప్ డౌన్‌లోడ్ చేయండి",
+    "nav.Quiz": "క్విజ్", "nav.Yatra": "యాత్ర",
+    "h.quiz": "🎯 రాధా కృష్ణ క్విజ్", "h.yatra": "🗺️ బ్రజ్ యాత్ర గైడ్",
     "set.theme": "రంగు", "set.lang": "భాష",
   },
   kn: {
@@ -168,6 +186,8 @@ export const STRINGS = {
     "c.today": "ಇಂದು", "c.month": "ಈ ತಿಂಗಳು", "c.year": "ಈ ವರ್ಷ", "c.total": "ಒಟ್ಟು ಜಪ",
     "c.tap": "ಇಲ್ಲಿ ಟ್ಯಾಪ್ ಮಾಡಿ 🌸",
     "footer.dl": "ಇಲ್ಲಿಂದ ಆ್ಯಪ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+    "nav.Quiz": "ಕ್ವಿಜ್", "nav.Yatra": "ಯಾತ್ರೆ",
+    "h.quiz": "🎯 ರಾಧಾ ಕೃಷ್ಣ ಕ್ವಿಜ್", "h.yatra": "🗺️ ಬ್ರಜ್ ಯಾತ್ರಾ ಗೈಡ್",
     "set.theme": "ಬಣ್ಣ", "set.lang": "ಭಾಷೆ",
   },
   ml: {
@@ -183,6 +203,8 @@ export const STRINGS = {
     "c.today": "ഇന്ന്", "c.month": "ഈ മാസം", "c.year": "ഈ വർഷം", "c.total": "ആകെ ജപം",
     "c.tap": "ഇവിടെ ടാപ്പ് ചെയ്യുക 🌸",
     "footer.dl": "ഇവിടെ നിന്ന് ആപ്പ് ഡൗൺലോഡ് ചെയ്യുക",
+    "nav.Quiz": "ക്വിസ്", "nav.Yatra": "യാത്ര",
+    "h.quiz": "🎯 രാധാ കൃഷ്ണ ക്വിസ്", "h.yatra": "🗺️ ബ്രജ് യാത്രാ ഗൈഡ്",
     "set.theme": "നിറം", "set.lang": "ഭാഷ",
   },
 };

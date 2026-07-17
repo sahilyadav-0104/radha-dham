@@ -10,6 +10,8 @@ const FEATURES = [
   { title: "Leelas & Quotes", color: { bg: "#CECBF6", text: "#26215C", tag: "#EEEDFE", tagText: "#3C3489" }, nav: "Leelas", icon: "📖", desc: "Puri kahaniyan aur dohe" },
   { title: "Festival Calendar", color: { bg: "#C0DD97", text: "#173404", tag: "#EAF3DE", tagText: "#27500A" }, nav: "Calendar", icon: "📅", desc: "Har saal ka panchang" },
   { title: "Japa Counter", color: { bg: "var(--c-border)", text: "var(--c-deep)", tag: "var(--c-bg)", tagText: "var(--c-dark)" }, nav: "Counter", icon: "📿", desc: "Naam jaap ginein — roz, mahina, saal" },
+  { title: "Radha Krishna Quiz", color: { bg: "#FAC775", text: "#412402", tag: "#FAEEDA", tagText: "#633806" }, nav: "Quiz", icon: "🎯", desc: "12 sawaal — kitne bade bhakt ho?" },
+  { title: "Braj Yatra Guide", color: { bg: "#B5D4F4", text: "#042C53", tag: "#E6F1FB", tagText: "#0C447C" }, nav: "Yatra", icon: "🗺️", desc: "Mandir, timings aur aarti ki puri jaankari" },
   { title: "Bhakto ke Anubhav", color: { bg: "#9FE1CB", text: "#04342C", tag: "#E1F5EE", tagText: "#085041" }, nav: "Contact", icon: "💬", desc: "Apna anubhav share karein" },
   { title: "Smart Search", color: { bg: "#B5D4F4", text: "#042C53", tag: "#E6F1FB", tagText: "#0C447C" }, nav: "Contact", icon: "🔍", desc: "Bhajan ya Leela dhundho" },
 ];
