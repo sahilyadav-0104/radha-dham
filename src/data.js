@@ -259,7 +259,7 @@ export function getFestivalsForYear(year) {
   return FESTIVAL_DATA[year] || FESTIVAL_DATA[2026];
 }
 
-const MONTH_IDX = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+export const MONTH_IDX = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
 
 // Aane wala sabse nazdeeki festival (countdown ke liye)
 export function getNextFestival() {
