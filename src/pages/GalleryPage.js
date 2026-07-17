@@ -52,6 +52,23 @@ export default function GalleryPage() {
               style={{ background:"var(--c-deep)", border:"none", color:"var(--c-soft)", fontSize:24, borderRadius:"50%", width:46, height:46, cursor:"pointer" }}>›</button>
           </div>
           <p style={{ color:"var(--c-soft)", fontSize:15 }}>{GALLERY_ITEMS[selected].label}</p>
+          {/* Photo download — admin ki add ki photos samet sabhi */}
+          {!errors[selected] && (
+            <a
+              href={GALLERY_ITEMS[selected].url}
+              download={
+                (GALLERY_ITEMS[selected].label || "radha-krishna")
+                  .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+                + "." + (GALLERY_ITEMS[selected].url.split(".").pop().split("?")[0] || "jpg")
+              }
+              onClick={e => e.stopPropagation()}
+              style={{
+                background: "var(--c-primary)", color: "#fff", textDecoration: "none",
+                borderRadius: 20, padding: "9px 22px", fontSize: 14,
+                fontFamily: "Georgia, serif", fontWeight: 600,
+              }}
+            >⬇️ Photo Download Karo</a>
+          )}
           <p style={{ color:"var(--c-border)", fontSize:12 }}>{selected+1} / {GALLERY_ITEMS.length}</p>
         </div>
       )}
