@@ -6,6 +6,16 @@ import { useT } from "../i18n";
    CONTACT PAGE — Comments (sabke liye — site par upload) + Search
    ============================================================ */
 
+// Har browser ki ek pakki anonymous id — ban ke liye (koi personal jaankari nahi)
+function getClientId() {
+  let id = localStorage.getItem("radhaDhamCid");
+  if (!id) {
+    id = "c_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("radhaDhamCid", id);
+  }
+  return id;
+}
+
 // "kuch samay pehle" jaisa relative time
 function relTime(ts) {
   if (!ts) return "";
@@ -60,7 +70,7 @@ export default function ContactPage() {
       const r = await fetch("/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ author: name, text }),
+        body: JSON.stringify({ author: name, text, cid: getClientId() }),
       });
       const j = await r.json();
       if (!r.ok) {

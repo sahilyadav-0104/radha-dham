@@ -29,6 +29,9 @@ export default function AdminPage() {
   // Delete/manage
   const [items, setItems] = useState(null); // { gallery, bhajans, leelas }
   const [loadingList, setLoadingList] = useState(false);
+  // Comments moderation
+  const [comments, setComments] = useState(null);
+  const [loadingComments, setLoadingComments] = useState(false);
 
   function unlock() {
     if (!secret.trim()) return;
@@ -101,6 +104,58 @@ export default function AdminPage() {
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
     }
+    setBusy(false);
+  }
+
+  // ---- Comments moderation (alag API: /api/comments) ----
+  async function commentsApi(body) {
+    const r = await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Secret": sessionStorage.getItem("adminSecret") || "",
+      },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json().catch(() => ({}));
+    return { r, j };
+  }
+
+  async function loadComments() {
+    setLoadingComments(true);
+    setMsg(null);
+    try {
+      const { r, j } = await commentsApi({ action: "list" });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Anubhav load nahi hue") });
+      else setComments(j.comments || []);
+    } catch (e) {
+      setMsg({ ok: false, text: "Network problem — dobara try karein" });
+    }
+    setLoadingComments(false);
+  }
+
+  async function delComment(id, author) {
+    if (!window.confirm(`${author} ka anubhav delete karna hai?`)) return;
+    setBusy(true); setMsg(null);
+    try {
+      const { r, j } = await commentsApi({ action: "delete", id });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Delete nahi hua") });
+      else { setMsg({ ok: true, text: j.message }); setComments(j.comments || []); }
+    } catch (e) { setMsg({ ok: false, text: "Network problem" }); }
+    setBusy(false);
+  }
+
+  async function banComment(id, author) {
+    if (!window.confirm(`${author} ko BAN karna hai? Iske saare anubhav hat jayenge aur ye dobara post nahi kar payega.`)) return;
+    setBusy(true); setMsg(null);
+    try {
+      const { r, j } = await commentsApi({ action: "ban", id });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Ban nahi hua") });
+      else { setMsg({ ok: true, text: j.message }); setComments(j.comments || []); }
+    } catch (e) { setMsg({ ok: false, text: "Network problem" }); }
     setBusy(false);
   }
 
@@ -190,8 +245,8 @@ export default function AdminPage() {
       <div className="section-divider" />
 
       <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 22, flexWrap: "wrap" }}>
-        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"], ["manage", "🗑️ Delete"]].map(([id, label]) => (
-          <button key={id} onClick={() => { setTab(id); setMsg(null); if (id === "manage") loadList(); }} className={`lang-chip${tab === id ? " active" : ""}`}>
+        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"], ["manage", "🗑️ Delete"], ["comment", "💬 Comments"]].map(([id, label]) => (
+          <button key={id} onClick={() => { setTab(id); setMsg(null); if (id === "manage") loadList(); if (id === "comment") loadComments(); }} className={`lang-chip${tab === id ? " active" : ""}`}>
             {label}
           </button>
         ))}
@@ -279,6 +334,32 @@ export default function AdminPage() {
             ));
           })()}
           <button className="lang-chip" onClick={loadList} style={{ display: "block", margin: "10px auto 0" }}>🔄 Refresh</button>
+        </div>
+      )}
+
+      {tab === "comment" && (
+        <div>
+          <h3 style={{ textAlign: "center", color: "var(--c-deep)", marginBottom: 6 }}>Bhakton ke anubhav — delete ya ban karo</h3>
+          <p style={{ textAlign: "center", fontSize: 12, color: "var(--c-dark)", marginBottom: 16 }}>
+            🚫 Ban = us bhakt ke saare anubhav hat jayenge aur wo dobara post nahi kar payega.
+          </p>
+          {loadingComments && <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Load ho raha hai...</p>}
+          {comments && comments.length === 0 && (
+            <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Abhi koi anubhav nahi hai.</p>
+          )}
+          {comments && comments.map(c => (
+            <div key={c.id} style={{ background: "var(--c-bg)", border: "0.5px solid var(--c-border)", borderRadius: 10, padding: "12px 14px", marginBottom: 10 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-deep)", margin: "0 0 4px" }}>🙏 {c.author}</p>
+              <p style={{ fontSize: 14, color: "var(--c-dark)", margin: "0 0 10px", lineHeight: 1.6 }}>{c.text}</p>
+              <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+                <button className="counter-reset-btn" disabled={busy} onClick={() => delComment(c.id, c.author)}>Delete</button>
+                {c.cid
+                  ? <button className="counter-reset-btn" disabled={busy} style={{ borderColor: "#D64545", color: "#D64545" }} onClick={() => banComment(c.id, c.author)}>🚫 Ban</button>
+                  : <span style={{ fontSize: 11, color: "var(--c-dark)", alignSelf: "center" }}>(purana — ban nahi)</span>}
+              </div>
+            </div>
+          ))}
+          <button className="lang-chip" onClick={loadComments} style={{ display: "block", margin: "10px auto 0" }}>🔄 Refresh</button>
         </div>
       )}
 
