@@ -27,6 +27,11 @@ export default function BhajansPage() {
   }, [current]);
 
   function play(idx) {
+    // YouTube bhajan — seedha YouTube par khol do (koi inline audio nahi)
+    if (BHAJANS[idx].yt) {
+      window.open(BHAJANS[idx].yt, "_blank", "noopener");
+      return;
+    }
     setAudioError(false);
     if (current === idx) {
       if (isPlaying) { audioRef.current.pause(); setIsPlaying(false); }
@@ -56,8 +61,19 @@ export default function BhajansPage() {
     return `${m}:${sec.toString().padStart(2,"0")}`;
   }
 
-  function next() { const n = current === null ? 0 : (current+1)%BHAJANS.length; setCurrent(n); setProgress(0); setIsPlaying(true); setTimeout(()=>{ audioRef.current?.play().catch(()=>setAudioError(true)); },100); }
-  function prev() { const n = current === null ? 0 : (current-1+BHAJANS.length)%BHAJANS.length; setCurrent(n); setProgress(0); setIsPlaying(true); setTimeout(()=>{ audioRef.current?.play().catch(()=>setAudioError(true)); },100); }
+  // next/prev sirf audio (non-YouTube) bhajanon par jaate hain
+  function step(dir) {
+    if (current === null) return;
+    let n = current;
+    for (let k = 0; k < BHAJANS.length; k++) {
+      n = (n + dir + BHAJANS.length) % BHAJANS.length;
+      if (!BHAJANS[n].yt) break;
+    }
+    setCurrent(n); setProgress(0); setIsPlaying(true);
+    setTimeout(() => { audioRef.current?.play().catch(() => setAudioError(true)); }, 100);
+  }
+  function next() { step(1); }
+  function prev() { step(-1); }
 
   return (
     <div className="page-section">
@@ -118,21 +134,23 @@ export default function BhajansPage() {
               <img src={b.cover} alt="" onError={e=>e.target.style.display="none"}
                 style={{ width:56, height:42, borderRadius:8, objectFit:"cover", display:"block" }} />
               <div style={{ position:"absolute", inset:0, background:"rgba(0,0,0,0.3)", borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <span style={{ color:"white", fontSize:16 }}>{current===i && isPlaying ? "⏸" : "▶"}</span>
+                <span style={{ color:"white", fontSize:16 }}>{b.yt ? "▶" : (current===i && isPlaying ? "⏸" : "▶")}</span>
               </div>
             </div>
             <div className="bhajan-info">
               <p className="bhajan-title">{b.title}</p>
               <p className="bhajan-singer">{b.singer}</p>
             </div>
-            <span className="bhajan-duration">{b.duration}</span>
+            {b.yt
+              ? <span className="bhajan-duration" style={{ background:"#c4302b", color:"#fff", borderRadius:12, padding:"3px 10px", fontSize:11 }}>▶ YouTube</span>
+              : <span className="bhajan-duration">{b.duration}</span>}
           </div>
         ))}
       </div>
 
       <p style={{ textAlign:"center", fontSize:12, color:"#854F0B", marginTop:20, lineHeight:1.7 }}>
-        🎵 Bhajans ke liye stable internet connection zaroori hai.<br/>
-        Agar load na ho toh thoda wait karein ya next bhajan try karein.
+        🎵 Pehle 6 bhajan yahin bajte hain. <span style={{ color:"#c4302b" }}>▶ YouTube</span> wale naye gaane<br/>
+        YouTube par khulte hain — asli gaayak ko sunne aur support karne ke liye. 🌸
       </p>
     </div>
   );

@@ -112,9 +112,43 @@ const BASE_BHAJANS = [
   },
 ];
 
+// YouTube search link banao (hamesha sahi official gaana khulta hai)
+const YT = (q) => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+/* ============================================================
+   YOUTUBE BHAJANS — naye/popular gaane (copyright, isliye
+   YouTube par khulte hain — artist ko bhi credit milta hai)
+   ============================================================ */
+const YT_BHAJANS = [
+  { title: "Radha Rani Meri Hai", singer: "Devi Neha Saraswat", yt: YT("Radha Rani Meri Hai Devi Neha Saraswat") },
+  { title: "Braj Ras", singer: "B Praak · Jaani · Mir Desai", yt: YT("Braj Ras B Praak Jaani official") },
+  { title: "Mithe Ras Se Bharyo Radha Rani Lage", singer: "The Bundeli Artists", yt: YT("Mithe Ras Se Bharyo Radha Rani Lage The Bundeli Artists") },
+  { title: "Main Haara", singer: "Jainen · Paras Chhabra", yt: YT("Main Haara Jainen Paras Chhabra") },
+  { title: "Meri Vinti Yahi Hai Radha Rani", singer: "Chitra Vichitra Ji Maharaj", yt: YT("Meri Vinti Yahi Hai Radha Rani Chitra Vichitra Ji Maharaj") },
+  { title: "Koi Jaye Jo Barsane", singer: "Nikhil Verma · Krishnapriya Panchal · KSHL Music", yt: YT("Koi Jaye Jo Barsane Nikhil Verma KSHL Music") },
+  { title: "Radha Rani Mann Barsana", singer: "Nikhil Verma", yt: YT("Radha Rani Mann Barsana Nikhil Verma") },
+  { title: "Radha Rani Ke 28 Naam", singer: "Komal Bareth", yt: YT("Radha Rani Ke 28 Naam Komal Bareth") },
+  { title: "Shyama Pyari Kunj Bihari", singer: "Chitra Vichitra Ji Maharaj", yt: YT("Shyama Pyari Kunj Bihari Chitra Vichitra Ji Maharaj") },
+  { title: "Karuna Karo Kasht Haro", singer: "Dr. Prakhar Dagar", yt: YT("Karuna Karo Kasht Haro Dr Prakhar Dagar") },
+];
+
+const YT_COVERS = [
+  IMG("iskcon-radha-shyamsundar.jpg"), IMG("prem-mandir.jpg"), IMG("banke-bihari.jpg"),
+  IMG("nauka-vihar.jpg"), IMG("radha-raman.jpg"), IMG("yamuna-ghat.jpg"),
+  IMG("govardhan-leela.jpg"), IMG("phool-shringaar.jpg"), IMG("janmashtami.jpg"), IMG("govardhan-parvat.jpg"),
+];
+
 // Admin ke add kiye bhajans merge karo
 export const BHAJANS = [
   ...BASE_BHAJANS,
+  ...YT_BHAJANS.map((b, i) => ({
+    id: 200 + i,
+    title: b.title,
+    singer: b.singer,
+    duration: "YouTube",
+    yt: b.yt,
+    cover: YT_COVERS[i % YT_COVERS.length],
+  })),
   ...CUSTOM.bhajans.map((b, i) => ({
     id: 100 + i,
     title: b.title,
