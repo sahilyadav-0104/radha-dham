@@ -112,24 +112,22 @@ const BASE_BHAJANS = [
   },
 ];
 
-// YouTube search link banao (hamesha sahi official gaana khulta hai)
-const YT = (q) => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
-
 /* ============================================================
-   YOUTUBE BHAJANS — naye/popular gaane (copyright, isliye
-   YouTube par khulte hain — artist ko bhi credit milta hai)
+   YOUTUBE BHAJANS — naye/popular gaane (copyright ke karan MP3
+   nahi, isliye app ke andar hi YouTube embed player se bajte hain)
+   ytId = YouTube video ki ID
    ============================================================ */
 const YT_BHAJANS = [
-  { title: "Radha Rani Meri Hai", singer: "Devi Neha Saraswat", yt: YT("Radha Rani Meri Hai Devi Neha Saraswat") },
-  { title: "Braj Ras", singer: "B Praak · Jaani · Mir Desai", yt: YT("Braj Ras B Praak Jaani official") },
-  { title: "Mithe Ras Se Bharyo Radha Rani Lage", singer: "The Bundeli Artists", yt: YT("Mithe Ras Se Bharyo Radha Rani Lage The Bundeli Artists") },
-  { title: "Main Haara", singer: "Jainen · Paras Chhabra", yt: YT("Main Haara Jainen Paras Chhabra") },
-  { title: "Meri Vinti Yahi Hai Radha Rani", singer: "Chitra Vichitra Ji Maharaj", yt: YT("Meri Vinti Yahi Hai Radha Rani Chitra Vichitra Ji Maharaj") },
-  { title: "Koi Jaye Jo Barsane", singer: "Nikhil Verma · Krishnapriya Panchal · KSHL Music", yt: YT("Koi Jaye Jo Barsane Nikhil Verma KSHL Music") },
-  { title: "Radha Rani Mann Barsana", singer: "Nikhil Verma", yt: YT("Radha Rani Mann Barsana Nikhil Verma") },
-  { title: "Radha Rani Ke 28 Naam", singer: "Komal Bareth", yt: YT("Radha Rani Ke 28 Naam Komal Bareth") },
-  { title: "Shyama Pyari Kunj Bihari", singer: "Chitra Vichitra Ji Maharaj", yt: YT("Shyama Pyari Kunj Bihari Chitra Vichitra Ji Maharaj") },
-  { title: "Karuna Karo Kasht Haro", singer: "Dr. Prakhar Dagar", yt: YT("Karuna Karo Kasht Haro Dr Prakhar Dagar") },
+  { title: "Radha Rani Meri Hai", singer: "Devi Neha Saraswat", ytId: "yyl1GredDLY" },
+  { title: "Braj Ras", singer: "B Praak · Jaani · Mir Desai", ytId: "C8iQCmo-o_Y" },
+  { title: "Mithe Ras Se Bharyo Radha Rani Lage", singer: "The Bundeli Artists", ytId: "w8piP6I3VS0" },
+  { title: "Main Haara", singer: "Jainen · Paras Chhabra", ytId: "RoXNfVS5NJY" },
+  { title: "Meri Vinti Yahi Hai Radha Rani", singer: "Chitra Vichitra Ji Maharaj", ytId: "mjixdc3g9Cs" },
+  { title: "Koi Jaye Jo Barsane", singer: "Nikhil Verma · KSHL Music", ytId: "a5rJoF0Xviw" },
+  { title: "Radha Rani Mann Barsana", singer: "Nikhil Verma", ytId: "Q0QCiVell7Y" },
+  { title: "Radha Rani Ke 28 Naam", singer: "Komal Bareth", ytId: "nrKBWz1WWwk" },
+  { title: "Shyama Pyari Kunj Bihari", singer: "Chitra Vichitra Ji Maharaj", ytId: "aHlkANajtBs" },
+  { title: "Karuna Karo Kasht Haro", singer: "Dr. Prakhar Dagar", ytId: "YQ8OTZ31yCs" },
 ];
 
 const YT_COVERS = [
@@ -146,7 +144,7 @@ export const BHAJANS = [
     title: b.title,
     singer: b.singer,
     duration: "YouTube",
-    yt: b.yt,
+    ytId: b.ytId,
     cover: YT_COVERS[i % YT_COVERS.length],
   })),
   ...CUSTOM.bhajans.map((b, i) => ({

@@ -27,9 +27,10 @@ export default function BhajansPage() {
   }, [current]);
 
   function play(idx) {
-    // YouTube bhajan — seedha YouTube par khol do (koi inline audio nahi)
-    if (BHAJANS[idx].yt) {
-      window.open(BHAJANS[idx].yt, "_blank", "noopener");
+    // YouTube bhajan — app ke andar hi embed player me bajega
+    if (BHAJANS[idx].ytId) {
+      setIsPlaying(false);
+      setCurrent(idx);
       return;
     }
     setAudioError(false);
@@ -80,12 +81,37 @@ export default function BhajansPage() {
       <h2 className="section-heading">{t("h.bhajans")}</h2>
       <div className="section-divider" />
 
-      {current !== null && (
+      {current !== null && !BHAJANS[current].ytId && (
         <audio ref={audioRef} src={BHAJANS[current].src} crossOrigin="anonymous" />
       )}
 
-      {/* Player Bar */}
-      {current !== null && (
+      {/* YouTube Player — app ke andar hi bajta hai */}
+      {current !== null && BHAJANS[current].ytId && (
+        <div style={{ background:"var(--c-deep)", borderRadius:16, padding:"16px", marginBottom:28, border:"0.5px solid var(--c-dark)" }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+            <div>
+              <p style={{ color:"#FAC775", fontSize:16, fontWeight:500, margin:0 }}>{BHAJANS[current].title}</p>
+              <p style={{ color:"var(--c-soft)", fontSize:12, margin:"3px 0 0" }}>{BHAJANS[current].singer}</p>
+            </div>
+            <button onClick={() => setCurrent(null)} style={{ background:"var(--c-dark)", border:"none", color:"var(--c-soft)", borderRadius:"50%", width:32, height:32, cursor:"pointer", fontSize:16, flexShrink:0 }}>✕</button>
+          </div>
+          <div style={{ position:"relative", width:"100%", paddingBottom:"56.25%", borderRadius:12, overflow:"hidden", background:"#000" }}>
+            <iframe
+              title={BHAJANS[current].title}
+              src={`https://www.youtube-nocookie.com/embed/${BHAJANS[current].ytId}?autoplay=1&rel=0&modestbranding=1`}
+              style={{ position:"absolute", top:0, left:0, width:"100%", height:"100%", border:"none" }}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <p style={{ color:"var(--c-soft)", fontSize:11, textAlign:"center", margin:"10px 0 0" }}>
+            🎵 Agar video na chale to <a href={`https://www.youtube.com/watch?v=${BHAJANS[current].ytId}`} target="_blank" rel="noreferrer" style={{ color:"#FAC775" }}>YouTube par kholein ↗</a>
+          </p>
+        </div>
+      )}
+
+      {/* Audio Player Bar */}
+      {current !== null && !BHAJANS[current].ytId && (
         <div style={{ background:"var(--c-deep)", borderRadius:16, padding:"16px 20px", marginBottom:28, border:"0.5px solid var(--c-dark)" }}>
           <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:14 }}>
             <img src={BHAJANS[current].cover} alt="" onError={e=>e.target.style.display="none"}
@@ -149,8 +175,8 @@ export default function BhajansPage() {
       </div>
 
       <p style={{ textAlign:"center", fontSize:12, color:"#854F0B", marginTop:20, lineHeight:1.7 }}>
-        🎵 Pehle 6 bhajan yahin bajte hain. <span style={{ color:"#c4302b" }}>▶ YouTube</span> wale naye gaane<br/>
-        YouTube par khulte hain — asli gaayak ko sunne aur support karne ke liye. 🌸
+        🎵 Saare bhajan yahin, isi page par bajte hain.<br/>
+        <span style={{ color:"#c4302b" }}>▶ YouTube</span> wale naye gaane video ke saath chalte hain. 🌸
       </p>
     </div>
   );
