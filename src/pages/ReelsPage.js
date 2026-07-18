@@ -17,6 +17,16 @@ function saveLiked(set) {
   localStorage.setItem(LIKED_KEY, JSON.stringify([...set]));
 }
 
+// Reels ko har baar alag order me dikhao
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
   const videoRef = useRef(null);
   const [paused, setPaused] = useState(false);
@@ -98,7 +108,7 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
   );
 }
 
-export default function ReelsPage() {
+export default function ReelsPage({ fullScreen, onExit }) {
   const [reels, setReels] = useState(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const [muted, setMuted] = useState(true); // browser autoplay ke liye pehle muted
@@ -110,7 +120,7 @@ export default function ReelsPage() {
     let alive = true;
     fetch("/api/reels")
       .then(r => r.json())
-      .then(j => { if (alive) setReels(j.reels || []); })
+      .then(j => { if (alive) setReels(shuffle(j.reels || [])); }) // har baar shuffle
       .catch(() => { if (alive) setReels([]); });
     return () => { alive = false; };
   }, []);
@@ -149,12 +159,18 @@ export default function ReelsPage() {
   }, [liked]);
 
   if (reels === null) {
-    return <div className="page-section" style={{ textAlign: "center", color: "var(--c-dark)" }}>Load ho raha hai... 🌸</div>;
+    return (
+      <div className="page-section" style={{ textAlign: "center", color: "var(--c-dark)" }}>
+        {onExit && <button className="reel-back" onClick={onExit} aria-label="Wapas">‹</button>}
+        Load ho raha hai... 🌸
+      </div>
+    );
   }
 
   if (reels.length === 0) {
     return (
       <div className="page-section" style={{ textAlign: "center" }}>
+        {onExit && <button className="reel-back" onClick={onExit} aria-label="Wapas">‹</button>}
         <h2 className="section-heading">🎬 Status</h2>
         <div className="section-divider" />
         <div style={{ background: "var(--c-bg)", border: "0.5px dashed var(--c-border)", borderRadius: 16, padding: "40px 24px" }}>
@@ -169,7 +185,10 @@ export default function ReelsPage() {
   }
 
   return (
-    <div className="reels-wrap" ref={containerRef}>
+    <div className={`reels-wrap${fullScreen ? " full" : ""}`} ref={containerRef}>
+      {onExit && (
+        <button className="reel-back" onClick={onExit} aria-label="Wapas">‹</button>
+      )}
       {reels.map((reel, i) => (
         <div key={reel.id} data-idx={i} ref={el => (reelRefs.current[i] = el)} className="reel-slot">
           <Reel

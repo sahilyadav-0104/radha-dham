@@ -135,6 +135,15 @@ export default function App() {
     }
   }
 
+  // Status/Reels — Instagram jaisa full page (upar ka bar/nav/footer hata do)
+  if (!isAdmin && activeNav === "Status") {
+    return (
+      <LangContext.Provider value={{ lang, t }}>
+        <ReelsPage fullScreen onExit={() => setActiveNav("Home")} />
+      </LangContext.Provider>
+    );
+  }
+
   return (
     <LangContext.Provider value={{ lang, t }}>
     <div style={{ fontFamily:"Georgia, serif", background:"var(--c-page)", minHeight:"100vh" }}>

@@ -1292,6 +1292,35 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Full page (Instagram jaisa) — upar/neeche kuch nahi */
+.reels-wrap.full {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 500;
+}
+
+.reel-back {
+  position: fixed;
+  top: 14px;
+  left: 12px;
+  z-index: 600;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
 .reel-slot {
   height: 100%;
   scroll-snap-align: start;
