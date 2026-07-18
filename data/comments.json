@@ -1,13 +1,6 @@
 {
   "comments": [
     {
-      "id": 1784371880206,
-      "author": "Spam Bhakt",
-      "text": "ye galat comment hai test ke liye",
-      "ts": "2026-07-18T10:51:20.206Z",
-      "cid": "c_testban123"
-    },
-    {
       "id": 1,
       "author": "Priya Devi",
       "text": "Jai Shri Radhe! Yeh website dekh ke mann ko bahut sukoon mila. Radha Rani ki kripa sab par bani rahe. 🙏",
@@ -32,5 +25,7 @@
       "time": "kuch din pehle"
     }
   ],
-  "banned": []
+  "banned": [
+    "c_testban123"
+  ]
 }
