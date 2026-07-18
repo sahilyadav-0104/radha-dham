@@ -32,6 +32,11 @@ export default function AdminPage() {
   // Comments moderation
   const [comments, setComments] = useState(null);
   const [loadingComments, setLoadingComments] = useState(false);
+  // Reels
+  const [reelUrl, setReelUrl] = useState("");
+  const [reelCaption, setReelCaption] = useState("");
+  const [reels, setReels] = useState(null);
+  const [loadingReels, setLoadingReels] = useState(false);
 
   function unlock() {
     if (!secret.trim()) return;
@@ -159,6 +164,56 @@ export default function AdminPage() {
     setBusy(false);
   }
 
+  // ---- Reels (alag API: /api/reels) ----
+  async function reelsApi(body) {
+    const r = await fetch("/api/reels", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Secret": sessionStorage.getItem("adminSecret") || "",
+      },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json().catch(() => ({}));
+    return { r, j };
+  }
+
+  async function loadReels() {
+    setLoadingReels(true);
+    setMsg(null);
+    try {
+      const { r, j } = await reelsApi({ action: "list" });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Reels load nahi hue") });
+      else setReels(j.reels || []);
+    } catch (e) { setMsg({ ok: false, text: "Network problem" }); }
+    setLoadingReels(false);
+  }
+
+  async function submitReel() {
+    if (!reelUrl.trim()) return setMsg({ ok: false, text: "Video / YouTube ka link daalein" });
+    setBusy(true); setMsg(null);
+    try {
+      const { r, j } = await reelsApi({ action: "add", url: reelUrl.trim(), caption: reelCaption.trim() });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Reel add nahi hua") });
+      else { setMsg({ ok: true, text: j.message }); setReels(j.reels || []); setReelUrl(""); setReelCaption(""); }
+    } catch (e) { setMsg({ ok: false, text: "Network problem" }); }
+    setBusy(false);
+  }
+
+  async function delReel(id) {
+    if (!window.confirm("Ye reel delete karna hai?")) return;
+    setBusy(true); setMsg(null);
+    try {
+      const { r, j } = await reelsApi({ action: "delete", id });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Delete nahi hua") });
+      else { setMsg({ ok: true, text: j.message }); setReels(j.reels || []); }
+    } catch (e) { setMsg({ ok: false, text: "Network problem" }); }
+    setBusy(false);
+  }
+
   // Photo ko browser me hi resize + JPEG me convert karo (phone ki badi photo/webp/heic sab handle)
   // Input photo kitni bhi badi ho sakti hai — save 2000px high-quality JPEG hoti hai
   function resizePhoto(file, maxSide = 2000, quality = 0.9) {
@@ -245,8 +300,8 @@ export default function AdminPage() {
       <div className="section-divider" />
 
       <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 22, flexWrap: "wrap" }}>
-        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"], ["manage", "🗑️ Delete"], ["comment", "💬 Comments"]].map(([id, label]) => (
-          <button key={id} onClick={() => { setTab(id); setMsg(null); if (id === "manage") loadList(); if (id === "comment") loadComments(); }} className={`lang-chip${tab === id ? " active" : ""}`}>
+        {[["photo", "🖼️ Photo"], ["bhajan", "🎵 Bhajan"], ["leela", "📖 Leela"], ["reel", "🎬 Reels"], ["manage", "🗑️ Delete"], ["comment", "💬 Comments"]].map(([id, label]) => (
+          <button key={id} onClick={() => { setTab(id); setMsg(null); if (id === "manage") loadList(); if (id === "comment") loadComments(); if (id === "reel") loadReels(); }} className={`lang-chip${tab === id ? " active" : ""}`}>
             {label}
           </button>
         ))}
@@ -300,6 +355,36 @@ export default function AdminPage() {
           <button className="btn-submit" disabled={busy} onClick={submitLeela}>
             {busy ? "Save ho raha hai..." : "Leela Add Karo →"}
           </button>
+        </div>
+      )}
+
+      {tab === "reel" && (
+        <div>
+          <div className="comment-form">
+            <h3>Naya Status / Reel add karo 🎬</h3>
+            <input type="text" placeholder="Video ya YouTube ka link (Shorts bhi chalega) *" value={reelUrl} onChange={e => setReelUrl(e.target.value)} />
+            <input type="text" placeholder="Caption (optional)" value={reelCaption} onChange={e => setReelCaption(e.target.value)} />
+            <button className="btn-submit" disabled={busy} onClick={submitReel}>
+              {busy ? "Add ho raha hai..." : "Reel Add Karo →"}
+            </button>
+            <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 8, lineHeight: 1.6 }}>
+              💡 YouTube / YouTube Shorts ka link, ya koi direct video link (.mp4). Vertical (khada) video reels ke liye sabse accha lagta hai.
+            </p>
+          </div>
+
+          <h3 style={{ textAlign: "center", color: "var(--c-deep)", margin: "20px 0 12px" }}>Add kiye reels — delete karne ke liye</h3>
+          {loadingReels && <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Load ho raha hai...</p>}
+          {reels && reels.length === 0 && <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Abhi koi reel nahi hai.</p>}
+          {reels && reels.map(rl => (
+            <div key={rl.id} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--c-bg)", border: "0.5px solid var(--c-border)", borderRadius: 10, padding: "10px 14px", marginBottom: 8 }}>
+              {rl.type === "youtube" && <img src={`https://i.ytimg.com/vi/${rl.ytId}/default.jpg`} alt="" style={{ width: 48, height: 34, borderRadius: 5, objectFit: "cover" }} />}
+              <span style={{ flex: 1, fontSize: 13, color: "var(--c-deep)" }}>
+                {rl.type === "youtube" ? "▶ YouTube" : "🎞️ Video"} · {rl.caption || "(no caption)"} · ❤️ {rl.likes || 0}
+              </span>
+              <button className="counter-reset-btn" disabled={busy} onClick={() => delReel(rl.id)}>Delete</button>
+            </div>
+          ))}
+          <button className="lang-chip" onClick={loadReels} style={{ display: "block", margin: "10px auto 0" }}>🔄 Refresh</button>
         </div>
       )}
 

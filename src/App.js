@@ -12,6 +12,7 @@ import CounterPage from "./pages/CounterPage";
 import ContactPage from "./pages/ContactPage";
 import QuizPage from "./pages/QuizPage";
 import YatraPage from "./pages/YatraPage";
+import ReelsPage from "./pages/ReelsPage";
 import AdminPage from "./pages/AdminPage";
 
 /* ============================================================
@@ -128,6 +129,7 @@ export default function App() {
       case "Counter":  return <CounterPage />;
       case "Quiz":     return <QuizPage />;
       case "Yatra":    return <YatraPage />;
+      case "Status":   return <ReelsPage />;
       case "Contact":  return <ContactPage />;
       default:         return <HomePage onNavigate={setActiveNav} />;
     }

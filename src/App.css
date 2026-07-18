@@ -1283,6 +1283,139 @@ body {
   color: var(--c-bg);
 }
 
+/* ---- STATUS / REELS ---- */
+.reels-wrap {
+  height: calc(100vh - 96px);
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  background: #000;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reel-slot {
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.reel {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reel-media {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reel-media video,
+.reel-media iframe,
+.reel-media .reel-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+  display: block;
+}
+
+.reel-media iframe {
+  object-fit: contain;
+}
+
+.reel-burst {
+  position: absolute;
+  font-size: 90px;
+  animation: reelBurst 0.7s ease-out;
+  pointer-events: none;
+}
+
+@keyframes reelBurst {
+  0% { transform: scale(0.3); opacity: 0; }
+  30% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+.reel-playicon {
+  position: absolute;
+  font-size: 60px;
+  color: rgba(255,255,255,0.85);
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.reel-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 3;
+}
+
+.reel-act {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  font-family: Georgia, serif;
+}
+
+.reel-act-icon {
+  font-size: 30px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+}
+
+.reel-act-count {
+  font-size: 11px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.reel-act.liked .reel-act-count {
+  color: #ff4d6d;
+}
+
+.reel-caption {
+  position: absolute;
+  left: 14px;
+  right: 70px;
+  bottom: 24px;
+  z-index: 3;
+}
+
+.reel-author {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 5px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+.reel-text {
+  color: #f0f0f0;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+}
+
 /* ---- CALENDAR GRID VIEW ---- */
 .cal-nav {
   display: flex;
