@@ -16,6 +16,19 @@ export const DARSHAN_IMAGES = [
 // Gallery photos — Wikimedia Commons se download karke public/gallery/ mein rakhi hain
 const IMG = (file) => process.env.PUBLIC_URL + "/gallery/" + file;
 
+// Jab admin photo ka naam na dale, to inme se koi random naam lag jata hai
+export const RADHA_CAPTIONS = [
+  "Radhe Radhe 🌸", "Jai Shri Radhe", "Ladli Ji", "Kishori Ji",
+  "Barsane Wali Radha Rani", "Vrishbhanu Dulari", "Kirti Kumari",
+  "Shyama Pyari", "Braj Rani Radha", "Radha Vallabh", "Radha Madhav",
+  "Shri Radha", "Radha Rani ki Divya Chhavi", "Nitya Kishori Radha",
+  "Radha Krishna", "Raseshwari Radha", "Vrindavan Bihari Radha",
+];
+
+export function randomRadhaCaption() {
+  return RADHA_CAPTIONS[Math.floor(Math.random() * RADHA_CAPTIONS.length)];
+}
+
 const BASE_GALLERY = [
   { url: IMG("iskcon-radha-shyamsundar.jpg"), label: "ISKCON Vrindavan — Radha Shyamsundar" },
   { url: IMG("banke-bihari.jpg"), label: "Banke Bihari Mandir" },
@@ -36,7 +49,7 @@ export const GALLERY_ITEMS = [
   ...BASE_GALLERY,
   ...CUSTOM.gallery.map(g => ({
     url: g.file ? IMG(g.file) : g.url,
-    label: g.label || "Radha Krishna",
+    label: g.label || randomRadhaCaption(),
   })),
 ];
 

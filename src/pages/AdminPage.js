@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { randomRadhaCaption } from "../data";
 
 /* ============================================================
    ADMIN PANEL — shriradharani.in/#admin
@@ -137,7 +138,8 @@ export default function AdminPage() {
     try {
       const base64 = await resizePhoto(photoFile);
       setBusy(false);
-      await send("gallery", { label: photoLabel || "Radha Krishna" }, { name: "photo.jpg", base64 });
+      // Naam na dala to Radha Rani se juda koi random naam lag jayega
+      await send("gallery", { label: photoLabel.trim() || randomRadhaCaption() }, { name: "photo.jpg", base64 });
       setPhotoFile(null); setPhotoLabel("");
     } catch (e) {
       setBusy(false);
@@ -210,7 +212,7 @@ export default function AdminPage() {
           <h3>Nayi photo add karo</h3>
           <input type="file" accept="image/*" onChange={e => setPhotoFile(e.target.files[0] || null)} />
           {photoFile && <p style={{ fontSize: 12, color: "var(--c-dark)" }}>📎 {photoFile.name} ({Math.round(photoFile.size / 1024)} KB)</p>}
-          <input type="text" placeholder="Photo ka naam (jaise: Barsana Mandir)" value={photoLabel} onChange={e => setPhotoLabel(e.target.value)} />
+          <input type="text" placeholder="Photo ka naam (khaali chhodo to Radha Rani wala naam khud lag jayega)" value={photoLabel} onChange={e => setPhotoLabel(e.target.value)} />
           <button className="btn-submit" disabled={busy} onClick={submitPhoto}>
             {busy ? "Upload ho raha hai..." : "Photo Add Karo →"}
           </button>
