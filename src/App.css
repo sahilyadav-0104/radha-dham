@@ -176,25 +176,37 @@ body {
 /* ---- HERO ---- */
 .hero {
   position: relative;
-  background: var(--c-bg);
+  background: var(--c-deep);
   text-align: center;
-  padding: 40px 20px 36px;
+  padding: 54px 20px 48px;
   overflow: hidden;
-  min-height: 420px;
+  min-height: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.hero-bg-svg {
+/* Radha Krishna ki photo — text ke peeche background */
+.hero-photo {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.13;
-  pointer-events: none;
+  inset: 0;
+  background-size: cover;
+  background-position: center 22%;
+  z-index: 0;
+}
+
+/* Theme rang ka halka overlay — taaki text saaf padhe aur photo bhi dikhe */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--c-deep-rgb), 0.35) 0%,
+    rgba(var(--c-deep-rgb), 0.45) 45%,
+    rgba(var(--c-deep-rgb), 0.82) 100%
+  );
 }
 
 .hero-content {
@@ -252,31 +264,35 @@ body {
 
 .hero h1 {
   font-family: Georgia, serif;
-  font-size: 36px;
-  font-weight: 500;
-  color: var(--c-deep);
-  margin: 0 0 6px;
+  font-size: 42px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
   letter-spacing: 0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
 .hero-subtitle {
   font-size: 14px;
-  color: var(--c-dark);
+  color: #FAC775;
   margin: 0 0 22px;
   letter-spacing: 0.3px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .hero-tagline {
   font-size: 17px;
   font-weight: 500;
-  color: var(--c-deep);
+  color: #fff;
   margin: 0 0 6px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .hero-links {
   font-size: 13px;
-  color: var(--c-dark);
+  color: var(--c-soft);
   margin: 0 0 24px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .btn-cta {

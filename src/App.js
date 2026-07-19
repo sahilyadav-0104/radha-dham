@@ -16,50 +16,6 @@ import ReelsPage from "./pages/ReelsPage";
 import AdminPage from "./pages/AdminPage";
 
 /* ============================================================
-   HERO SVG
-   ============================================================ */
-function HeroBgSvg() {
-  return (
-    <svg className="hero-bg-svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="500" cy="230" rx="340" ry="200" fill="#D4537E" />
-      <ellipse cx="500" cy="230" rx="240" ry="150" fill="#ED93B1" />
-      <ellipse cx="500" cy="310" rx="120" ry="90" fill="#D4537E" />
-      <ellipse cx="500" cy="270" rx="70" ry="100" fill="#993556" />
-      <ellipse cx="360" cy="230" rx="80" ry="40" fill="#F4C0D1" transform="rotate(-20 360 230)" />
-      <ellipse cx="310" cy="260" rx="60" ry="28" fill="#ED93B1" transform="rotate(-30 310 260)" />
-      <ellipse cx="640" cy="230" rx="80" ry="40" fill="#F4C0D1" transform="rotate(20 640 230)" />
-      <ellipse cx="690" cy="260" rx="60" ry="28" fill="#ED93B1" transform="rotate(30 690 260)" />
-      <ellipse cx="500" cy="155" rx="45" ry="52" fill="#993556" />
-      <ellipse cx="500" cy="108" rx="38" ry="18" fill="#BA7517" />
-      <rect x="482" y="88" width="10" height="22" rx="5" fill="#854F0B" />
-      <rect x="496" y="82" width="10" height="28" rx="5" fill="#BA7517" />
-      <rect x="510" y="88" width="10" height="22" rx="5" fill="#854F0B" />
-      <circle cx="487" cy="90" r="4" fill="#E24B4A" />
-      <circle cx="501" cy="84" r="4" fill="#EF9F27" />
-      <circle cx="515" cy="90" r="4" fill="#E24B4A" />
-      <rect x="360" y="228" width="280" height="7" rx="3.5" fill="#BA7517" />
-      {[0,1,2,3,4,5,6,7].map(i => <circle key={i} cx={378 + i * 32} cy="231" r="5" fill="#854F0B" />)}
-      <ellipse cx="390" cy="235" rx="16" ry="10" fill="#993556" />
-      <ellipse cx="610" cy="235" rx="16" ry="10" fill="#993556" />
-      {[-120,-60,0,60,120].map((x,i) => (
-        <g key={i}>
-          <ellipse cx={500+x} cy="390" rx="22" ry="8" fill="#ED93B1" opacity="0.7" />
-          <ellipse cx={500+x} cy="385" rx="14" ry="12" fill="#F4C0D1" opacity="0.8" />
-          <ellipse cx={500+x} cy="383" rx="7" ry="7" fill="#D4537E" opacity="0.9" />
-        </g>
-      ))}
-      <ellipse cx="500" cy="75" rx="6" ry="18" fill="#1D9E75" opacity="0.8" />
-      <ellipse cx="490" cy="78" rx="5" ry="15" fill="#1D9E75" opacity="0.6" transform="rotate(-15 490 90)" />
-      <ellipse cx="510" cy="78" rx="5" ry="15" fill="#1D9E75" opacity="0.6" transform="rotate(15 510 90)" />
-      <circle cx="500" cy="58" r="5" fill="#185FA5" opacity="0.8" />
-      {[[200,100],[750,120],[150,320],[820,300],[280,60],[700,70],[100,200],[880,180]].map(([x,y],i) => (
-        <circle key={i} cx={x} cy={y} r="5" fill="#FAC775" opacity="0.6" />
-      ))}
-    </svg>
-  );
-}
-
-/* ============================================================
    MAIN APP
    ============================================================ */
 export default function App() {
@@ -189,16 +145,9 @@ export default function App() {
         </>
       )}
       <div className="hero">
-        <HeroBgSvg />
+        <div className="hero-photo" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/hero-bg.webp)` }} />
+        <div className="hero-overlay" />
         <div className="hero-content">
-          <div className="lotus-wrap">
-            <div className="lotus-circle" style={{ width:180, height:180, background:"var(--c-soft)", opacity:0.35 }} />
-            <div className="lotus-circle" style={{ width:130, height:130, background:"var(--c-border)", opacity:0.3 }} />
-            <div className="lotus-circle" style={{ width:85, height:85, background:"var(--c-primary)", opacity:0.2 }} />
-            <div className="lotus-flute" />
-            {[0,1,2,3,4,5,6].map(i => <div key={i} className="lotus-hole" style={{ left:`calc(18% + ${i*10}%)` }} />)}
-            {[-20,0,20].map((rot,i) => <div key={i} className="lotus-petal" style={{ background:i===1?"var(--c-soft)":"var(--c-border)", transform:`translate(-50%, 0) rotate(${rot}deg)` }} />)}
-          </div>
           <h1>Radha Rani</h1>
           <p className="hero-subtitle">{t("hero.sub")}</p>
           <p className="hero-tagline">{t("hero.tag")}</p>
