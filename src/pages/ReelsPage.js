@@ -63,9 +63,9 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
           active ? (
             <iframe
               title={reel.caption || "reel"}
-              src={`https://www.youtube-nocookie.com/embed/${reel.ytId}?autoplay=1&loop=1&playlist=${reel.ytId}&mute=${muted ? 1 : 0}&controls=1&modestbranding=1&playsinline=1&rel=0`}
+              className="reel-yt"
+              src={`https://www.youtube-nocookie.com/embed/${reel.ytId}?autoplay=1&loop=1&playlist=${reel.ytId}&mute=${muted ? 1 : 0}&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&fs=0&disablekb=1`}
               allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
             />
           ) : (
             <img src={`https://i.ytimg.com/vi/${reel.ytId}/hqdefault.jpg`} alt="" className="reel-thumb" />

@@ -1379,7 +1379,21 @@ body {
   object-fit: contain;
 }
 
-/* Instagram embed — card safed background par aata hai */
+/* YouTube reel — controls band + player ko crop karke branding chhupao.
+   pointer-events none = tap se pause nahi hota (play button kabhi nahi dikhta),
+   double-tap seedha like pe jaata hai */
+.reel-yt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100.5%;
+  height: calc(100% + 150px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: none;
+}
+
+/* Instagram embed — card safed background par aata hai (tap se chalta hai) */
 .reel-ig {
   background: #fff;
 }
