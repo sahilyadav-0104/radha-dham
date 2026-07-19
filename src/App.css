@@ -1379,6 +1379,11 @@ body {
   object-fit: contain;
 }
 
+/* Instagram embed — card safed background par aata hai */
+.reel-ig {
+  background: #fff;
+}
+
 .reel-burst {
   position: absolute;
   font-size: 90px;

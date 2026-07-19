@@ -429,7 +429,7 @@ export default function AdminPage() {
               {busy ? "Add ho raha hai..." : "Reel Add Karo →"}
             </button>
             <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 8, lineHeight: 1.6 }}>
-              💡 YouTube / YouTube Shorts ka link, ya koi direct video link (.mp4). Vertical (khada) video reels ke liye sabse accha lagta hai.
+              💡 YouTube / YouTube Shorts, Instagram reel, ya direct video (.mp4) — koi bhi link chalega. YouTube sabse smooth (autoplay) chalta hai; Instagram tap karke chalega.
             </p>
 
             <div style={{ borderTop: "0.5px solid var(--c-border)", margin: "18px 0 14px" }} />

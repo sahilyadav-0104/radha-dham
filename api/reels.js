@@ -57,6 +57,23 @@ function parseYouTube(url) {
   return m ? m[1] : null;
 }
 
+// Instagram reel/post ka shortcode nikaalo
+function parseInstagram(url) {
+  const m = String(url).match(/instagram\.com\/(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/);
+  if (!m) return null;
+  return { code: m[2], kind: m[1] === "reels" ? "reel" : m[1] };
+}
+
+// URL se reel object banao (YouTube / Instagram / direct video)
+function makeReel(url, caption, id) {
+  const base = { id, caption, author: "Radha Dham", likes: 0, ts: new Date().toISOString() };
+  const ytId = parseYouTube(url);
+  if (ytId) return { ...base, type: "youtube", ytId };
+  const ig = parseInstagram(url);
+  if (ig) return { ...base, type: "instagram", igCode: ig.code, igKind: ig.kind };
+  return { ...base, type: "video", src: url };
+}
+
 async function mutate(fn, message) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const { list, sha } = await readFile();
@@ -111,11 +128,7 @@ export default async function handler(req, res) {
       const author = clean(req.body && req.body.author, 40) || "Radha Dham";
       if (!url) return res.status(400).json({ error: "Video ya YouTube ka link daalein" });
 
-      const ytId = parseYouTube(url);
-      const reel = ytId
-        ? { id: Date.now(), type: "youtube", ytId, caption, author, likes: 0, ts: new Date().toISOString() }
-        : { id: Date.now(), type: "video", src: url, caption, author, likes: 0, ts: new Date().toISOString() };
-
+      const reel = { ...makeReel(url, caption, Date.now()), author };
       const next = await mutate((list) => [reel, ...list].slice(0, MAX_REELS), `Admin: naya reel [skip ci]`);
       return res.status(200).json({ ok: true, reels: next, message: "✅ Reel add ho gaya!" });
     }
@@ -129,11 +142,7 @@ export default async function handler(req, res) {
         const url = clean(it && it.url, 300);
         if (!url) continue;
         const caption = clean(it && it.caption, 200);
-        const ytId = parseYouTube(url);
-        const id = base++;
-        reels.push(ytId
-          ? { id, type: "youtube", ytId, caption, author: "Radha Dham", likes: 0, ts: new Date().toISOString() }
-          : { id, type: "video", src: url, caption, author: "Radha Dham", likes: 0, ts: new Date().toISOString() });
+        reels.push(makeReel(url, caption, base++));
       }
       if (!reels.length) return res.status(400).json({ error: "Koi sahi link nahi mila" });
       const next = await mutate((list) => [...reels, ...list].slice(0, MAX_REELS), `Admin: ${reels.length} reels add [skip ci]`);

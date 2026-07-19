@@ -70,6 +70,15 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
           ) : (
             <img src={`https://i.ytimg.com/vi/${reel.ytId}/hqdefault.jpg`} alt="" className="reel-thumb" />
           )
+        ) : reel.type === "instagram" ? (
+          <iframe
+            title={reel.caption || "reel"}
+            className="reel-ig"
+            src={`https://www.instagram.com/${reel.igKind || "reel"}/${reel.igCode}/embed/`}
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+            scrolling="no"
+          />
         ) : (
           <video ref={videoRef} src={reel.src} loop playsInline muted={muted} preload="metadata" />
         )}
