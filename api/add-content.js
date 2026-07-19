@@ -89,18 +89,44 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, message: "🗑️ Delete ho gaya! 2-3 minute me site se hat jayega." });
     }
 
+    // ---- BULK STEP 1: sirf image repo me daalo (rebuild nahi — [skip ci]) ----
+    // Bulk me pehle saari images upload hoti hain, phir ek hi content-update.
+    if (action === "uploadImage") {
+      if (!image || !image.base64) return res.status(400).json({ error: "image zaroori hai" });
+      const safe = (image.name || "photo.jpg").toLowerCase().replace(/[^a-z0-9.]+/g, "-");
+      const fName = `admin-${Date.now()}-${Math.floor(Math.random() * 1e4)}-${safe}`;
+      const up = await gh(`/repos/${REPO}/contents/public/gallery/${fName}`, {
+        method: "PUT",
+        body: JSON.stringify({ message: `Admin: photo upload ${fName} [skip ci]`, content: image.base64 }),
+      });
+      if (!up.ok) return res.status(500).json({ error: "Photo upload nahi hui", detail: (await up.text()).slice(0, 200) });
+      return res.status(200).json({ ok: true, file: fName });
+    }
+
+    // ---- BULK STEP 2: sab gallery entries ek saath jodo (ek hi rebuild) ----
+    if (action === "addGalleryBulk") {
+      const items = Array.isArray(req.body && req.body.items) ? req.body.items : [];
+      if (!items.length) return res.status(400).json({ error: "Koi photo nahi mili" });
+      const { content, sha } = await readContent();
+      for (const it of items) {
+        if (it && it.file) content.gallery.push({ label: it.label || "Radha Krishna", file: it.file, addedAt: new Date().toISOString() });
+      }
+      await writeContent(content, sha, `Admin: ${items.length} photos add kiye`);
+      return res.status(200).json({ ok: true, message: `✅ ${items.length} photos add ho gayin! 2-3 min me live.` });
+    }
+
     // ---- ADD: naya content ----
     if (!type || !data) return res.status(400).json({ error: "type aur data zaroori hai" });
     if (!KEY[type]) return res.status(400).json({ error: "type galat hai" });
 
-    // Agar photo hai toh pehle usse repo me upload karo
+    // Agar photo hai toh pehle usse repo me upload karo ([skip ci] — content commit hi deploy karega)
     let fileName = null;
     if (image && image.base64) {
       const safe = (image.name || "photo.jpg").toLowerCase().replace(/[^a-z0-9.]+/g, "-");
       fileName = `admin-${Date.now()}-${safe}`;
       const up = await gh(`/repos/${REPO}/contents/public/gallery/${fileName}`, {
         method: "PUT",
-        body: JSON.stringify({ message: `Admin: nayi photo ${fileName}`, content: image.base64 }),
+        body: JSON.stringify({ message: `Admin: nayi photo ${fileName} [skip ci]`, content: image.base64 }),
       });
       if (!up.ok) {
         return res.status(500).json({ error: "Photo upload nahi hui", detail: (await up.text()).slice(0, 200) });

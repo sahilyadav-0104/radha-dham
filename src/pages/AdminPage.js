@@ -16,6 +16,9 @@ export default function AdminPage() {
   // Photo form
   const [photoFile, setPhotoFile] = useState(null);
   const [photoLabel, setPhotoLabel] = useState("");
+  const [bulkFiles, setBulkFiles] = useState([]); // bulk photo upload
+  const [bulkReels, setBulkReels] = useState(""); // bulk reels (ek line me ek link)
+  const [progress, setProgress] = useState(""); // "3 / 50" jaisa
   // Bhajan form
   const [bTitle, setBTitle] = useState("");
   const [bSinger, setBSinger] = useState("");
@@ -257,6 +260,53 @@ export default function AdminPage() {
     }
   }
 
+  // Bahut saari photos ek saath — pehle sab upload, phir ek hi baar gallery me jodo
+  async function submitPhotosBulk() {
+    if (!bulkFiles.length) return setMsg({ ok: false, text: "Photos choose karo pehle" });
+    setBusy(true); setMsg({ ok: true, text: "Photos taiyar ho rahi hain..." });
+    const uploaded = [];
+    try {
+      for (let i = 0; i < bulkFiles.length; i++) {
+        setProgress(`${i + 1} / ${bulkFiles.length}`);
+        let base64;
+        try { base64 = await resizePhoto(bulkFiles[i]); } catch { continue; } // koi photo kharab ho to skip
+        const { r, j } = await api({ action: "uploadImage", image: { name: "photo.jpg", base64 } });
+        if (r.status === 401) { setProgress(""); setBusy(false); setMsg({ ok: false, text: j.error || "Galat password" }); lock(); return; }
+        if (r.ok && j.file) uploaded.push({ file: j.file, label: randomRadhaCaption() });
+      }
+      setProgress("");
+      if (!uploaded.length) { setBusy(false); return setMsg({ ok: false, text: "Koi photo upload nahi hui" }); }
+      const { r, j } = await api({ action: "addGalleryBulk", items: uploaded });
+      setBusy(false);
+      if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Gallery update nahi hui") });
+      else { setMsg({ ok: true, text: j.message }); setBulkFiles([]); }
+    } catch (e) {
+      setProgress(""); setBusy(false);
+      setMsg({ ok: false, text: "Bulk upload me dikkat — dobara try karein" });
+    }
+  }
+
+  // Bahut saare reels ek saath — ek line me ek link (ya "link | caption")
+  async function submitReelsBulk() {
+    const lines = bulkReels.split("\n").map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return setMsg({ ok: false, text: "Kam se kam ek link daalein (ek line me ek)" });
+    const parsed = lines.map(line => {
+      const [url, ...rest] = line.split("|");
+      return { url: url.trim(), caption: rest.join("|").trim() };
+    });
+    setBusy(true); setMsg({ ok: true, text: `${parsed.length} reels add ho rahe hain...` });
+    try {
+      const { r, j } = await reelsApi({ action: "addMany", items: parsed });
+      setBusy(false);
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Reels add nahi hue") });
+      else { setMsg({ ok: true, text: j.message }); setReels(j.reels || []); setBulkReels(""); }
+    } catch (e) {
+      setBusy(false);
+      setMsg({ ok: false, text: "Bulk reels me dikkat — dobara try karein" });
+    }
+  }
+
   async function submitBhajan() {
     if (!bTitle.trim() || !bSrc.trim()) return setMsg({ ok: false, text: "Bhajan ka naam aur MP3 link zaroori hai" });
     await send("bhajan", { title: bTitle, singer: bSinger, src: bSrc, duration: bDuration, lyrics: bLyrics || undefined });
@@ -319,13 +369,24 @@ export default function AdminPage() {
 
       {tab === "photo" && (
         <div className="comment-form">
-          <h3>Nayi photo add karo</h3>
+          <h3>Ek photo add karo</h3>
           <input type="file" accept="image/*" onChange={e => setPhotoFile(e.target.files[0] || null)} />
           {photoFile && <p style={{ fontSize: 12, color: "var(--c-dark)" }}>📎 {photoFile.name} ({Math.round(photoFile.size / 1024)} KB)</p>}
           <input type="text" placeholder="Photo ka naam (khaali chhodo to Radha Rani wala naam khud lag jayega)" value={photoLabel} onChange={e => setPhotoLabel(e.target.value)} />
           <button className="btn-submit" disabled={busy} onClick={submitPhoto}>
             {busy ? "Upload ho raha hai..." : "Photo Add Karo →"}
           </button>
+
+          <div style={{ borderTop: "0.5px solid var(--c-border)", margin: "20px 0 14px" }} />
+          <h3>📦 Bahut saari photos ek saath (Bulk)</h3>
+          <input type="file" accept="image/*" multiple onChange={e => setBulkFiles([...e.target.files])} />
+          {bulkFiles.length > 0 && <p style={{ fontSize: 12, color: "var(--c-dark)" }}>📎 {bulkFiles.length} photos chuni gayi</p>}
+          <button className="btn-submit" disabled={busy} onClick={submitPhotosBulk}>
+            {busy ? `Upload ho raha hai... ${progress}` : `${bulkFiles.length || ""} Photos Upload Karo →`}
+          </button>
+          <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 8 }}>
+            💡 Ek saath 50+ photos chun sakte ho. Har photo chhoti (2000px) ho jaati hai — upload me thoda time lagta hai, page band mat karna. Naam apne aap Radha Rani wala lag jayega.
+          </p>
         </div>
       )}
 
@@ -369,6 +430,21 @@ export default function AdminPage() {
             </button>
             <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 8, lineHeight: 1.6 }}>
               💡 YouTube / YouTube Shorts ka link, ya koi direct video link (.mp4). Vertical (khada) video reels ke liye sabse accha lagta hai.
+            </p>
+
+            <div style={{ borderTop: "0.5px solid var(--c-border)", margin: "18px 0 14px" }} />
+            <h3>📦 Bahut saare reels ek saath (Bulk)</h3>
+            <textarea
+              style={{ minHeight: 150, fontFamily: "monospace", fontSize: 12 }}
+              placeholder={"Ek line me ek link paste karo. Jaise:\nhttps://youtube.com/shorts/abc123\nhttps://youtu.be/xyz789 | Radhe Radhe\n... (jitne chaaho)"}
+              value={bulkReels}
+              onChange={e => setBulkReels(e.target.value)}
+            />
+            <button className="btn-submit" disabled={busy} onClick={submitReelsBulk}>
+              {busy ? "Add ho raha hai..." : `${bulkReels.split("\n").filter(l => l.trim()).length || ""} Reels Add Karo →`}
+            </button>
+            <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 8, lineHeight: 1.6 }}>
+              💡 Ek line me ek YouTube link. Caption dena ho to link ke baad " | " lagakar likho. Ek saath 100 tak daal sakte ho.
             </p>
           </div>
 

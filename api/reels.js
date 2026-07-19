@@ -120,6 +120,26 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, reels: next, message: "✅ Reel add ho gaya!" });
     }
 
+    if (action === "addMany") {
+      const items = Array.isArray(req.body && req.body.items) ? req.body.items : [];
+      if (!items.length) return res.status(400).json({ error: "Koi link nahi mila" });
+      let base = Date.now();
+      const reels = [];
+      for (const it of items) {
+        const url = clean(it && it.url, 300);
+        if (!url) continue;
+        const caption = clean(it && it.caption, 200);
+        const ytId = parseYouTube(url);
+        const id = base++;
+        reels.push(ytId
+          ? { id, type: "youtube", ytId, caption, author: "Radha Dham", likes: 0, ts: new Date().toISOString() }
+          : { id, type: "video", src: url, caption, author: "Radha Dham", likes: 0, ts: new Date().toISOString() });
+      }
+      if (!reels.length) return res.status(400).json({ error: "Koi sahi link nahi mila" });
+      const next = await mutate((list) => [...reels, ...list].slice(0, MAX_REELS), `Admin: ${reels.length} reels add [skip ci]`);
+      return res.status(200).json({ ok: true, reels: next, message: `✅ ${reels.length} reels add ho gaye!` });
+    }
+
     if (action === "delete") {
       const id = req.body && req.body.id;
       const next = await mutate((list) => list.filter(r => String(r.id) !== String(id)), `Admin: reel delete [skip ci]`);
