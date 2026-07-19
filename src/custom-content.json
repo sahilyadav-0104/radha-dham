@@ -1,15 +1,27 @@
 {
   "gallery": [
-    {
-      "label": "Radha Krishna",
-      "file": "admin-1784252575672-oip.webp",
-      "addedAt": "2026-07-17T01:42:56.597Z"
-    },
-    {
-      "label": "Barsane Wali Radha Rani",
-      "file": "admin-1784396578426-photo.jpg",
-      "addedAt": "2026-07-18T17:42:59.289Z"
-    }
+    { "label": "Radha Krishna", "file": "admin-1784252575672-oip.webp", "addedAt": "2026-07-17T01:42:56.597Z" },
+    { "label": "Barsane Wali Radha Rani", "file": "admin-1784396578426-photo.jpg", "addedAt": "2026-07-18T17:42:59.289Z" },
+    { "label": "Radha Krishna — Prem", "file": "st-01.jpg", "addedAt": "2026-07-19T00:00:01.000Z" },
+    { "label": "Radha Krishna aur Gopiyan", "file": "st-02.jpg", "addedAt": "2026-07-19T00:00:02.000Z" },
+    { "label": "Radha Krishna — Kalighat Chitra", "file": "st-03.jpg", "addedAt": "2026-07-19T00:00:03.000Z" },
+    { "label": "Radha Krishna", "file": "st-04.jpg", "addedAt": "2026-07-19T00:00:04.000Z" },
+    { "label": "Krishna Murli", "file": "st-05.jpg", "addedAt": "2026-07-19T00:00:05.000Z" },
+    { "label": "Murli Manohar", "file": "st-06.jpg", "addedAt": "2026-07-19T00:00:06.000Z" },
+    { "label": "Radha Shyamsundar — Vrindavan", "file": "st-07.jpg", "addedAt": "2026-07-19T00:00:07.000Z" },
+    { "label": "Shahji Mandir, Vrindavan", "file": "st-08.jpg", "addedAt": "2026-07-19T00:00:08.000Z" },
+    { "label": "Radha Rani Mandir, Barsana", "file": "st-09.jpg", "addedAt": "2026-07-19T00:00:09.000Z" },
+    { "label": "Ladli Ji Mandir, Barsana", "file": "st-10.jpg", "addedAt": "2026-07-19T00:00:10.000Z" },
+    { "label": "Govind Dev Mandir, Vrindavan", "file": "st-11.jpg", "addedAt": "2026-07-19T00:00:11.000Z" },
+    { "label": "Keshav Dev — Mathura", "file": "st-12.jpg", "addedAt": "2026-07-19T00:00:12.000Z" },
+    { "label": "Shrinathji — Nathdwara", "file": "st-13.jpg", "addedAt": "2026-07-19T00:00:13.000Z" },
+    { "label": "Radha Krishna Darshan", "file": "st-14.jpg", "addedAt": "2026-07-19T00:00:14.000Z" },
+    { "label": "Radha Krishna Mandir", "file": "st-15.jpg", "addedAt": "2026-07-19T00:00:15.000Z" },
+    { "label": "Krishna Murli — Deccan Chitra", "file": "st-16.jpg", "addedAt": "2026-07-19T00:00:16.000Z" },
+    { "label": "Krishna Murli — Kangra Chitra", "file": "st-17.jpg", "addedAt": "2026-07-19T00:00:17.000Z" },
+    { "label": "Shri Krishna Murli", "file": "st-18.jpg", "addedAt": "2026-07-19T00:00:18.000Z" },
+    { "label": "Prem Mandir Dwar, Vrindavan", "file": "st-19.jpg", "addedAt": "2026-07-19T00:00:19.000Z" },
+    { "label": "Radha Krishna", "file": "st-20.jpg", "addedAt": "2026-07-19T00:00:20.000Z" }
   ],
   "bhajans": [],
   "leelas": []
