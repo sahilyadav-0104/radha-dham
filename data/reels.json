@@ -1,16 +1,6 @@
 {
   "reels": [
     {
-      "id": 1784449681205,
-      "caption": "",
-      "author": "Radha Dham",
-      "likes": 0,
-      "ts": "2026-07-19T08:28:01.205Z",
-      "type": "instagram",
-      "igCode": "TESTCODE123",
-      "igKind": "reel"
-    },
-    {
       "id": 1784429533998,
       "type": "youtube",
       "ytId": "M8rINFTdjns",
