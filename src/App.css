@@ -1411,19 +1411,6 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.85);
-}
-
-.reel-curtain-om {
-  position: absolute;
-  font-size: 44px;
-  animation: omPulse 1.4s ease-in-out infinite;
-  text-shadow: 0 2px 14px rgba(0,0,0,0.6);
-}
-
-@keyframes omPulse {
-  0%, 100% { transform: scale(1); opacity: 0.85; }
-  50% { transform: scale(1.15); opacity: 1; }
 }
 
 .reel-curtain.out {

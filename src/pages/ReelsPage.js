@@ -99,7 +99,6 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
         {reel.type === "youtube" && active && (
           <div className={`reel-curtain${curtain ? "" : " out"}`}>
             <img src={`https://i.ytimg.com/vi/${reel.ytId}/hqdefault.jpg`} alt="" />
-            <span className="reel-curtain-om">🌸</span>
           </div>
         )}
 
