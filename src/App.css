@@ -1517,6 +1517,95 @@ body {
   text-shadow: 0 1px 4px rgba(0,0,0,0.9);
 }
 
+/* ---- PUZZLE GAME ---- */
+.puzzle-stats {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  font-size: 14px;
+  color: var(--c-dark);
+  margin-bottom: 14px;
+}
+
+.puzzle-hint {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.puzzle-hint img {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  border: 2px solid var(--c-border);
+  object-fit: cover;
+}
+
+.puzzle-hint p {
+  font-size: 12px;
+  color: var(--c-dark);
+  margin-top: 6px;
+}
+
+.puzzle-board {
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  gap: 3px;
+  width: min(92vw, 420px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  background: var(--c-deep);
+  border: 3px solid var(--c-deep);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.puzzle-tile {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  transition: transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.puzzle-tile:active:not(.empty) {
+  transform: scale(0.96);
+}
+
+.puzzle-tile.empty {
+  background: var(--c-deep);
+  cursor: default;
+}
+
+.puzzle-tile.won {
+  border-radius: 0;
+  cursor: default;
+}
+
+.puzzle-win {
+  background: var(--c-bg);
+  border: 0.5px solid var(--c-border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.puzzle-win-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-deep);
+  margin: 0 0 8px;
+}
+
+.puzzle-win-text {
+  font-size: 14px;
+  color: var(--c-dark);
+  margin: 0;
+  line-height: 1.7;
+}
+
 /* ---- CALENDAR GRID VIEW ---- */
 .cal-nav {
   display: flex;

@@ -388,6 +388,6 @@ export const ALL_SEARCH_DATA = [
   { title: "Govardhan Parvat", type: "Gallery" },
 ];
 
-export const NAV_LINKS = ["Home", "Gallery", "Bhajans", "Leelas", "Calendar", "Counter", "Quiz", "Yatra", "Status", "Contact"];
+export const NAV_LINKS = ["Home", "Gallery", "Bhajans", "Leelas", "Calendar", "Counter", "Quiz", "Puzzle", "Yatra", "Status", "Contact"];
 
 export const MANTRAS = ["राधे राधे", "हरे कृष्ण हरे कृष्ण", "जय श्री राधे", "ॐ नमो भगवते वासुदेवाय"];
