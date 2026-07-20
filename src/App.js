@@ -14,6 +14,7 @@ import QuizPage from "./pages/QuizPage";
 import YatraPage from "./pages/YatraPage";
 import ReelsPage from "./pages/ReelsPage";
 import PuzzlePage from "./pages/PuzzlePage";
+import TemplePage from "./pages/TemplePage";
 import AdminPage from "./pages/AdminPage";
 
 /* ============================================================
@@ -87,6 +88,7 @@ export default function App() {
       case "Quiz":     return <QuizPage />;
       case "Yatra":    return <YatraPage />;
       case "Puzzle":   return <PuzzlePage />;
+      case "Mandir":   return <TemplePage />;
       case "Status":   return <ReelsPage />;
       case "Contact":  return <ContactPage />;
       default:         return <HomePage onNavigate={setActiveNav} />;

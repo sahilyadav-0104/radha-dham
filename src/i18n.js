@@ -33,8 +33,8 @@ export const STRINGS = {
     "c.today": "Aaj", "c.month": "Is Mahine", "c.year": "Is Saal", "c.total": "Kul Jaap",
     "c.tap": "yahan tap karein 🌸",
     "footer.dl": "Download App from here",
-    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra", "nav.Status": "Status", "nav.Puzzle": "Puzzle",
-    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide", "h.puzzle": "🧩 Radha Krishna Puzzle",
+    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra", "nav.Status": "Status", "nav.Puzzle": "Puzzle", "nav.Mandir": "Mandir",
+    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide", "h.puzzle": "🧩 Radha Krishna Puzzle", "h.mandir": "🛕 Mera Mandir",
     "set.theme": "Rang (Theme)", "set.lang": "Bhasha (Language)",
   },
   hi: {
@@ -50,8 +50,8 @@ export const STRINGS = {
     "c.today": "आज", "c.month": "इस महीने", "c.year": "इस साल", "c.total": "कुल जप",
     "c.tap": "यहाँ टैप करें 🌸",
     "footer.dl": "यहाँ से ऐप डाउनलोड करें",
-    "nav.Quiz": "क्विज़", "nav.Yatra": "यात्रा", "nav.Status": "स्टेटस", "nav.Puzzle": "पहेली",
-    "h.quiz": "🎯 राधा कृष्ण क्विज़", "h.yatra": "🗺️ ब्रज यात्रा गाइड", "h.puzzle": "🧩 राधा कृष्ण पहेली",
+    "nav.Quiz": "क्विज़", "nav.Yatra": "यात्रा", "nav.Status": "स्टेटस", "nav.Puzzle": "पहेली", "nav.Mandir": "मंदिर",
+    "h.quiz": "🎯 राधा कृष्ण क्विज़", "h.yatra": "🗺️ ब्रज यात्रा गाइड", "h.puzzle": "🧩 राधा कृष्ण पहेली", "h.mandir": "🛕 मेरा मंदिर",
     "set.theme": "रंग", "set.lang": "भाषा",
   },
   en: {
@@ -67,8 +67,8 @@ export const STRINGS = {
     "c.today": "Today", "c.month": "This Month", "c.year": "This Year", "c.total": "Total Japa",
     "c.tap": "tap here 🌸",
     "footer.dl": "Download App from here",
-    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra", "nav.Status": "Status", "nav.Puzzle": "Puzzle",
-    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide", "h.puzzle": "🧩 Radha Krishna Puzzle",
+    "nav.Quiz": "Quiz", "nav.Yatra": "Yatra", "nav.Status": "Status", "nav.Puzzle": "Puzzle", "nav.Mandir": "My Temple",
+    "h.quiz": "🎯 Radha Krishna Quiz", "h.yatra": "🗺️ Braj Yatra Guide", "h.puzzle": "🧩 Radha Krishna Puzzle", "h.mandir": "🛕 My Temple",
     "set.theme": "Theme", "set.lang": "Language",
   },
   bn: {
