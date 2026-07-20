@@ -120,7 +120,9 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
 export default function ReelsPage({ fullScreen, onExit }) {
   const [reels, setReels] = useState(null);
   const [activeIdx, setActiveIdx] = useState(0);
-  const [muted, setMuted] = useState(true); // browser autoplay ke liye pehle muted
+  // Voice hamesha ON se shuru (user Status pe tap karke aaya hai, isliye
+  // browser sound allow karta hai). Agar user ne mute kiya tha to wahi yaad rehta hai.
+  const [muted, setMuted] = useState(() => localStorage.getItem("radhaDhamReelsMuted") === "1");
   const [liked, setLiked] = useState(loadLiked);
   const containerRef = useRef(null);
   const reelRefs = useRef([]);
@@ -204,7 +206,7 @@ export default function ReelsPage({ fullScreen, onExit }) {
             reel={reel}
             active={activeIdx === i}
             muted={muted}
-            onToggleMute={() => setMuted(m => !m)}
+            onToggleMute={() => setMuted(m => { localStorage.setItem("radhaDhamReelsMuted", m ? "0" : "1"); return !m; })}
             liked={liked.has(reel.id)}
             onLike={() => likeReel(reel)}
           />
