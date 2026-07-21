@@ -108,16 +108,15 @@ export default function PuzzlePage() {
         {best[bestKey] && <span>🏅 Best: <b>{best[bestKey]}</b></span>}
       </div>
 
-      {/* Hint — puri picture */}
-      {showHint && (
-        <div className="puzzle-hint">
-          <img src={IMG_SRC} alt="Makhan Chori" />
-          <p>Makhan Chori Leela — yehi picture banani hai! 🧈</p>
-        </div>
-      )}
-
-      {/* Board */}
-      <div className="puzzle-board" style={{ "--n": n }}>
+      {/* Board — hint isi ke side (kone) me chhoti si dikhti hai */}
+      <div className="puzzle-area">
+        {showHint && (
+          <div className="puzzle-hint">
+            <img src={IMG_SRC} alt="Makhan Chori Leela" />
+            <span>Yehi banani hai 🧈</span>
+          </div>
+        )}
+        <div className="puzzle-board" style={{ "--n": n }}>
         {board.map((val, idx) => {
           if (val === emptyVal && !won) {
             return <div key={idx} className="puzzle-tile empty" />;
@@ -136,6 +135,7 @@ export default function PuzzlePage() {
             />
           );
         })}
+        </div>
       </div>
 
       {/* Jeet gaye! */}

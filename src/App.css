@@ -1707,23 +1707,49 @@ body {
   margin-bottom: 14px;
 }
 
+/* Board + side ka hint ek saath */
+.puzzle-area {
+  position: relative;
+  width: min(92vw, 420px);
+  margin: 0 auto;
+}
+
+/* Hint — board ke upar-daayein kone me chhoti si (side me) */
 .puzzle-hint {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  background: var(--c-bg);
+  border: 2px solid #FAC775;
+  border-radius: 10px;
+  padding: 4px 4px 2px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
   text-align: center;
-  margin-bottom: 14px;
 }
 
 .puzzle-hint img {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-  border: 2px solid var(--c-border);
+  width: 82px;
+  height: 82px;
+  border-radius: 6px;
   object-fit: cover;
+  display: block;
 }
 
-.puzzle-hint p {
-  font-size: 12px;
+.puzzle-hint span {
+  display: block;
+  font-size: 9px;
   color: var(--c-dark);
-  margin-top: 6px;
+  margin-top: 2px;
+}
+
+@media (min-width: 620px) {
+  /* Badi screen par hint board ke bilkul bahar side me chala jata hai */
+  .puzzle-hint {
+    right: -112px;
+    top: 0;
+  }
+  .puzzle-hint img { width: 96px; height: 96px; }
 }
 
 .puzzle-board {
