@@ -109,7 +109,12 @@ export default async function handler(req, res) {
       if (!items.length) return res.status(400).json({ error: "Koi photo nahi mili" });
       const { content, sha } = await readContent();
       for (const it of items) {
-        if (it && it.file) content.gallery.push({ label: it.label || "Radha Krishna", file: it.file, addedAt: new Date().toISOString() });
+        if (it && it.file) content.gallery.push({
+          label: it.label || "Radha Krishna",
+          file: it.file,
+          ...(it.album ? { album: String(it.album).slice(0, 40) } : {}),
+          addedAt: new Date().toISOString(),
+        });
       }
       await writeContent(content, sha, `Admin: ${items.length} photos add kiye`);
       return res.status(200).json({ ok: true, message: `✅ ${items.length} photos add ho gayin! 2-3 min me live.` });

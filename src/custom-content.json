@@ -48,12 +48,14 @@
     {
       "label": "Radha Rani Mandir, Barsana",
       "file": "st-09.jpg",
-      "addedAt": "2026-07-19T00:00:09.000Z"
+      "addedAt": "2026-07-19T00:00:09.000Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Ladli Ji Mandir, Barsana",
       "file": "st-10.jpg",
-      "addedAt": "2026-07-19T00:00:10.000Z"
+      "addedAt": "2026-07-19T00:00:10.000Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Govind Dev Mandir, Vrindavan",
@@ -68,7 +70,8 @@
     {
       "label": "Shrinathji — Nathdwara",
       "file": "st-13.jpg",
-      "addedAt": "2026-07-19T00:00:13.000Z"
+      "addedAt": "2026-07-19T00:00:13.000Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Radha Krishna Darshan",
@@ -78,7 +81,8 @@
     {
       "label": "Radha Krishna Mandir",
       "file": "st-15.jpg",
-      "addedAt": "2026-07-19T00:00:15.000Z"
+      "addedAt": "2026-07-19T00:00:15.000Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Krishna Murli — Deccan Chitra",
@@ -118,7 +122,8 @@
     {
       "label": "Krishna Mandir",
       "file": "gal-005.jpg",
-      "addedAt": "2026-07-21T13:49:05.410Z"
+      "addedAt": "2026-07-21T13:49:05.410Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Raas Leela",
@@ -263,22 +268,26 @@
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-048.jpg",
-      "addedAt": "2026-07-21T13:49:05.416Z"
+      "addedAt": "2026-07-21T13:49:05.416Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-049.jpg",
-      "addedAt": "2026-07-21T13:49:05.416Z"
+      "addedAt": "2026-07-21T13:49:05.416Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-050.jpg",
-      "addedAt": "2026-07-21T13:49:05.416Z"
+      "addedAt": "2026-07-21T13:49:05.416Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-051.jpg",
-      "addedAt": "2026-07-21T13:49:05.416Z"
+      "addedAt": "2026-07-21T13:49:05.416Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Holi Utsav — Braj",
@@ -288,17 +297,20 @@
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-053.jpg",
-      "addedAt": "2026-07-21T13:49:05.417Z"
+      "addedAt": "2026-07-21T13:49:05.417Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-054.jpg",
-      "addedAt": "2026-07-21T13:49:05.417Z"
+      "addedAt": "2026-07-21T13:49:05.417Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",
       "file": "gal-055.jpg",
-      "addedAt": "2026-07-21T13:49:05.418Z"
+      "addedAt": "2026-07-21T13:49:05.418Z",
+      "album": "Radha Mandir"
     },
     {
       "label": "Barsana — Radha Rani ka Gaon",

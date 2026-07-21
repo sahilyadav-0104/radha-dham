@@ -45,11 +45,14 @@ const BASE_GALLERY = [
 ];
 
 // Admin ke add kiye photos merge karo
+// Album wali photos sabse pehle (naya upload sabse upar), phir baaki
 export const GALLERY_ITEMS = [
   ...BASE_GALLERY,
   ...CUSTOM.gallery.map(g => ({
     url: g.file ? IMG(g.file) : g.url,
     label: g.label || randomRadhaCaption(),
+    album: g.album || undefined, // jaise "Radha Mandir"
+    addedAt: g.addedAt,
   })),
 ];
 

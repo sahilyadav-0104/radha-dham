@@ -16,6 +16,7 @@ export default function AdminPage() {
   // Photo form
   const [photoFile, setPhotoFile] = useState(null);
   const [photoLabel, setPhotoLabel] = useState("");
+  const [photoAlbum, setPhotoAlbum] = useState(""); // album (jaise "Radha Mandir") — khaali = normal gallery
   const [bulkFiles, setBulkFiles] = useState([]); // bulk photo upload
   const [bulkReels, setBulkReels] = useState(""); // bulk reels (ek line me ek link)
   const [progress, setProgress] = useState(""); // "3 / 50" jaisa
@@ -252,7 +253,10 @@ export default function AdminPage() {
       const base64 = await resizePhoto(photoFile);
       setBusy(false);
       // Naam na dala to Radha Rani se juda koi random naam lag jayega
-      await send("gallery", { label: photoLabel.trim() || randomRadhaCaption() }, { name: "photo.jpg", base64 });
+      await send("gallery", {
+        label: photoLabel.trim() || randomRadhaCaption(),
+        ...(photoAlbum.trim() ? { album: photoAlbum.trim() } : {}),
+      }, { name: "photo.jpg", base64 });
       setPhotoFile(null); setPhotoLabel("");
     } catch (e) {
       setBusy(false);
@@ -272,7 +276,11 @@ export default function AdminPage() {
         try { base64 = await resizePhoto(bulkFiles[i]); } catch { continue; } // koi photo kharab ho to skip
         const { r, j } = await api({ action: "uploadImage", image: { name: "photo.jpg", base64 } });
         if (r.status === 401) { setProgress(""); setBusy(false); setMsg({ ok: false, text: j.error || "Galat password" }); lock(); return; }
-        if (r.ok && j.file) uploaded.push({ file: j.file, label: randomRadhaCaption() });
+        if (r.ok && j.file) uploaded.push({
+          file: j.file,
+          label: randomRadhaCaption(),
+          ...(photoAlbum.trim() ? { album: photoAlbum.trim() } : {}),
+        });
       }
       setProgress("");
       if (!uploaded.length) { setBusy(false); return setMsg({ ok: false, text: "Koi photo upload nahi hui" }); }
@@ -373,6 +381,18 @@ export default function AdminPage() {
           <input type="file" accept="image/*" onChange={e => setPhotoFile(e.target.files[0] || null)} />
           {photoFile && <p style={{ fontSize: 12, color: "var(--c-dark)" }}>📎 {photoFile.name} ({Math.round(photoFile.size / 1024)} KB)</p>}
           <input type="text" placeholder="Photo ka naam (khaali chhodo to Radha Rani wala naam khud lag jayega)" value={photoLabel} onChange={e => setPhotoLabel(e.target.value)} />
+
+          <p style={{ fontSize: 12, fontWeight: 600, color: "var(--c-dark)", margin: "10px 0 6px" }}>📁 Album (dono — ek aur bulk — pe lagta hai):</p>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
+            {["Radha Mandir", "Daily Darshan", ""].map(a => (
+              <button key={a || "none"} type="button"
+                className={`lang-chip${photoAlbum === a ? " active" : ""}`}
+                onClick={() => setPhotoAlbum(a)}>
+                {a || "✕ Album ke bina"}
+              </button>
+            ))}
+          </div>
+          <input type="text" placeholder="Ya apna album ka naam likho" value={photoAlbum} onChange={e => setPhotoAlbum(e.target.value)} maxLength={40} />
           <button className="btn-submit" disabled={busy} onClick={submitPhoto}>
             {busy ? "Upload ho raha hai..." : "Photo Add Karo →"}
           </button>
