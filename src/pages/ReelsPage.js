@@ -31,17 +31,6 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
   const videoRef = useRef(null);
   const [paused, setPaused] = useState(false);
   const [burst, setBurst] = useState(false); // double-tap heart animation
-  const [curtain, setCurtain] = useState(true); // YouTube ke shuruaati overlay (title/buttons) ko dhakne wala parda
-
-  // Reel active hote hi ~3.2s ka parda — tab tak YouTube ka apna
-  // title/play-buttons wala overlay fade ho chuka hota hai
-  useEffect(() => {
-    if (active && reel.type === "youtube") {
-      setCurtain(true);
-      const t = setTimeout(() => setCurtain(false), 3200);
-      return () => clearTimeout(t);
-    }
-  }, [active, reel]);
 
   // Active reel apne aap chale, baaki ruk jaayein (sirf native video)
   useEffect(() => {
@@ -92,14 +81,6 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
           />
         ) : (
           <video ref={videoRef} src={reel.src} loop playsInline muted={muted} preload="metadata" />
-        )}
-
-        {/* Parda — YouTube ke start-overlay (title/buttons/logo) ko chhupata hai,
-            phir apne aap fade ho jata hai. Audio piche chalti rehti hai. */}
-        {reel.type === "youtube" && active && (
-          <div className={`reel-curtain${curtain ? "" : " out"}`}>
-            <img src={`https://i.ytimg.com/vi/${reel.ytId}/hqdefault.jpg`} alt="" />
-          </div>
         )}
 
         {burst && <div className="reel-burst">❤️</div>}
