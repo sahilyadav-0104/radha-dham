@@ -421,7 +421,7 @@ export default function AdminPage() {
 
           <p style={{ fontSize: 12, fontWeight: 600, color: "var(--c-dark)", margin: "10px 0 6px" }}>📁 Album (dono — ek aur bulk — pe lagta hai):</p>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
-            {["Radha Mandir", "Daily Darshan", ""].map(a => (
+            {["Radha Mandir", "Daily Darshan", "Puzzle", ""].map(a => (
               <button key={a || "none"} type="button"
                 className={`lang-chip${photoAlbum === a ? " active" : ""}`}
                 onClick={() => setPhotoAlbum(a)}>
@@ -430,6 +430,9 @@ export default function AdminPage() {
             ))}
           </div>
           <input type="text" placeholder="Ya apna album ka naam likho" value={photoAlbum} onChange={e => setPhotoAlbum(e.target.value)} maxLength={40} />
+          <p style={{ fontSize: 11, color: "var(--c-dark)", marginTop: 6, lineHeight: 1.6 }}>
+            💡 <b>Puzzle</b> album chunoge to wo photo Puzzle game me khelne ke liye aa jayegi.
+          </p>
           <button className="btn-submit" disabled={busy} onClick={submitPhoto}>
             {busy ? "Upload ho raha hai..." : "Photo Add Karo →"}
           </button>

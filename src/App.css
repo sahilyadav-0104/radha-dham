@@ -1763,6 +1763,39 @@ body {
   margin-bottom: 14px;
 }
 
+/* Puzzle ke liye photo chunne wali patti */
+.puzzle-pics {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.puzzle-pic {
+  padding: 0;
+  border: 2px solid var(--c-border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.puzzle-pic img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  display: block;
+}
+
+.puzzle-pic:hover { transform: scale(1.07); }
+
+.puzzle-pic.active {
+  border-color: var(--c-primary);
+  outline: 2px solid var(--c-primary);
+}
+
 /* Board + side ka hint ek saath */
 .puzzle-area {
   position: relative;

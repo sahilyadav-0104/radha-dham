@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useT } from "../i18n";
-import { whatsappShare } from "../data";
+import { whatsappShare, getPuzzleImages } from "../data";
 
 /* ============================================================
    RADHA KRISHNA PUZZLE — slide puzzle (tukde sarka ke pic banao)
-   Photo: Makhan Chori leela (bal Krishna)
+   Photos: default Makhan Chori + admin ki "Puzzle" album wali photos
    ============================================================ */
-const IMG_SRC = process.env.PUBLIC_URL + "/puzzle-makhan-chor.jpg";
+const PICS = getPuzzleImages();
 
 // Solved state se random valid moves — hamesha solvable puzzle
 function shuffleBoard(n, moves = 300) {
@@ -43,6 +43,8 @@ export default function PuzzlePage() {
   const [moves, setMoves] = useState(0);
   const [won, setWon] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const [picIdx, setPicIdx] = useState(0);          // kaunsi photo ka puzzle
+  const [aspect, setAspect] = useState(1);          // photo ke hisaab se board ka shape
   const [best, setBest] = useState(() => {
     try { return JSON.parse(localStorage.getItem("radhaDhamPuzzleBest")) || {}; }
     catch { return {}; }
@@ -50,10 +52,28 @@ export default function PuzzlePage() {
 
   const total = n * n;
   const emptyVal = total - 1;
+  const pic = PICS[picIdx] || PICS[0];
+  const IMG_SRC = pic.src;
+
+  // Photo ka asli shape le lo taaki tasveer khinchi hui na lage
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      if (img.naturalWidth && img.naturalHeight) setAspect(img.naturalWidth / img.naturalHeight);
+    };
+    img.src = IMG_SRC;
+  }, [IMG_SRC]);
 
   function newGame(size = n) {
     setN(size);
     setBoard(shuffleBoard(size));
+    setMoves(0);
+    setWon(false);
+  }
+
+  function pickPic(i) {
+    setPicIdx(i);
+    setBoard(shuffleBoard(n));
     setMoves(0);
     setWon(false);
   }
@@ -103,6 +123,21 @@ export default function PuzzlePage() {
         <button className="lang-chip" onClick={() => setShowHint(h => !h)}>{showHint ? "🙈 Hint band" : "👀 Puri pic dekho"}</button>
       </div>
 
+      {/* Photo chuno — admin ki "Puzzle" album wali photos yahan aati hain */}
+      {PICS.length > 1 && (
+        <>
+          <p style={{ textAlign: "center", fontSize: 12, color: "var(--c-dark)", margin: "0 0 8px" }}>🖼️ Photo chuno:</p>
+          <div className="puzzle-pics">
+            {PICS.map((p, i) => (
+              <button key={p.src} className={`puzzle-pic${picIdx === i ? " active" : ""}`}
+                onClick={() => pickPic(i)} title={p.name}>
+                <img src={p.src} alt={p.name} />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
       <div className="puzzle-stats">
         <span>Chaal: <b>{moves}</b></span>
         {best[bestKey] && <span>🏅 Best: <b>{best[bestKey]}</b></span>}
@@ -112,11 +147,11 @@ export default function PuzzlePage() {
       <div className="puzzle-area">
         {showHint && (
           <div className="puzzle-hint">
-            <img src={IMG_SRC} alt="Makhan Chori Leela" />
+            <img src={IMG_SRC} alt={pic.name} />
             <span>Yehi banani hai 🧈</span>
           </div>
         )}
-        <div className="puzzle-board" style={{ "--n": n }}>
+        <div className="puzzle-board" style={{ "--n": n, aspectRatio: String(aspect) }}>
         {board.map((val, idx) => {
           if (val === emptyVal && !won) {
             return <div key={idx} className="puzzle-tile empty" />;
@@ -143,7 +178,7 @@ export default function PuzzlePage() {
         <div className="puzzle-win">
           <p className="puzzle-win-title">🎉 Badhai ho! Jai Shri Radhe! 🌸</p>
           <p className="puzzle-win-text">
-            Aapne <b>{moves} chaalon</b> me Makhan Chori Leela ki picture bana li!
+            Aapne <b>{moves} chaalon</b> me {pic.name} ki picture bana li!
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginTop: 12 }}>
             <button className="btn-cta" onClick={() => newGame(n)}>🔄 Phir Khelo</button>
@@ -158,7 +193,7 @@ export default function PuzzlePage() {
       ) : (
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--c-dark)", marginTop: 14, lineHeight: 1.7 }}>
           🧩 Khali jagah ke bagal wali tile pe tap karo — wo sarak jayegi.<br />
-          Saare tukde sahi jagah lagao aur bal Krishna ki Makhan Chori Leela ki pic banao!
+          Saare tukde sahi jagah lagao aur poori pic banao!
         </p>
       )}
     </div>

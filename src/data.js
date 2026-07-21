@@ -45,6 +45,19 @@ const BASE_GALLERY = [
 ];
 
 // Admin ke add kiye photos merge karo
+/* Puzzle ke liye photos — default + admin ki "Puzzle" album wali photos.
+   Admin panel me photo upload karte waqt album "Puzzle" chuno, wo yahan aa jayegi. */
+export function getPuzzleImages() {
+  const admin = CUSTOM.gallery
+    .filter(g => /puzzle/i.test(g.album || ""))
+    .sort((a, b) => String(b.addedAt || "").localeCompare(String(a.addedAt || "")))
+    .map(g => ({ src: g.file ? IMG(g.file) : g.url, name: g.label || "Radha Krishna" }));
+  return [
+    ...admin,
+    { src: process.env.PUBLIC_URL + "/puzzle-makhan-chor.jpg", name: "Makhan Chori Leela" },
+  ];
+}
+
 // Album wali photos sabse pehle (naya upload sabse upar), phir baaki
 export const GALLERY_ITEMS = [
   ...BASE_GALLERY,
