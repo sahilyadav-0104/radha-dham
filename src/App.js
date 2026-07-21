@@ -20,8 +20,15 @@ import AdminPage from "./pages/AdminPage";
 /* ============================================================
    MAIN APP
    ============================================================ */
+// Share link se aaya hua reel — #reel-<id>
+function reelIdFromHash() {
+  const m = String(window.location.hash || "").match(/^#reel-(.+)$/);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+
 export default function App() {
-  const [activeNav, setActiveNav] = useState("Home");
+  const [sharedReel, setSharedReel] = useState(reelIdFromHash);
+  const [activeNav, setActiveNav] = useState(() => (reelIdFromHash() ? "Status" : "Home"));
   const [darshan, setDarshan] = useState(null); // current darshan image index
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(window.location.hash === "#admin");
@@ -56,9 +63,13 @@ export default function App() {
     localStorage.setItem("radhaDhamLang", lang);
   }, [lang]);
 
-  // #admin hash se admin panel khulta hai (nav me nahi dikhta)
+  // #admin se admin panel, #reel-<id> se seedha wahi reel khulta hai
   useEffect(() => {
-    const onHash = () => setIsAdmin(window.location.hash === "#admin");
+    const onHash = () => {
+      setIsAdmin(window.location.hash === "#admin");
+      const rid = reelIdFromHash();
+      if (rid) { setSharedReel(rid); setActiveNav("Status"); }
+    };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
@@ -95,11 +106,17 @@ export default function App() {
     }
   }
 
+  function exitReels() {
+    setSharedReel(null);
+    if (reelIdFromHash()) window.location.hash = "";
+    setActiveNav("Home");
+  }
+
   // Status/Reels — Instagram jaisa full page (upar ka bar/nav/footer hata do)
   if (!isAdmin && activeNav === "Status") {
     return (
       <LangContext.Provider value={{ lang, t }}>
-        <ReelsPage fullScreen onExit={() => setActiveNav("Home")} />
+        <ReelsPage fullScreen startId={sharedReel} onExit={exitReels} />
       </LangContext.Provider>
     );
   }

@@ -1,6 +1,24 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { whatsappShare } from "../data";
 
+const SITE = "https://shriradharani.in";
+
+// Ek reel ka apna link — ye khulte hi wahi reel chalti hai
+function reelLink(reel) {
+  return `${SITE}/r/${encodeURIComponent(reel.id)}`;
+}
+
+// Phone par native share sheet, warna WhatsApp
+function shareReel(reel) {
+  const url = reelLink(reel);
+  const text = `${reel.caption ? reel.caption + "\n\n" : ""}🌸 Radha Dham par ye status dekhein 🌸\nJai Shri Radhe`;
+  if (navigator.share) {
+    navigator.share({ title: reel.caption || "Radha Dham", text, url }).catch(() => {});
+    return;
+  }
+  window.open(whatsappShare(`${text}\n\n${url}`), "_blank", "noreferrer");
+}
+
 /* ============================================================
    STATUS / REELS — Instagram-reels style vertical video feed
    - Har reel full screen, scroll-snap se ek-ek karke aati hai
@@ -93,15 +111,13 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
           <span className="reel-act-icon">{liked ? "❤️" : "🤍"}</span>
           <span className="reel-act-count">{reel.likes || 0}</span>
         </button>
-        <a
+        <button
           className="reel-act"
-          href={whatsappShare(`${reel.caption ? reel.caption + "\n\n" : ""}🌸 Radha Dham par dekhein: https://shriradharani.in\n\nJai Shri Radhe 🌸`)}
-          target="_blank" rel="noreferrer"
-          onClick={e => e.stopPropagation()}
+          onClick={e => { e.stopPropagation(); shareReel(reel); }}
         >
           <span className="reel-act-icon">↗</span>
           <span className="reel-act-count">Share</span>
-        </a>
+        </button>
         <button className="reel-act" onClick={onToggleMute}>
           <span className="reel-act-icon">{muted ? "🔇" : "🔊"}</span>
           <span className="reel-act-count">{muted ? "Off" : "On"}</span>
@@ -117,7 +133,7 @@ function Reel({ reel, active, muted, onToggleMute, liked, onLike }) {
   );
 }
 
-export default function ReelsPage({ fullScreen, onExit }) {
+export default function ReelsPage({ fullScreen, onExit, startId }) {
   const [reels, setReels] = useState(null);
   const [activeIdx, setActiveIdx] = useState(0);
   // Voice hamesha ON se shuru (user Status pe tap karke aaya hai, isliye
@@ -131,10 +147,19 @@ export default function ReelsPage({ fullScreen, onExit }) {
     let alive = true;
     fetch("/api/reels")
       .then(r => r.json())
-      .then(j => { if (alive) setReels(shuffle(j.reels || [])); }) // har baar shuffle
+      .then(j => {
+        if (!alive) return;
+        const list = shuffle(j.reels || []);
+        // Share link se aaye ho to wahi reel sabse pehle chalegi
+        if (startId) {
+          const i = list.findIndex(r => String(r.id) === String(startId));
+          if (i > 0) list.unshift(...list.splice(i, 1));
+        }
+        setReels(list);
+      })
       .catch(() => { if (alive) setReels([]); });
     return () => { alive = false; };
-  }, []);
+  }, [startId]);
 
   // Kaunsi reel screen par hai — usse active karo
   useEffect(() => {
