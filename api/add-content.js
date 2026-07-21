@@ -89,6 +89,39 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, message: "🗑️ Delete ho gaya! 2-3 minute me site se hat jayega." });
     }
 
+    // ---- MULTI DELETE: ek saath kai items hatao (ek hi commit) ----
+    if (action === "deleteMany") {
+      const arrKey = KEY[type];
+      if (!arrKey) return res.status(400).json({ error: "type galat hai" });
+      const idxs = Array.isArray(req.body && req.body.indexes) ? req.body.indexes : [];
+      if (!idxs.length) return res.status(400).json({ error: "Kuch select nahi kiya" });
+
+      const { content, sha } = await readContent();
+      const arr = content[arrKey] || [];
+      // bade index pehle hatao taaki baaki ke index na khiskein
+      const sorted = [...new Set(idxs.map(Number))].filter(i => i >= 0 && i < arr.length).sort((a, b) => b - a);
+      const removed = [];
+      for (const i of sorted) removed.push(...arr.splice(i, 1));
+
+      // photos ki files bhi repo se hatao (best-effort)
+      for (const it of removed) {
+        if (!it || !it.file) continue;
+        try {
+          const f = await gh(`/repos/${REPO}/contents/public/gallery/${it.file}`);
+          if (f.ok) {
+            const fj = await f.json();
+            await gh(`/repos/${REPO}/contents/public/gallery/${it.file}`, {
+              method: "DELETE",
+              body: JSON.stringify({ message: `Admin: photo delete ${it.file} [skip ci]`, sha: fj.sha }),
+            });
+          }
+        } catch (_) { /* file delete fail ho to bhi content update karo */ }
+      }
+
+      await writeContent(content, sha, `Admin: ${removed.length} ${type} delete kiye`);
+      return res.status(200).json({ ok: true, message: `🗑️ ${removed.length} delete ho gaye! 2-3 min me site se hat jayenge.` });
+    }
+
     // ---- BULK STEP 1: sirf image repo me daalo (rebuild nahi — [skip ci]) ----
     // Bulk me pehle saari images upload hoti hain, phir ek hi content-update.
     if (action === "uploadImage") {

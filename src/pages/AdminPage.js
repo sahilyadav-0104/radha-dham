@@ -33,6 +33,7 @@ export default function AdminPage() {
   // Delete/manage
   const [items, setItems] = useState(null); // { gallery, bhajans, leelas }
   const [loadingList, setLoadingList] = useState(false);
+  const [sel, setSel] = useState({}); // multi-select: { "gallery:3": true, ... }
   // Comments moderation
   const [comments, setComments] = useState(null);
   const [loadingComments, setLoadingComments] = useState(false);
@@ -110,6 +111,42 @@ export default function AdminPage() {
       if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
       else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Delete nahi hua") });
       else { setMsg({ ok: true, text: j.message }); await loadList(); }
+    } catch (e) {
+      setMsg({ ok: false, text: "Network problem — dobara try karein" });
+    }
+    setBusy(false);
+  }
+
+  // ---- Multi-select delete ----
+  function toggleSel(group, idx) {
+    const k = `${group}:${idx}`;
+    setSel(p => { const n = { ...p }; if (n[k]) delete n[k]; else n[k] = true; return n; });
+  }
+  function selectedIdx(group) {
+    return Object.keys(sel).filter(k => k.startsWith(group + ":")).map(k => Number(k.split(":")[1]));
+  }
+  function selectAll(group, count) {
+    setSel(p => {
+      const n = { ...p };
+      const already = selectedIdx(group).length === count;
+      for (let i = 0; i < count; i++) { const k = `${group}:${i}`; if (already) delete n[k]; else n[k] = true; }
+      return n;
+    });
+  }
+  async function delMany(type, group) {
+    const indexes = selectedIdx(group);
+    if (!indexes.length) return setMsg({ ok: false, text: "Pehle kuch select karo" });
+    if (!window.confirm(`${indexes.length} item delete karne hain?`)) return;
+    setBusy(true); setMsg(null);
+    try {
+      const { r, j } = await api({ action: "deleteMany", type, indexes });
+      if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
+      else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Delete nahi hua") });
+      else {
+        setMsg({ ok: true, text: j.message });
+        setSel(p => { const n = { ...p }; Object.keys(n).forEach(k => { if (k.startsWith(group + ":")) delete n[k]; }); return n; });
+        await loadList();
+      }
     } catch (e) {
       setMsg({ ok: false, text: "Network problem — dobara try karein" });
     }
@@ -497,22 +534,54 @@ export default function AdminPage() {
             const typeOf = { gallery: "gallery", bhajans: "bhajan", leelas: "leela" };
             const total = groups.reduce((s, [k]) => s + (items[k]?.length || 0), 0);
             if (total === 0) return <p style={{ textAlign: "center", color: "var(--c-dark)" }}>Abhi aapne kuch add nahi kiya. Jo aap add karoge wahi yahan delete ke liye dikhega.<br />(Website ka original content yahan nahi aata.)</p>;
-            return groups.map(([key, label, nameFn]) => (
-              (items[key] && items[key].length > 0) && (
+            return groups.map(([key, label, nameFn]) => {
+              if (!items[key] || items[key].length === 0) return null;
+              const picked = selectedIdx(key);
+              const allOn = picked.length === items[key].length;
+              return (
                 <div key={key} style={{ marginBottom: 18 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", marginBottom: 8 }}>{label} ({items[key].length})</p>
-                  {items[key].map((it, idx) => (
-                    <div key={idx} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--c-bg)", border: "0.5px solid var(--c-border)", borderRadius: 10, padding: "10px 14px", marginBottom: 8 }}>
-                      {key === "gallery" && it.file && (
-                        <img src={process.env.PUBLIC_URL + "/gallery/" + it.file} alt="" style={{ width: 40, height: 40, borderRadius: 6, objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
-                      )}
-                      <span style={{ flex: 1, fontSize: 14, color: "var(--c-deep)" }}>{nameFn(it)}</span>
-                      <button className="counter-reset-btn" disabled={busy} onClick={() => del(typeOf[key], idx, nameFn(it))}>Delete</button>
-                    </div>
-                  ))}
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", margin: 0, flex: 1 }}>{label} ({items[key].length})</p>
+                    <button className="lang-chip" onClick={() => selectAll(key, items[key].length)}>
+                      {allOn ? "✕ Sab hatao" : "☑️ Sab select"}
+                    </button>
+                    {picked.length > 0 && (
+                      <button
+                        className="counter-reset-btn"
+                        style={{ borderColor: "#D64545", color: "#fff", background: "#D64545", fontWeight: 700 }}
+                        disabled={busy}
+                        onClick={() => delMany(typeOf[key], key)}
+                      >🗑️ {picked.length} delete karo</button>
+                    )}
+                  </div>
+                  {items[key].map((it, idx) => {
+                    const on = !!sel[`${key}:${idx}`];
+                    return (
+                      <div key={idx}
+                        onClick={() => toggleSel(key, idx)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          background: on ? "var(--c-soft)" : "var(--c-bg)",
+                          border: on ? "1.5px solid var(--c-primary)" : "0.5px solid var(--c-border)",
+                          borderRadius: 10, padding: "10px 14px", marginBottom: 8, cursor: "pointer",
+                        }}>
+                        <input type="checkbox" checked={on} readOnly
+                          style={{ width: 18, height: 18, flexShrink: 0, accentColor: "var(--c-primary)" }} />
+                        {key === "gallery" && it.file && (
+                          <img src={process.env.PUBLIC_URL + "/gallery/" + it.file} alt="" style={{ width: 40, height: 40, borderRadius: 6, objectFit: "cover" }} onError={e => e.target.style.display = "none"} />
+                        )}
+                        <span style={{ flex: 1, fontSize: 14, color: "var(--c-deep)" }}>
+                          {nameFn(it)}
+                          {it.album && <span style={{ fontSize: 11, color: "var(--c-dark)" }}> · 📁 {it.album}</span>}
+                        </span>
+                        <button className="counter-reset-btn" disabled={busy}
+                          onClick={e => { e.stopPropagation(); del(typeOf[key], idx, nameFn(it)); }}>Delete</button>
+                      </div>
+                    );
+                  })}
                 </div>
-              )
-            ));
+              );
+            });
           })()}
           <button className="lang-chip" onClick={loadList} style={{ display: "block", margin: "10px auto 0" }}>🔄 Refresh</button>
         </div>
