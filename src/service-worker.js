@@ -21,6 +21,8 @@ const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 registerRoute(({ request, url }) => {
   if (request.mode !== 'navigate') return false;
   if (url.pathname.startsWith('/_')) return false;
+  // /r/<id> aur /api/* server se hi aane chahiye (reel share link ka OG preview)
+  if (url.pathname.startsWith('/r/') || url.pathname.startsWith('/api/')) return false;
   if (url.pathname.match(fileExtensionRegexp)) return false;
   return true;
 }, createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html'));

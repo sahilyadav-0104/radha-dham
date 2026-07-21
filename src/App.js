@@ -20,8 +20,10 @@ import AdminPage from "./pages/AdminPage";
 /* ============================================================
    MAIN APP
    ============================================================ */
-// Share link se aaya hua reel — #reel-<id>
+// Share link se aaya hua reel — /r/<id> ya #reel-<id>
 function reelIdFromHash() {
+  const p = String(window.location.pathname || "").match(/^\/r\/([^/?#]+)/);
+  if (p) return decodeURIComponent(p[1]);
   const m = String(window.location.hash || "").match(/^#reel-(.+)$/);
   return m ? decodeURIComponent(m[1]) : null;
 }
@@ -108,7 +110,8 @@ export default function App() {
 
   function exitReels() {
     setSharedReel(null);
-    if (reelIdFromHash()) window.location.hash = "";
+    // Share link ka URL saaf kar do, warna refresh pe wahi reel dobara khulegi
+    if (reelIdFromHash()) window.history.replaceState(null, "", "/");
     setActiveNav("Home");
   }
 
