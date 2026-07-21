@@ -1557,6 +1557,40 @@ body {
   display: block;
 }
 
+/* Aarti ke waqt murti chamakti hai */
+.mandir-murti-wrap.aarti .mandir-murti {
+  animation: murtiGlow 1.6s ease-in-out infinite;
+}
+
+@keyframes murtiGlow {
+  0%, 100% { box-shadow: 0 0 34px rgba(250, 199, 117, 0.55); }
+  50% { box-shadow: 0 0 60px rgba(255, 210, 120, 0.95); }
+}
+
+/* Phoolon ki barsaat */
+.mandir-petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.mandir-petals span {
+  position: absolute;
+  top: -30px;
+  font-size: 18px;
+  animation-name: petalFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes petalFall {
+  0% { transform: translateY(-30px) rotate(0deg); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(420px) rotate(300deg); opacity: 0.9; }
+}
+
 .mandir-aarti-diya {
   position: absolute;
   top: 50%;

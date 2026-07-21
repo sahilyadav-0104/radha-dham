@@ -48,24 +48,67 @@ function load() {
   catch { return { ...DEFAULTS }; }
 }
 
-// Mandir ki ghanti — WebAudio se (koi file nahi chahiye)
+// Asli mandir ki ghanti — WebAudio se bani (koi file nahi chahiye).
+// Dhaatu (metal) ki tarah kai inharmonic partials + strike ki "tunn" +
+// halki shimmer/beating — real temple bell jaisa lagta hai.
 function ringBell() {
   try {
     const Ctx = window.AudioContext || window.webkitAudioContext;
     const ctx = window.__mandirBell || (window.__mandirBell = new Ctx());
-    const t = ctx.currentTime;
-    [[660, 0.35, 1.8], [1320, 0.12, 1.1]].forEach(([freq, vol, dur]) => {
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = "sine";
-      o.frequency.value = freq;
-      o.connect(g);
-      g.connect(ctx.destination);
-      g.gain.setValueAtTime(vol, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-      o.start(t);
-      o.stop(t + dur + 0.1);
+    if (ctx.state === "suspended") ctx.resume();
+    const t0 = ctx.currentTime;
+
+    const master = ctx.createGain();
+    master.gain.value = 0.85;
+    const warm = ctx.createBiquadFilter(); // thodi warmth
+    warm.type = "lowpass";
+    warm.frequency.value = 7000;
+    master.connect(warm);
+    warm.connect(ctx.destination);
+
+    const f0 = 560; // ghanti ki base pitch
+    // [ratio, gain, decay(s), detune-twin(Hz)] — bell ke inharmonic partials
+    const partials = [
+      [1.00, 0.55, 3.6, 0.7],
+      [2.00, 0.42, 2.9, 1.1],
+      [2.74, 0.30, 2.2, 0],
+      [3.76, 0.20, 1.6, 0],
+      [5.40, 0.14, 1.1, 0],
+      [6.82, 0.09, 0.8, 0],
+    ];
+    partials.forEach(([ratio, g, dur, twin]) => {
+      const freqs = twin ? [f0 * ratio, f0 * ratio + twin] : [f0 * ratio];
+      freqs.forEach(fr => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = fr;
+        osc.connect(gain);
+        gain.connect(master);
+        const gv = twin ? g / 2 : g;
+        gain.gain.setValueAtTime(0.0001, t0);
+        gain.gain.exponentialRampToValueAtTime(gv, t0 + 0.004); // tez attack (tunn)
+        gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        osc.start(t0);
+        osc.stop(t0 + dur + 0.05);
+      });
     });
+
+    // Strike transient — ghanti pe chot ki "tunn" (chhota bright noise burst)
+    const dur = 0.07;
+    const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = 3200;
+    bp.Q.value = 0.8;
+    const ng = ctx.createGain();
+    ng.gain.value = 0.3;
+    noise.connect(bp); bp.connect(ng); ng.connect(master);
+    noise.start(t0);
   } catch (e) { /* audio na chale to bhi mandir chalta rahe */ }
 }
 
@@ -88,9 +131,11 @@ export default function TemplePage() {
   function doAarti() {
     if (aarti) return;
     setAarti(true);
+    // Ghanti rhythm me 4 baar baje (asli aarti jaisi)
     ringBell();
-    if (navigator.vibrate) navigator.vibrate([80, 60, 80]);
-    setTimeout(() => setAarti(false), 6500);
+    [1300, 2500, 3700, 5000].forEach(ms => setTimeout(ringBell, ms));
+    if (navigator.vibrate) navigator.vibrate([80, 60, 80, 60, 80]);
+    setTimeout(() => setAarti(false), 6800);
   }
 
   function doBell() {
@@ -123,8 +168,17 @@ export default function TemplePage() {
         <button className={`mandir-bell left${belling ? " ring" : ""}`} onClick={doBell}>🔔</button>
         <button className={`mandir-bell right${belling ? " ring" : ""}`} onClick={doBell}>🔔</button>
 
+        {/* Aarti ke waqt phoolon ki barsaat */}
+        {aarti && (
+          <div className="mandir-petals">
+            {["🌸","🌺","🌼","🌸","🌷","🌺","🌸","🌼","🌷","🌸","🌺","🌸"].map((p, i) => (
+              <span key={i} style={{ left: `${(i * 8.3 + 4)}%`, animationDelay: `${(i % 6) * 0.5}s`, animationDuration: `${3 + (i % 4) * 0.6}s` }}>{p}</span>
+            ))}
+          </div>
+        )}
+
         {/* Murti */}
-        <div className="mandir-murti-wrap">
+        <div className={`mandir-murti-wrap${aarti ? " aarti" : ""}`}>
           <img src={deity.src} alt={deity.name} className="mandir-murti" />
           {aarti && <span className="mandir-aarti-diya">🪔</span>}
         </div>
