@@ -9,7 +9,7 @@
    ============================================================ */
 const REPO = "sahilyadav-0104/radha-dham";
 const FILE = "data/reels.json";
-const MAX_REELS = 200;
+const MAX_REELS = 400;
 
 async function gh(path, opts = {}) {
   return fetch(`https://api.github.com${path}`, {
