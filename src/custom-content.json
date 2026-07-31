@@ -1,4 +1,10 @@
 {
+  "music": {
+    "enabled": true,
+    "tune": "bansuri",
+    "volume": 0.4,
+    "audioUrl": "https://archive.org/download/LostChocolateLabBeautifulFlute_0/BeautifulFlute1.mp3"
+  },
   "gallery": [
     {
       "label": "Radha Krishna",
