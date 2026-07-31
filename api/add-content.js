@@ -122,6 +122,19 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, message: `🗑️ ${removed.length} delete ho gaye! 2-3 min me site se hat jayenge.` });
     }
 
+    // ---- MURLI SANGEET settings (on/off, tune, volume) ----
+    // Rebuild karta hai (build-time config) taaki har visitor ko naya setting mile
+    if (action === "setMusic") {
+      const m = (req.body && req.body.music) || {};
+      const tune = ["bansuri", "shanti", "raas"].includes(m.tune) ? m.tune : "bansuri";
+      let vol = Number(m.volume);
+      if (!(vol >= 0 && vol <= 1)) vol = 0.5;
+      const { content, sha } = await readContent();
+      content.music = { enabled: m.enabled !== false, tune, volume: vol };
+      await writeContent(content, sha, "Admin: murli sangeet settings update");
+      return res.status(200).json({ ok: true, message: "🎶 Sangeet settings save! 2-3 min me site pe live." });
+    }
+
     // ---- BULK STEP 1: sirf image repo me daalo (rebuild nahi — [skip ci]) ----
     // Bulk me pehle saari images upload hoti hain, phir ek hi content-update.
     if (action === "uploadImage") {
