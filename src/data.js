@@ -134,6 +134,13 @@ const BASE_BHAJANS = [
    ytId = YouTube video ki ID
    ============================================================ */
 const YT_BHAJANS = [
+  // 🔥 Trending — sabse upar (sab YouTube IDs oEmbed se verified)
+  { title: "Radhe Radhe Barsane Wali Radhe", singer: "Vipul Music · 84 Kos Yatra", ytId: "61EGpAy4Ids" },
+  { title: "Kabhi Ram Banke Kabhi Shyam Banke", singer: "Hari Om Sharan", ytId: "wSS9k4JW0xI" },
+  { title: "Achyutam Keshavam Krishna Damodaram", singer: "Anuradha Paudwal", ytId: "e_Oqo-xBmWU" },
+  { title: "Woh Kala Ek Bansuri Wala", singer: "Anup Jalota", ytId: "oGXeQXQ1_vE" },
+  { title: "Shri Krishna Govind Hare Murari", singer: "Jagjit Singh", ytId: "cFGHAavFIug" },
+  { title: "Adharam Madhuram — Madhurashtakam", singer: "Anuradha Paudwal", ytId: "g6caH_VTUTI" },
   { title: "Radha Rani Meri Hai", singer: "Devi Neha Saraswat", ytId: "yyl1GredDLY" },
   { title: "Braj Ras", singer: "B Praak · Jaani · Mir Desai", ytId: "C8iQCmo-o_Y" },
   { title: "Mithe Ras Se Bharyo Radha Rani Lage", singer: "The Bundeli Artists", ytId: "w8piP6I3VS0" },
