@@ -129,8 +129,10 @@ export default async function handler(req, res) {
       const tune = ["bansuri", "shanti", "raas"].includes(m.tune) ? m.tune : "bansuri";
       let vol = Number(m.volume);
       if (!(vol >= 0 && vol <= 1)) vol = 0.5;
+      let audioUrl = typeof m.audioUrl === "string" ? m.audioUrl.trim().slice(0, 400) : "";
+      if (audioUrl && !/^https?:\/\//i.test(audioUrl)) audioUrl = "";
       const { content, sha } = await readContent();
-      content.music = { enabled: m.enabled !== false, tune, volume: vol };
+      content.music = { enabled: m.enabled !== false, tune, volume: vol, audioUrl };
       await writeContent(content, sha, "Admin: murli sangeet settings update");
       return res.status(200).json({ ok: true, message: "🎶 Sangeet settings save! 2-3 min me site pe live." });
     }

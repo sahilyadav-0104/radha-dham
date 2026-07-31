@@ -13,6 +13,8 @@ export const MUSIC = {
   enabled: CUSTOM.music ? CUSTOM.music.enabled !== false : true,
   tune: (CUSTOM.music && CUSTOM.music.tune) || "bansuri",
   volume: (CUSTOM.music && typeof CUSTOM.music.volume === "number") ? CUSTOM.music.volume : 0.5,
+  // Admin ka diya asli bansuri MP3 link (khaali = synthesized dhun)
+  audioUrl: (CUSTOM.music && CUSTOM.music.audioUrl) || "",
 };
 
 // Darshan ki photos (public/ folder mein rakhi hain) — har pic ka apna mantra

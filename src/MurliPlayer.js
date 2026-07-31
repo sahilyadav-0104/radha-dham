@@ -3,51 +3,45 @@ import { MUSIC } from "./data";
 
 /* ============================================================
    MURLI PLAYER — Krishna ki bansuri ki dhun background me
-   - WebAudio se synthesize hoti hai (koi file/copyright nahi)
-   - Browser autoplay block ki wajah se pehle tap/scroll pe shuru hoti hai
-   - Chhota floating button: koi bhi visitor mute/unmute kar sakta hai
-   - Admin (Sangeet tab) se: on/off, dhun (tune) aur volume control
-   - Koi doosra audio/video (bhajan/reel) chale to murli apne aap dhimi
+   - Agar admin ne "Bansuri MP3 link" diya hai -> wahi asli
+     recording loop hoke chalti hai (real bansuri)
+   - Warna WebAudio se synthesized bansuri dhun (koi file nahi)
+   - Browser autoplay block: pehle tap/scroll pe shuru hoti hai
+   - Floating button: koi bhi visitor mute/unmute kar sakta hai
+   - Koi doosra audio/video (bhajan/reel) chale to murli dhimi
    ============================================================ */
 
 const MUTED_KEY = "radhaDhamMurliMuted";
 
-// Note frequencies (Hz)
 const N = {
   D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88,
   C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880.0, r: 0,
 };
 
-// Har dhun = [frequency, duration(sec)] ka sequence — loop hoti rehti hai
 const TUNES = {
-  // Shaant, madhur bansuri
   bansuri: [
     [N.G4, 0.6], [N.A4, 0.55], [N.B4, 0.9], [N.A4, 0.5], [N.G4, 0.95], [N.r, 0.4],
     [N.E4, 0.6], [N.G4, 0.6], [N.A4, 1.0], [N.r, 0.5],
     [N.G4, 0.6], [N.E4, 0.55], [N.D4, 0.9], [N.E4, 0.6], [N.G4, 1.1], [N.r, 0.9],
   ],
-  // Bahut dhimi, meditative — dhyaan ke liye
   shanti: [
     [N.D4, 1.3], [N.F4, 1.2], [N.G4, 1.7], [N.r, 0.6],
     [N.F4, 1.1], [N.E4, 1.1], [N.D4, 1.9], [N.r, 1.0],
     [N.A4, 1.2], [N.G4, 1.5], [N.E4, 1.9], [N.r, 1.3],
   ],
-  // Chanchal, khilti hui — Raas jaisi
   raas: [
     [N.C5, 0.4], [N.D5, 0.4], [N.E5, 0.5], [N.G5, 0.5], [N.E5, 0.4], [N.D5, 0.5], [N.C5, 0.65], [N.r, 0.3],
     [N.A4, 0.4], [N.C5, 0.4], [N.D5, 0.5], [N.E5, 0.6], [N.D5, 0.4], [N.C5, 0.5], [N.A4, 0.75], [N.r, 0.5],
   ],
 };
 
-// Ek sur bajao — bansuri jaisi (triangle + vibrato + halki saans)
 function playNote(ctx, dest, freq, dur) {
-  if (!freq) return; // rest
+  if (!freq) return;
   const now = ctx.currentTime;
   const osc = ctx.createOscillator();
   osc.type = "triangle";
   osc.frequency.value = freq;
 
-  // vibrato (thodi si kaamp)
   const lfo = ctx.createOscillator();
   lfo.frequency.value = 5.2;
   const lfoGain = ctx.createGain();
@@ -72,7 +66,6 @@ function playNote(ctx, dest, freq, dur) {
   lfo.start(now);
   lfo.stop(now + dur + 0.05);
 
-  // halki "saans" (breath noise) — asli bansuri jaisa
   const nDur = Math.min(0.25, dur);
   const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * nDur), ctx.sampleRate);
   const d = buf.getChannelData(0);
@@ -92,7 +85,6 @@ function playNote(ctx, dest, freq, dur) {
   nb.stop(now + nDur + 0.02);
 }
 
-// Ek baar user page se interact kar le (autoplay policy)
 let gestured = false;
 
 export default function MurliPlayer() {
@@ -102,9 +94,12 @@ export default function MurliPlayer() {
   const masterRef = useRef(null);
   const timerRef = useRef(null);
   const idxRef = useRef(0);
-  const duckRef = useRef(false); // koi aur audio chal raha hai?
+  const audioElRef = useRef(null); // asli MP3 (agar admin ne link diya)
+  const duckRef = useRef(false);
 
   const enabled = MUSIC.enabled;
+  const url = (MUSIC.audioUrl || "").trim();
+  const useMp3 = /^https?:\/\//i.test(url);
 
   useEffect(() => {
     if (!enabled) return;
@@ -112,7 +107,6 @@ export default function MurliPlayer() {
     function buildChain(ctx) {
       const master = ctx.createGain();
       master.gain.value = MUSIC.volume * 0.5;
-      // halki si space (delay) — mandir jaisa ehsaas
       const delay = ctx.createDelay();
       delay.delayTime.value = 0.28;
       const fb = ctx.createGain();
@@ -136,8 +130,8 @@ export default function MurliPlayer() {
       timerRef.current = setTimeout(loop, dur * 1000);
     }
 
-    function start() {
-      if (ctxRef.current || muted) return;
+    function startSynth() {
+      if (ctxRef.current) return;
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return;
       const ctx = new AC();
@@ -149,15 +143,44 @@ export default function MurliPlayer() {
       loop();
     }
 
+    function startMp3() {
+      if (audioElRef.current) return;
+      // new Audio() DOM se bahar hota hai -> apne aap ko duck-detect me nahi ginega
+      const el = new Audio(url);
+      el.loop = true;
+      el.volume = Math.min(1, Math.max(0, MUSIC.volume));
+      audioElRef.current = el;
+      el.addEventListener("error", () => {
+        // MP3 na chale to synthesized dhun pe wapas
+        audioElRef.current = null;
+        startSynth();
+      });
+      el.play().then(() => setPlaying(true)).catch(() => { /* gesture ke baad chalega */ });
+    }
+
+    function start() {
+      if (muted) return;
+      if (useMp3) startMp3(); else startSynth();
+    }
+
     function stop() {
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = null;
       if (ctxRef.current) { ctxRef.current.close().catch(() => {}); ctxRef.current = null; }
       masterRef.current = null;
+      if (audioElRef.current) { audioElRef.current.pause(); audioElRef.current.src = ""; audioElRef.current = null; }
       setPlaying(false);
     }
 
-    // pehle gesture pe shuru
+    function applyDuck() {
+      const el = audioElRef.current;
+      if (el) {
+        if (duckRef.current) el.pause();
+        else if (!muted) el.play().catch(() => {});
+      }
+      // synth: loop() duckRef dekh ke khud handle karta hai
+    }
+
     function onGesture() {
       gestured = true;
       if (!muted) start();
@@ -167,15 +190,16 @@ export default function MurliPlayer() {
       window.removeEventListener("scroll", onGesture);
     }
 
-    // Agar koi bhajan/reel (audio/video) chale to murli dhimi/band
     function onMediaPlay(e) {
       if (e.target && (e.target.tagName === "AUDIO" || e.target.tagName === "VIDEO")) {
         duckRef.current = true;
+        applyDuck();
       }
     }
     function onMediaStop() {
       const any = [...document.querySelectorAll("audio,video")].some(m => !m.paused && !m.ended);
       duckRef.current = any;
+      applyDuck();
     }
 
     document.addEventListener("play", onMediaPlay, true);
@@ -185,10 +209,10 @@ export default function MurliPlayer() {
     if (gestured && !muted) {
       start();
     } else {
-      window.addEventListener("pointerdown", onGesture, { once: false });
-      window.addEventListener("keydown", onGesture, { once: false });
-      window.addEventListener("touchstart", onGesture, { once: false });
-      window.addEventListener("scroll", onGesture, { once: false, passive: true });
+      window.addEventListener("pointerdown", onGesture);
+      window.addEventListener("keydown", onGesture);
+      window.addEventListener("touchstart", onGesture);
+      window.addEventListener("scroll", onGesture, { passive: true });
     }
 
     return () => {
@@ -202,7 +226,7 @@ export default function MurliPlayer() {
       stop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, muted]);
+  }, [enabled, muted, url, useMp3]);
 
   if (!enabled) return null;
 

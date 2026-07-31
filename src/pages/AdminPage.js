@@ -46,6 +46,7 @@ export default function AdminPage() {
   const [musicEnabled, setMusicEnabled] = useState(true);
   const [musicTune, setMusicTune] = useState("bansuri");
   const [musicVolume, setMusicVolume] = useState(0.5);
+  const [musicUrl, setMusicUrl] = useState(""); // asli bansuri MP3 link (khaali = synthesized)
 
   function unlock() {
     if (!secret.trim()) return;
@@ -367,6 +368,7 @@ export default function AdminPage() {
         setMusicEnabled(m.enabled !== false);
         setMusicTune(m.tune || "bansuri");
         setMusicVolume(typeof m.volume === "number" ? m.volume : 0.5);
+        setMusicUrl(m.audioUrl || "");
       }
     } catch (e) { /* default settings hi dikhenge */ }
   }
@@ -374,7 +376,7 @@ export default function AdminPage() {
   async function saveMusic() {
     setBusy(true); setMsg(null);
     try {
-      const { r, j } = await api({ action: "setMusic", music: { enabled: musicEnabled, tune: musicTune, volume: musicVolume } });
+      const { r, j } = await api({ action: "setMusic", music: { enabled: musicEnabled, tune: musicTune, volume: musicVolume, audioUrl: musicUrl.trim() } });
       if (r.status === 401) { setMsg({ ok: false, text: j.error || "Galat password" }); lock(); }
       else if (!r.ok) setMsg({ ok: false, text: errText(r, j, "Save nahi hua") });
       else setMsg({ ok: true, text: j.message });
@@ -568,8 +570,17 @@ export default function AdminPage() {
             <button type="button" className={`lang-chip${!musicEnabled ? " active" : ""}`} onClick={() => setMusicEnabled(false)}>🔇 OFF</button>
           </div>
 
-          <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", margin: "14px 0 6px" }}>Dhun (tune):</p>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 6 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", margin: "14px 0 6px" }}>🪈 Asli bansuri MP3 link (optional):</p>
+          <input type="text" placeholder="https://... bansuri recording ka direct MP3 link" value={musicUrl} onChange={e => setMusicUrl(e.target.value)} />
+          <p style={{ fontSize: 11, color: "var(--c-dark)", margin: "4px 0 0", lineHeight: 1.6 }}>
+            💡 Link daaloge to <b>wahi asli bansuri</b> loop hoke background me chalegi. Khaali chhodo to neeche wali synthesized dhun chalegi.
+            Sirf apni ya royalty-free (copyright-free) recording ka link daalein.
+          </p>
+
+          <p style={{ fontSize: 13, fontWeight: 600, color: "var(--c-dark)", margin: "16px 0 6px" }}>
+            Dhun (tune) — {musicUrl.trim() ? "MP3 link hai isliye ye abhi use nahi hogi" : "jab MP3 link khaali ho"}:
+          </p>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 6, opacity: musicUrl.trim() ? 0.5 : 1 }}>
             {[["bansuri", "🪈 Bansuri (madhur)"], ["shanti", "🧘 Shanti (dhimi)"], ["raas", "💫 Raas (chanchal)"]].map(([id, label]) => (
               <button key={id} type="button" className={`lang-chip${musicTune === id ? " active" : ""}`} onClick={() => setMusicTune(id)}>{label}</button>
             ))}
