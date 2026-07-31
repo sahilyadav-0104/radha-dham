@@ -1,9 +1,9 @@
 {
   "music": {
-    "enabled": true,
+    "enabled": false,
     "tune": "bansuri",
-    "volume": 0.4,
-    "audioUrl": "https://archive.org/download/LostChocolateLabBeautifulFlute_0/BeautifulFlute1.mp3"
+    "volume": 1,
+    "audioUrl": ""
   },
   "gallery": [
     {
@@ -951,10 +951,5 @@
       "story": "Ek din Vrindavan ke nikunj mein Radha Rani apni sakhiyon ke saath baithi thi. Halki-halki thandi hawa chal rahi thi aur charon or phoolon ki sugandh faili hui thi. Usi samay Shri Krishna apni bansuri lekar wahan aaye. Radha Rani muskuraakar boli, \"Shyam, aaj bansuri kyun shaant hai?\" Krishna ne prem se bansuri Radha Rani ke haathon mein dete hue kaha, \"Radhe, meri bansuri ki madhurta us prem se hai jo tumhare hriday mein basta hai. Tumhare bina iske sur bhi adhure hain.\" Radha Rani ne bansuri ko apne mastak se lagaya aur dheere se Krishna ko wapas kar diya. Krishna ne jaise hi bansuri bajani shuru ki, poora Vrindavan madhur dhun se gunj utha. Gaayen charna bhool gayin, pakshi chup hokar sunne lage aur Yamuna ji ki lehrein bhi jaise dheemi ho gayin. Sakhiyan anand se \"Radhe-Shyam\" ka kirtan karne lagi. Us din sabne samjha ki jab prem aur bhakti ek ho jaate hain, tab har sur Bhagwan ka sandesh ban jaata hai. 🌸",
       "addedAt": "2026-07-31T11:08:07.626Z"
     }
-  ],
-  "music": {
-    "enabled": true,
-    "tune": "raas",
-    "volume": 0.85
-  }
+  ]
 }
