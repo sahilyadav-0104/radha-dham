@@ -187,14 +187,26 @@ export default function App() {
       {renderPage()}
       <footer className="main-footer">
         <p>🌸 Radha Rani Devotional Website 🌸</p>
-        <p onClick={secretAdminTap} style={{ cursor: "default", userSelect: "none" }}>Built with love by Sahil · Training Project 2026 · Jai Shri Radhe</p>
-        <a
-          className="footer-app-link"
-          href={process.env.PUBLIC_URL + "/app/radha-dham.apk"}
-          download="radha-dham.apk"
-        >
-          📲 {t("footer.dl")}
-        </a>
+        <p onClick={secretAdminTap} style={{ cursor: "default", userSelect: "none" }}>Built with ❤️ by Sahil · Jai Shri Radhe</p>
+        <div className="footer-links">
+          {/* NOTE: [YOUR_CONTACT] ko apne WhatsApp number se badlo (jaise 919876543210).
+              Ya email ke liye href="mailto:you@email.com" kar do. */}
+          <a
+            className="footer-contact"
+            href="https://wa.me/[YOUR_CONTACT]"
+            target="_blank"
+            rel="noreferrer"
+          >
+            💼 Apni website banwani hai? — Contact Sahil
+          </a>
+          <a
+            className="footer-app-link"
+            href={process.env.PUBLIC_URL + "/app/radha-dham.apk"}
+            download="radha-dham.apk"
+          >
+            📲 {t("footer.dl")}
+          </a>
+        </div>
       </footer>
 
       {/* DARSHAN MODAL — Full Screen */}

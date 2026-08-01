@@ -929,9 +929,36 @@ body {
   color: var(--c-border);
 }
 
+/* Footer ke links (contact + app) — mobile pe neeche-neeche, bade pe saath */
+.footer-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.footer-contact {
+  display: inline-block;
+  background: var(--c-primary);
+  color: #fff;
+  border-radius: 20px;
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: Georgia, serif;
+  text-decoration: none;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.footer-contact:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
 .footer-app-link {
   display: inline-block;
-  margin-top: 14px;
   background: #FAC775;
   color: #412402;
   border-radius: 20px;

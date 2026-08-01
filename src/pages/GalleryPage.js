@@ -44,7 +44,7 @@ export default function GalleryPage() {
   const Tile = ({ item, i }) => (
     <div className="gallery-item" onClick={() => openList(i)} style={{ position: "relative" }}>
       {!errors[item.url] ? (
-        <img src={item.url} alt={item.label} onError={() => setErrors(p => ({ ...p, [item.url]: true }))}
+        <img src={item.url} alt={item.label} loading="lazy" decoding="async" onError={() => setErrors(p => ({ ...p, [item.url]: true }))}
           style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0 }} />
       ) : (
         <div style={{ width: "100%", height: "100%", background: "var(--c-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 44 }}>
@@ -78,7 +78,7 @@ export default function GalleryPage() {
         <div className="gallery-grid" style={{ marginBottom: 18 }}>
           {albums.map(([name, items]) => (
             <div key={name} className="gallery-item album-card" onClick={() => setOpenAlbum(name)} style={{ position: "relative" }}>
-              <img src={items[0].url} alt={name}
+              <img src={items[0].url} alt={name} loading="lazy" decoding="async"
                 style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0 }} />
               <span className="album-badge">📁 {items.length}</span>
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent,rgba(var(--c-deep-rgb),0.92))", padding: "26px 8px 9px" }}>

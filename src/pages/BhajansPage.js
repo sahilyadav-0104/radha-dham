@@ -157,7 +157,7 @@ export default function BhajansPage() {
         {BHAJANS.map((b, i) => (
           <div key={b.id} className={`bhajan-card${current===i ? " playing" : ""}`} onClick={() => play(i)}>
             <div style={{ position:"relative", flexShrink:0 }}>
-              <img src={b.cover} alt="" onError={e=>e.target.style.display="none"}
+              <img src={b.cover} alt="" loading="lazy" decoding="async" onError={e=>e.target.style.display="none"}
                 style={{ width:56, height:42, borderRadius:8, objectFit:"cover", display:"block" }} />
               <div style={{ position:"absolute", inset:0, background:"rgba(0,0,0,0.3)", borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center" }}>
                 <span style={{ color:"white", fontSize:16 }}>{b.yt ? "▶" : (current===i && isPlaying ? "⏸" : "▶")}</span>
