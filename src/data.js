@@ -5,18 +5,6 @@
    ============================================================ */
 import CUSTOM from "./custom-content.json";
 
-/* ============================================================
-   MURLI SANGEET — background flute settings (admin se control)
-   enabled: on/off · tune: kaunsi dhun · volume: 0..1
-   ============================================================ */
-export const MUSIC = {
-  enabled: CUSTOM.music ? CUSTOM.music.enabled !== false : true,
-  tune: (CUSTOM.music && CUSTOM.music.tune) || "bansuri",
-  volume: (CUSTOM.music && typeof CUSTOM.music.volume === "number") ? CUSTOM.music.volume : 0.5,
-  // Admin ka diya asli bansuri MP3 link (khaali = synthesized dhun)
-  audioUrl: (CUSTOM.music && CUSTOM.music.audioUrl) || "",
-};
-
 // Darshan ki photos (public/ folder mein rakhi hain) — har pic ka apna mantra
 export const DARSHAN_IMAGES = [
   { src: process.env.PUBLIC_URL + "/radha-krishna-1.webp", caption: "ISKCON Vrindavan — Radha Krishna", mantra: "राधे राधे श्याम मिला दे" },

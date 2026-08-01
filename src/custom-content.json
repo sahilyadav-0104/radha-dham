@@ -1,10 +1,4 @@
 {
-  "music": {
-    "enabled": false,
-    "tune": "bansuri",
-    "volume": 1,
-    "audioUrl": ""
-  },
   "gallery": [
     {
       "label": "Radha Krishna",

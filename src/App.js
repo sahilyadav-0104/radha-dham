@@ -16,7 +16,6 @@ import ReelsPage from "./pages/ReelsPage";
 import PuzzlePage from "./pages/PuzzlePage";
 import TemplePage from "./pages/TemplePage";
 import AdminPage from "./pages/AdminPage";
-import MurliPlayer from "./MurliPlayer";
 
 /* ============================================================
    MAIN APP
@@ -186,8 +185,6 @@ export default function App() {
         ))}
       </nav>
       {renderPage()}
-      {/* Murli ki dhun background me (reels page pe nahi — wahan reel ki apni awaaz) */}
-      {!isAdmin && <MurliPlayer />}
       <footer className="main-footer">
         <p>🌸 Radha Rani Devotional Website 🌸</p>
         <p onClick={secretAdminTap} style={{ cursor: "default", userSelect: "none" }}>Built with love by Sahil · Training Project 2026 · Jai Shri Radhe</p>
