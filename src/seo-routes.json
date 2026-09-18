@@ -1,0 +1,149 @@
+{
+  "site": "https://shriradharani.in",
+  "routes": [
+    {
+      "nav": "Home",
+      "path": "/",
+      "title": "Radha Dham — Shri Radha Rani ka Digital Mandir 🌸",
+      "description": "Radha Dham — Radha Rani aur Shri Krishna ka digital mandir. Bhajan, leela, darshan, japa counter, festival calendar, Braj Yatra guide, quiz aur photo gallery. Bilkul free, koi login nahi. Jai Shri Radhe.",
+      "h1": "Radha Dham — Shri Radha Rani ka Digital Mandir",
+      "linkText": "Radha Dham Home",
+      "intro": [
+        "Jai Shri Radhe. Radha Dham ek free bhakti portal hai jahan Shri Radha Rani aur Krishna ki bhakti ek hi jagah milti hai — bina kisi login ke.",
+        "Yahan aap Radha Rani ke bhajan sun sakte hain, Radha-Krishna ki leelaayein padh sakte hain, roz naya darshan le sakte hain, japa counter par naam-jap gin sakte hain, Radhashtami aur Janmashtami ki sahi tithi dekh sakte hain, aur Vrindavan-Barsana-Mathura-Govardhan ki Braj Yatra ki poori guide pa sakte hain."
+      ]
+    },
+    {
+      "nav": "Gallery",
+      "path": "/gallery",
+      "title": "Radha Krishna Photo Gallery — Darshan Tasveerein | Radha Dham",
+      "description": "Shri Radha Rani aur Krishna ki sundar tasveerein — ISKCON Vrindavan, Barsana ka Shriji Mandir, Prem Mandir aur Radha Raman ke darshan. Dekhein aur WhatsApp par share karein.",
+      "h1": "Radha Krishna Photo Gallery",
+      "linkText": "Radha Krishna Photo Gallery",
+      "intro": [
+        "Shri Radha Rani aur Krishna ke sundar darshan ki photo gallery — ISKCON Vrindavan, Barsana ka Shriji Mandir (Ladli Ji), Prem Mandir, Radha Raman Mandir aur Braj ke anya mandiron ki tasveerein.",
+        "Har tasveer ko bada karke dekh sakte hain aur seedha WhatsApp par share kar sakte hain."
+      ]
+    },
+    {
+      "nav": "Bhajans",
+      "path": "/bhajan",
+      "title": "Radha Rani Bhajan — Lyrics aur Audio | Radha Dham",
+      "description": "Radha Rani aur Shri Krishna ke bhajan sunein — lyrics ke saath. Radhe Radhe, Hare Krishna aur Braj ke prasiddh bhajan, sab free aur bina login.",
+      "h1": "Radha Rani Bhajan — Sunein aur Lyrics Padhein",
+      "linkText": "Radha Rani Bhajan",
+      "intro": [
+        "Shri Radha Rani aur Krishna ke bhajan ek hi jagah — audio ke saath lyrics bhi, taaki aap saath gaa sakein.",
+        "Radhe Radhe, Hare Krishna mahamantra aur Braj ke prasiddh bhajan — sab bilkul free, koi login nahi chahiye."
+      ]
+    },
+    {
+      "nav": "Leelas",
+      "path": "/leela",
+      "title": "Radha Krishna Leela — Amrit Kathayein | Radha Dham",
+      "description": "Radha aur Krishna ki divya leelaayein — Braj ki amrit-kathayein saral bhasha mein. Maakhan chori, raas leela, Govardhan aur Barsana ki katha.",
+      "h1": "Radha Krishna Leela — Braj ki Amrit Kathayein",
+      "linkText": "Radha Krishna Leela",
+      "intro": [
+        "Radha aur Krishna ki divya leelaayein saral bhasha mein — Braj bhoomi ki wo kathayein jo sun kar mann bhakti se bhar jaata hai.",
+        "Maakhan chori se raas leela tak, Govardhan uthane se Barsana ki premkatha tak — har leela ek chhoti, sundar kahani ke roop mein."
+      ]
+    },
+    {
+      "nav": "Calendar",
+      "path": "/festival-calendar",
+      "title": "Radhashtami, Janmashtami aur Braj Festival Calendar 2026–2027 | Radha Dham",
+      "description": "Braj ke sabhi vrat-tyohaar ki sahi tithi — Radhashtami, Janmashtami, Holi aur Phoolon ki Holi, Govardhan Puja, Sharad Purnima, Kartik Purnima, Hariyali Teej, Rang Panchami. 2026 aur 2027 ke dates.",
+      "h1": "Braj Festival Calendar — Radhashtami aur Janmashtami ki Tithi",
+      "linkText": "Braj Festival Calendar",
+      "intro": [
+        "Braj ke sabhi mukhya vrat aur tyohaar ki sahi tithi, 2026 aur 2027 dono saal ke liye — Drik Panchang se verified.",
+        "Ismein Radhashtami, Janmashtami, Holi aur Barsana ki Phoolon ki Holi, Rang Panchami, Hariyali Teej, Sharad Purnima, Govardhan Puja aur Kartik Purnima shaamil hain. Agla tyohaar kitne din baad hai, wo bhi dikhta hai."
+      ]
+    },
+    {
+      "nav": "Counter",
+      "path": "/japa-counter",
+      "title": "Online Japa Counter — Radhe Radhe Naam Jap Mala | Radha Dham",
+      "description": "Free online japa counter — Radhe Radhe, Hare Krishna aur Jai Shri Radhe ka naam-jap ginein. 108 ki mala, ginti aapke phone par save rehti hai.",
+      "h1": "Japa Counter — Naam Jap ki Ginti",
+      "linkText": "Japa Counter",
+      "intro": [
+        "Free online japa counter — Radhe Radhe, Hare Krishna Mahamantra, Jai Shri Radhe ya Om Namo Bhagavate Vasudevaya ka jap ginein.",
+        "108 ki mala poori hone par ginti apne aap badhti hai, aur aapki ginti aapke hi phone par save rehti hai — koi account banane ki zaroorat nahi."
+      ]
+    },
+    {
+      "nav": "Mandir",
+      "path": "/mera-mandir",
+      "title": "Mera Mandir — Apna Virtual Mandir Banayein | Radha Dham",
+      "description": "Apna virtual mandir banayein aur sajayein — murti chunein, mala pehnayein, diya aur agarbatti jalayein, bhog lagayein, ghanti bajayein aur aarti karein. Aapke phone par save rehta hai.",
+      "h1": "Mera Mandir — Apna Virtual Mandir",
+      "linkText": "Mera Mandir",
+      "intro": [
+        "Apna mandir khud sajayein — Radha Krishna ki murti chunein, mala pehnayein, diya aur agarbatti jalayein, bhog lagayein.",
+        "Ghanti bajayein aur aarti karein. Aapka mandir jaisa aap saja dete hain waisa hi aapke phone par save reh jaata hai."
+      ]
+    },
+    {
+      "nav": "Quiz",
+      "path": "/quiz",
+      "title": "Radha Krishna Quiz — Apna Bhakti Gyaan Parkhein | Radha Dham",
+      "description": "Radha Krishna par mazedaar quiz — Braj, Vrindavan, Barsana, leela aur tyohaaron ke sawaal. Har baar naye sawaal, bilkul free.",
+      "h1": "Radha Krishna Quiz",
+      "linkText": "Radha Krishna Quiz",
+      "intro": [
+        "Radha Rani aur Krishna par mazedaar quiz — Braj bhoomi, Vrindavan, Barsana, leelaayein aur tyohaaron se jude sawaal.",
+        "Har baar naye sawaal aate hain, aur sahi jawaab ke saath chhoti si jaankari bhi milti hai."
+      ]
+    },
+    {
+      "nav": "Puzzle",
+      "path": "/puzzle",
+      "title": "Radha Krishna Puzzle Game — Makhan Chor | Radha Dham",
+      "description": "Radha Krishna ki tasveeron ka sliding puzzle game — bachchon aur badon dono ke liye. Bilkul free, bina login.",
+      "h1": "Radha Krishna Puzzle",
+      "linkText": "Radha Krishna Puzzle",
+      "intro": [
+        "Radha Krishna ki sundar tasveeron ka sliding puzzle — tukde jod kar poori tasveer banayein.",
+        "Bachchon ke liye bhi bilkul aasaan, aur poori tarah family-friendly."
+      ]
+    },
+    {
+      "nav": "Yatra",
+      "path": "/braj-yatra",
+      "title": "Braj Yatra Guide — Vrindavan, Barsana, Mathura, Govardhan Mandir aur Timings | Radha Dham",
+      "description": "Braj Yatra ki poori guide — Vrindavan (Banke Bihari, Prem Mandir, ISKCON, Radha Raman, Nidhivan), Barsana (Shriji Mandir, Kirti Mandir, Maan Mandir), Mathura (Krishna Janmabhoomi, Dwarkadhish, Vishram Ghat), Govardhan (Daan Ghati, Radha Kund) aur Nandgaon ke darshan timings.",
+      "h1": "Braj Yatra Guide — Vrindavan, Barsana, Mathura, Govardhan",
+      "linkText": "Braj Yatra Guide",
+      "intro": [
+        "Braj ki yatra ki poori guide — kaun sa mandir kab khulta hai, aarti ka samay kya hai, aur kis kram mein darshan karein.",
+        "Vrindavan — Banke Bihari Mandir, Prem Mandir, ISKCON Krishna Balaram Mandir, Radha Raman Mandir, Nidhivan. Barsana — Shriji Mandir (Radha Rani / Ladli Ji), Kirti Mandir, Maan Mandir. Mathura — Shri Krishna Janmabhoomi, Dwarkadhish Mandir, Vishram Ghat. Govardhan — Daan Ghati Mandir, Radha Kund aur Shyam Kund, Mansi Ganga aur Mukharvind. Nandgaon — Nand Bhavan (Nand Rai Mandir)."
+      ]
+    },
+    {
+      "nav": "Status",
+      "path": "/status",
+      "title": "Bhakti Status aur Reels — Radha Krishna Video | Radha Dham",
+      "description": "Radha Krishna ke bhakti se bhare chhote video aur status — WhatsApp par share karne ke liye. Free, bina login.",
+      "h1": "Bhakti Status aur Reels",
+      "linkText": "Bhakti Status aur Reels",
+      "intro": [
+        "Radha Krishna ke bhakti se bhare chhote video — ek ke baad ek, bilkul reels ki tarah.",
+        "Jo pasand aaye usse like karein aur WhatsApp par apne status ke liye share karein."
+      ]
+    },
+    {
+      "nav": "Contact",
+      "path": "/contact",
+      "title": "Contact aur Apne Anubhav — Radha Dham",
+      "description": "Radha Dham se sampark karein aur Radha Rani se jude apne anubhav sabke saath baatein. Koi login nahi chahiye.",
+      "h1": "Contact aur Aapke Anubhav",
+      "linkText": "Contact aur Anubhav",
+      "intro": [
+        "Radha Rani se jude apne anubhav yahan sabke saath baant sakte hain — bina koi account banaye.",
+        "Website se jude sujhaav ya sawaal ke liye bhi yahin sampark karein."
+      ]
+    }
+  ]
+}

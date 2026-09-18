@@ -4,8 +4,22 @@
     {
       "name": "radha-dham",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["start"],
+      "runtimeArgs": [
+        "start"
+      ],
       "port": 3000
+    },
+    {
+      "name": "radha-dham-build",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173",
+        "--directory",
+        "build"
+      ],
+      "port": 4173
     }
   ]
 }

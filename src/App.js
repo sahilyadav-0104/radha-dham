@@ -1,6 +1,7 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { DARSHAN_IMAGES, NAV_LINKS } from "./data";
+import SEO from "./seo-routes.json";
 import { THEMES } from "./themes";
 import { LANGS, STRINGS, LangContext } from "./i18n";
 import HomePage from "./pages/HomePage";
@@ -28,9 +29,48 @@ function reelIdFromHash() {
   return m ? decodeURIComponent(m[1]) : null;
 }
 
+/* ============================================================
+   URLs — har page ka apna address (/bhajan, /braj-yatra, ...)
+   Isse Google har page ko alag-alag index kar sakta hai, aur
+   log seedha kisi ek page ka link share kar sakte hain.
+   Route table seo-routes.json me hai — wahi build ke waqt
+   static HTML aur sitemap banane ke liye bhi use hota hai.
+   ============================================================ */
+const NAV_TO_PATH = {};
+const PATH_TO_NAV = {};
+const NAV_TO_SEO = {};
+for (const r of SEO.routes) {
+  NAV_TO_PATH[r.nav] = r.path;
+  PATH_TO_NAV[r.path] = r.nav;
+  NAV_TO_SEO[r.nav] = r;
+}
+
+// URL dekh kar batao kaun sa page khulna chahiye
+function navFromLocation() {
+  if (reelIdFromHash()) return "Status";
+  const path = String(window.location.pathname || "/").replace(/\/+$/, "") || "/";
+  return PATH_TO_NAV[path] || "Home";
+}
+
+// Browser tab ka title aur description page ke hisaab se badlo
+function applyPageSeo(nav) {
+  const seo = NAV_TO_SEO[nav] || NAV_TO_SEO.Home;
+  if (!seo) return;
+  document.title = seo.title;
+  const set = (selector, attr, value) => {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  };
+  set('meta[name="description"]', "content", seo.description);
+  set('link[rel="canonical"]', "href", SEO.site + seo.path);
+  set('meta[property="og:url"]', "content", SEO.site + seo.path);
+  set('meta[property="og:title"]', "content", seo.title);
+  set('meta[property="og:description"]', "content", seo.description);
+}
+
 export default function App() {
   const [sharedReel, setSharedReel] = useState(reelIdFromHash);
-  const [activeNav, setActiveNav] = useState(() => (reelIdFromHash() ? "Status" : "Home"));
+  const [activeNav, setActiveNav] = useState(navFromLocation);
   const [darshan, setDarshan] = useState(null); // current darshan image index
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(window.location.hash === "#admin");
@@ -76,6 +116,33 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  // Nav click -> URL badal do (page reload ke bina) aur wahi page dikhao.
+  // pushState purana hash (#admin / #reel-) bhi saaf kar deta hai.
+  const navigate = useCallback((link) => {
+    setActiveNav(link);
+    setIsAdmin(false);
+    const path = NAV_TO_PATH[link] || "/";
+    if (window.location.pathname + window.location.hash !== path) {
+      window.history.pushState({ nav: link }, "", path);
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Browser ka back/forward — URL ke hisaab se page badlo
+  useEffect(() => {
+    const onPop = () => {
+      setIsAdmin(window.location.hash === "#admin");
+      setActiveNav(navFromLocation());
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Har page ka apna title/description (Google aur link preview ke liye)
+  useEffect(() => {
+    if (!isAdmin) applyPageSeo(activeNav);
+  }, [activeNav, isAdmin]);
+
   const t = (key) => (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.hinglish[key] || key;
 
   function openDarshan() {
@@ -92,7 +159,7 @@ export default function App() {
   function renderPage() {
     if (isAdmin) return <AdminPage />;
     switch (activeNav) {
-      case "Home":     return <HomePage onNavigate={setActiveNav} />;
+      case "Home":     return <HomePage onNavigate={navigate} />;
       case "Gallery":  return <GalleryPage />;
       case "Bhajans":  return <BhajansPage />;
       case "Leelas":   return <LeelasPage />;
@@ -104,15 +171,14 @@ export default function App() {
       case "Mandir":   return <TemplePage />;
       case "Status":   return <ReelsPage />;
       case "Contact":  return <ContactPage />;
-      default:         return <HomePage onNavigate={setActiveNav} />;
+      default:         return <HomePage onNavigate={navigate} />;
     }
   }
 
   function exitReels() {
     setSharedReel(null);
-    // Share link ka URL saaf kar do, warna refresh pe wahi reel dobara khulegi
-    if (reelIdFromHash()) window.history.replaceState(null, "", "/");
-    setActiveNav("Home");
+    // navigate() URL ko "/" kar deta hai, warna refresh pe wahi reel dobara khulegi
+    navigate("Home");
   }
 
   // Status/Reels — Instagram jaisa full page (upar ka bar/nav/footer hata do)
@@ -181,7 +247,7 @@ export default function App() {
       </div>
       <nav className="main-nav">
         {NAV_LINKS.map(link => (
-          <button key={link} className={`nav-btn${!isAdmin && activeNav===link?" active":""}`} onClick={() => { setActiveNav(link); if (isAdmin) { setIsAdmin(false); if (window.location.hash) window.location.hash = ""; } }}>{t("nav." + link)}</button>
+          <button key={link} className={`nav-btn${!isAdmin && activeNav===link?" active":""}`} onClick={() => navigate(link)}>{t("nav." + link)}</button>
         ))}
       </nav>
       {renderPage()}
