@@ -148,16 +148,51 @@ function buildHtml(shell, route) {
   return html;
 }
 
+/* Gallery ki photos client-side render hoti hain, to Google Images unhe
+   HTML me dekh hi nahi pata. Sitemap me image URLs seedhe dene se Google
+   Images tak pahunch jaata hai — 170+ Radha Krishna photos ke liye ye
+   bada farq hai. */
+function galleryImages() {
+  const dir = path.join(BUILD, "gallery");
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => /\.(jpe?g|png|webp|gif)$/i.test(f))
+    .sort()
+    .map((f) => `${SEO.site}/gallery/${encodeURIComponent(f)}`);
+}
+
+// Home par dikhne wali darshan photos
+function darshanImages() {
+  return fs
+    .readdirSync(BUILD)
+    .filter((f) => /^radha-krishna-\d+\.(webp|jpe?g|png)$/i.test(f))
+    .sort()
+    .map((f) => `${SEO.site}/${f}`);
+}
+
 function sitemap() {
+  const imagesFor = { "/gallery": galleryImages(), "/": darshanImages() };
   const urls = SEO.routes
-    .map(
-      (r) =>
+    .map((r) => {
+      const imgs = (imagesFor[r.path] || [])
+        .map((u) => `    <image:image>\n      <image:loc>${u}</image:loc>\n    </image:image>`)
+        .join("\n");
+      return (
         `  <url>\n    <loc>${SEO.site}${r.path}</loc>\n` +
         `    <changefreq>weekly</changefreq>\n` +
-        `    <priority>${r.path === "/" ? "1.0" : "0.8"}</priority>\n  </url>`
-    )
+        `    <priority>${r.path === "/" ? "1.0" : "0.8"}</priority>\n` +
+        (imgs ? imgs + "\n" : "") +
+        `  </url>`
+      );
+    })
     .join("\n");
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n` +
+    `        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n` +
+    `${urls}\n</urlset>\n`
+  );
 }
 
 function main() {
