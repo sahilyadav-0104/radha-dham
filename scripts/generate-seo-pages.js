@@ -195,7 +195,38 @@ function sitemap() {
   );
 }
 
-function main() {
+/* IndexNow — Bing, Yandex, DuckDuckGo wagera ko bata deta hai ki site
+   update hui hai. Bina kisi login ke chalta hai (key file public/ me
+   padi hai). Google IndexNow support NAHI karta — uske liye Search
+   Console se hi indexing request karni padti hai.
+   Ye fail ho jaye to build nahi rukna chahiye — sirf warning. */
+async function pingIndexNow() {
+  const key = SEO.indexNowKey;
+  if (!key) return;
+  if (typeof fetch !== "function") {
+    console.log("  · IndexNow skip (is Node me fetch nahi hai)");
+    return;
+  }
+  const body = {
+    host: SEO.site.replace(/^https?:\/\//, ""),
+    key,
+    keyLocation: `${SEO.site}/${key}.txt`,
+    urlList: SEO.routes.map((r) => SEO.site + r.path),
+  };
+  try {
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(10000),
+    });
+    console.log(`  ${res.ok ? "✓" : "·"} IndexNow ping -> HTTP ${res.status}`);
+  } catch (e) {
+    console.log(`  · IndexNow ping nahi ho paya (${e.message}) — build theek hai`);
+  }
+}
+
+async function main() {
   if (!fs.existsSync(SHELL)) {
     console.error("generate-seo-pages: build/index.html nahi mila — pehle build chalao.");
     process.exit(1);
@@ -222,7 +253,11 @@ function main() {
   const xml = sitemap();
   fs.writeFileSync(path.join(BUILD, "sitemap.xml"), xml, "utf8");
   fs.writeFileSync(path.join(ROOT, "public", "sitemap.xml"), xml, "utf8");
-  console.log(`  ✓ sitemap.xml (${SEO.routes.length} URLs)\n`);
+  const imgCount = (xml.match(/<image:loc>/g) || []).length;
+  console.log(`  ✓ sitemap.xml (${SEO.routes.length} URLs, ${imgCount} images)`);
+
+  await pingIndexNow();
+  console.log("");
 }
 
 main();
