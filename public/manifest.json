@@ -1,27 +1,66 @@
 {
-  "short_name": "Radha Dham",
+  "id": "/",
   "name": "Radha Dham — Bhakti ka Digital Mandir",
+  "short_name": "Radha Dham",
+  "description": "Radha Rani aur Shri Krishna ka digital mandir — bhajan, leela, darshan, japa counter, festival calendar, Braj Yatra guide, quiz aur photo gallery. Bilkul free, koi login nahi. Jai Shri Radhe.",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "theme_color": "#72243E",
+  "background_color": "#fff5f8",
+  "categories": ["lifestyle", "education", "books"],
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
       "src": "logo192.png",
-      "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "logo512.png",
-      "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#72243E",
-  "background_color": "#fff5f8"
+  "screenshots": [
+    {
+      "src": "screenshots/1-home.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Radha Dham home — darshan aur bhakti ek jagah"
+    },
+    {
+      "src": "screenshots/2-features.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Bhajan, leela, calendar aur Braj Yatra guide"
+    },
+    {
+      "src": "screenshots/3-japa.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Japa counter — naam jap ki ginti"
+    },
+    {
+      "src": "screenshots/4-yatra.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Braj Yatra guide — mandir aur darshan timings"
+    }
+  ]
 }
