@@ -255,13 +255,10 @@ export default function App() {
         <p>🌸 Radha Rani Devotional Website 🌸</p>
         <p onClick={secretAdminTap} style={{ cursor: "default", userSelect: "none" }}>Built with ❤️ by Sahil · Jai Shri Radhe</p>
         <div className="footer-links">
-          {/* NOTE: [YOUR_CONTACT] ko apne WhatsApp number se badlo (jaise 919876543210).
-              Ya email ke liye href="mailto:you@email.com" kar do. */}
+          {/* WhatsApp pe le jana ho to href="https://wa.me/91XXXXXXXXXX" kar do */}
           <a
             className="footer-contact"
-            href="https://wa.me/[YOUR_CONTACT]"
-            target="_blank"
-            rel="noreferrer"
+            href="mailto:sahilsultania66@gmail.com?subject=Website%20banwani%20hai"
           >
             💼 Apni website banwani hai? — Contact Sahil
           </a>
